@@ -21,7 +21,6 @@ class DatabaseConnection(object):
         print('***Connecting to the PostgreSQL database***')
         self._connection = psycopg2.connect(**params)
 
-
     @staticmethod
     def _config(filename='db/database.ini', section='postgresql'):
         """
