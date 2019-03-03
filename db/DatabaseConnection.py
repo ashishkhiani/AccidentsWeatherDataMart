@@ -18,8 +18,8 @@ class DatabaseConnection(object):
         params = self._config()
 
         # create connection to the PostgreSQL server
-        print('***Connecting to the PostgreSQL database***')
         self._connection = psycopg2.connect(**params)
+        self._connection.autocommit = True  # persist changes to DB automatically
 
     @staticmethod
     def _config(filename='db/database.ini', section='postgresql'):
@@ -52,4 +52,3 @@ class DatabaseConnection(object):
     def __del__(self):
         if self._connection is not None:
             self._connection.close()
-            print('***Database connection closed***')
