@@ -1,7 +1,7 @@
 from db.DatabaseConnection import DatabaseConnection
 
 
-class HourDimensionRepository(object):
+class HourDimensionDAL(object):
     """
     This functionality of this class is to interact with the database.
     ALl methods defined in the class must be solely responsible for reading and writing to the database.

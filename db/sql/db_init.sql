@@ -1,9 +1,9 @@
 CREATE SCHEMA IF NOT EXISTS accidents_weather_data_mart;
 
 CREATE TABLE IF NOT EXISTS accidents_weather_data_mart.hour_dimension (
-  hour_key INTEGER PRIMARY KEY,
-  hour_start INTEGER NOT NULL,
-  hour_end INTEGER NOT NULL,
+  hour_key SERIAL PRIMARY KEY,
+  hour_start TIME NOT NULL,
+  hour_end TIME NOT NULL,
   date DATE NOT NULL,
   day_of_week VARCHAR(10) NOT NULL,
   month VARCHAR(20) NOT NULL,

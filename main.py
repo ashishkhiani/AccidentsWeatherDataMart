@@ -1,5 +1,6 @@
-from db.queries import get_postgres_version, init_db
+from app.data_staging import populate_dimensions
+from db import init_schemas
 
 if __name__ == '__main__':
-    get_postgres_version()
-    init_db()
+    init_schemas()
+    populate_dimensions()

@@ -27,7 +27,7 @@ class DatabaseConnection(object):
         Fetches database configurations
         :param filename: config file path
         :param section: section in config to read from
-        :return: config parameters
+        :return: Dict representing the config parameters
         """
         # create a parser
         parser = ConfigParser()
@@ -47,8 +47,16 @@ class DatabaseConnection(object):
         return db
 
     def get_connection(self):
+        """
+        Accessor for the database connection
+        :return: the newly created database connection
+        """
         return self._connection
 
     def __del__(self):
+        """
+        Destructor to close the database connection
+        :return: None
+        """
         if self._connection is not None:
             self._connection.close()
