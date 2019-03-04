@@ -1,3 +1,5 @@
+# CONFIGURATION
+
 Prequisites:
 
 This project uses Python 3. You need to have Python 3 installed on your machine.
@@ -51,5 +53,29 @@ In addition, you will need to have pip install on your machine.
     python3 main.py
     ```
 
+# DEBUGGING LOCALLY
 
+I'd recommend debugging on a local PostGreSQL instance just because it's faster than having to connect to the uOttawa server.
 
+1. Start your local PostGreSQL instance
+
+    ```
+    pg_ctl -D /usr/local/var/postgres start
+    ```
+    
+2. Add the following to the `database.ini` file
+
+    ```
+    [localhost]
+    host=localhost
+    port=5432
+    database=postgres
+    ```
+
+3. Update the following line of code in DatabaseConnection.py to read the `localhost` configurations
+
+    ```
+    params = self._config(section='localhost')
+    ```
+
+4. Test the application and check if you can read and write to a local PostGreSQL instance.
