@@ -13,6 +13,8 @@ These are the steps taken to stage the data.
     * Import raw collision data for Calgary into `data_source.collision_data_calgary`
     * Import raw collision data for Toronto into `data_source.collision_data_toronto`
     * Import raw collision data for Ottawa into `data_source.collision_data_ottawa`
+        * Notes about 2017 data: The columns `Longitude`, `Latitude`, and `Year` were removed.
+        * Notes about 2014, 2015, 2016, 2017 data: Files were converted to csv format. 
 
 4. Populate Hour Dimension from 2007 to 2017.
 
