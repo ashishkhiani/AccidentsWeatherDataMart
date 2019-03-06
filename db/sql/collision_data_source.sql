@@ -105,18 +105,18 @@ FROM '/Users/AshishK/Desktop/collision_data/toronto/Fatal_Collisions.csv' CSV HE
 
 
 CREATE TABLE IF NOT EXISTS data_source.collision_data_calgary (
-  date                text,
-  collision_location	text,
-  collision_severity	text,
-  comm_name	          text,
-  comm_code	          text,
-  latitude	          text,
-  longitude	          text,
-  point	              text,
-  "4a3i-ccfj"         text,
-  "4b54-tmc4"         text,
-  "p8tp-5dkv"         text,
-  "kxmf-bzkv"         text
+  date                TEXT,
+  collision_location  TEXT,
+  collision_severity  TEXT,
+  comm_name           TEXT,
+  comm_code           TEXT,
+  latitude            TEXT,
+  longitude           TEXT,
+  point               TEXT,
+  "4a3i-ccfj"         TEXT,
+  "4b54-tmc4"         TEXT,
+  "p8tp-5dkv"         TEXT,
+  "kxmf-bzkv"         TEXT
 );
 
 COPY data_source.collision_data_calgary(date, collision_location, collision_severity, comm_name, comm_code,
