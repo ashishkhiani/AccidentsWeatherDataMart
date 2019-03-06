@@ -85,12 +85,8 @@ SELECT * FROM data_source.climate_data_ontario
 WHERE station_name in (
     'OTTAWA CDA',
     'OTTAWA CDA RCS',
-    'CHELSEA',
     'OTTAWA MACDONALD-CARTIER INT''L A',
-    'OTTAWA INTL A', 'GATINEAU A',
-    'OTTAWA GATINEAU A',
-    'OTTAWA GATINEAU A',
-    'ANGERS');
+    'OTTAWA INTL A',;
 
 
 CREATE TABLE data_source.climate_data_toronto AS
