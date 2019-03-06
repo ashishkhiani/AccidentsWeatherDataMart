@@ -86,7 +86,7 @@ WHERE station_name in (
     'OTTAWA CDA',
     'OTTAWA CDA RCS',
     'OTTAWA MACDONALD-CARTIER INT''L A',
-    'OTTAWA INTL A',;
+    'OTTAWA INTL A');
 
 
 CREATE TABLE data_source.climate_data_toronto AS
