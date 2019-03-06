@@ -36,7 +36,7 @@ class HourDimensionDAL(object):
     @staticmethod
     def insert_many(entities):
         """
-        Inserts a many entities at once to the database.
+        Insert many entities at once to the database.
         :param entities: a list of tuples of the form ->
                 [(hour_start, hour_end, date,day_of_week, month,year, is_weekend, is_holiday, holiday_name)]
         :return: None
@@ -57,4 +57,3 @@ class HourDimensionDAL(object):
 
         with db.get_connection().cursor() as cursor:
             cursor.executemany(sql_insert, entities)
-
