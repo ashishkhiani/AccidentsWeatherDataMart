@@ -1,8 +1,11 @@
 CREATE TABLE IF NOT EXISTS data_source.collision_data_ottawa (
   id                        SERIAL NOT NULL,
+  collision_id              TEXT,
   location                  TEXT,
   x                         TEXT,
   y                         TEXT,
+  longitude                 TEXT,
+  latitude                  TEXT,
   date                      TEXT,
   time                      TEXT,
   environment               TEXT,
@@ -15,20 +18,20 @@ CREATE TABLE IF NOT EXISTS data_source.collision_data_ottawa (
 );
 
 --For 2014 Ottawa Collision Data, file was converted to csv.
-COPY data_source.collision_data_ottawa(id, location, x, y, date, time, environment, road_Surface, traffic_Control, collision_Location, light, collision_Classification, impact_Type)
-FROM '/Users/AshishK/Desktop/collision_data/ottawa/2014collisionsfinal.csv' CSV HEADER NULL '';
+COPY data_source.collision_data_ottawa(id, collision_id,location, x, y, longitude, latitude, date, time, environment, road_Surface, traffic_Control, collision_Location, light, collision_Classification, impact_Type)
+FROM 'D:/DataScience/collisions/ottawa/2014collisionsfinal.csv' CSV HEADER NULL '';
 
 --For 2015 Ottawa Collision Data, file was converted to csv.
-COPY data_source.collision_data_ottawa(id, location, x, y, date, time, environment, road_Surface, traffic_Control, collision_Location, light, collision_Classification, impact_Type)
-FROM '/Users/AshishK/Desktop/collision_data/ottawa/2015collisionsfinal.csv' CSV HEADER NULL '';
+COPY data_source.collision_data_ottawa(id, collision_id,location, x, y, longitude, latitude, date, time, environment, road_Surface, traffic_Control, collision_Location, light, collision_Classification, impact_Type)
+FROM 'D:/DataScience/collisions/ottawa/2015collisionsfinal.csv' CSV HEADER NULL '';
 
 --For 2016 Ottawa Collision Data, file was converted to csv.
-COPY data_source.collision_data_ottawa(id, location, x, y, date, time, environment, road_Surface, traffic_Control, collision_Location, light, collision_Classification, impact_Type)
-FROM '/Users/AshishK/Desktop/collision_data/ottawa/2016collisionsfinal.csv' CSV HEADER NULL '';
+COPY data_source.collision_data_ottawa(id, collision_id,location, x, y, longitude, latitude, date, time, environment, road_Surface, traffic_Control, collision_Location, light, collision_Classification, impact_Type)
+FROM 'D:/DataScience/collisions/ottawa/2016collisionsfinal.csv' CSV HEADER NULL '';
 
 --For 2017 Ottawa Collision Data, Longitude, Latitude and Year columns were removed. File was converted to csv.
-COPY data_source.collision_data_ottawa(id, location, x, y, date, time, environment, road_Surface, traffic_Control, collision_Location, light, collision_Classification, impact_Type)
-FROM '/Users/AshishK/Desktop/collision_data/ottawa/2017collisionsfinal.csv' CSV HEADER NULL '';
+COPY data_source.collision_data_ottawa(id, collision_id,location, x, y, longitude, latitude, date, time, environment, road_Surface, traffic_Control, collision_Location, light, collision_Classification, impact_Type)
+FROM 'D:/DataScience/collisions/ottawa/2017collisionsfinal.csv' CSV HEADER NULL '';
 
 
 
