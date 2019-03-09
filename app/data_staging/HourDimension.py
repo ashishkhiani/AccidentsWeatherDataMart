@@ -2,7 +2,7 @@ import datetime
 
 import holidays
 
-from db.dal.HourDimensionDAL import HourDimensionDAL
+from db.dal.data_mart.HourDimensionDAL import HourDimensionDAL
 
 
 class HourDimension(object):

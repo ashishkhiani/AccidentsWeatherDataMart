@@ -4,7 +4,8 @@ from db.DatabaseConnection import DatabaseConnection
 class HourDimensionDAL(object):
     """
     This functionality of this class is to interact with the database.
-    ALl methods defined in the class must be solely responsible for reading and writing to the database.
+    All methods defined in the class must be solely responsible
+    for reading and writing to 'accidents_weather_data_mart.hour_dimension'.
     No business logic is allowed here.
     """
 
