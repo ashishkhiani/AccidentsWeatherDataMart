@@ -1,7 +1,7 @@
 CREATE SCHEMA IF NOT EXISTS data_source;
 
 CREATE TABLE IF NOT EXISTS data_source.climate_data_ontario (
-  id                  SERIAL NOT NULL,
+  id                  SERIAL PRIMARY KEY,
   date_time           TEXT,
   year                TEXT,
   month               TEXT,
@@ -73,7 +73,7 @@ COPY data_source.climate_data_ontario(date_time, year, month, day, time, temp_c,
 FROM '/Users/AshishK/Desktop/climate_data_files/ontario_4.csv' CSV HEADER NULL '';
 
 CREATE TABLE IF NOT EXISTS data_source.climate_data_alberta (
-  id                  SERIAL NOT NULL,
+  id                  SERIAL PRIMARY KEY,
   date_time           TEXT,
   year                TEXT,
   month               TEXT,
@@ -102,42 +102,42 @@ CREATE TABLE IF NOT EXISTS data_source.climate_data_alberta (
   province            TEXT
 );
 
-COPY data_source.climate_data_ontario(date_time, year, month, day, time, temp_c, temp_flag, dew_point_temp_c,
+COPY data_source.climate_data_alberta(date_time, year, month, day, time, temp_c, temp_flag, dew_point_temp_c,
                               dew_point_temp_flag, rel_hum_percent, rel_hum_flag, wind_dir_10s_deg,
                               wind_dir_flag, wind_spd_km_h, wind_spd_flag, visibility_km, visibility_flag,
                               stn_press_kpa, stn_press_flag, hmdx, hmdx_flag, wind_chill, wind_chill_flag,
                               weather, station_name, province)
 FROM '/Users/AshishK/Desktop/climate_data_files/alberta_1_1.csv' CSV HEADER NULL '';
 
-COPY data_source.climate_data_ontario(date_time, year, month, day, time, temp_c, temp_flag, dew_point_temp_c,
+COPY data_source.climate_data_alberta(date_time, year, month, day, time, temp_c, temp_flag, dew_point_temp_c,
                               dew_point_temp_flag, rel_hum_percent, rel_hum_flag, wind_dir_10s_deg,
                               wind_dir_flag, wind_spd_km_h, wind_spd_flag, visibility_km, visibility_flag,
                               stn_press_kpa, stn_press_flag, hmdx, hmdx_flag, wind_chill, wind_chill_flag,
                               weather, station_name, province)
 FROM '/Users/AshishK/Desktop/climate_data_files/alberta_1_2.csv' CSV HEADER NULL '';
 
-COPY data_source.climate_data_ontario(date_time, year, month, day, time, temp_c, temp_flag, dew_point_temp_c,
+COPY data_source.climate_data_alberta(date_time, year, month, day, time, temp_c, temp_flag, dew_point_temp_c,
                               dew_point_temp_flag, rel_hum_percent, rel_hum_flag, wind_dir_10s_deg,
                               wind_dir_flag, wind_spd_km_h, wind_spd_flag, visibility_km, visibility_flag,
                               stn_press_kpa, stn_press_flag, hmdx, hmdx_flag, wind_chill, wind_chill_flag,
                               weather, station_name, province)
 FROM '/Users/AshishK/Desktop/climate_data_files/alberta_2_1.csv' CSV HEADER NULL '';
 
-COPY data_source.climate_data_ontario(date_time, year, month, day, time, temp_c, temp_flag, dew_point_temp_c,
+COPY data_source.climate_data_alberta(date_time, year, month, day, time, temp_c, temp_flag, dew_point_temp_c,
                               dew_point_temp_flag, rel_hum_percent, rel_hum_flag, wind_dir_10s_deg,
                               wind_dir_flag, wind_spd_km_h, wind_spd_flag, visibility_km, visibility_flag,
                               stn_press_kpa, stn_press_flag, hmdx, hmdx_flag, wind_chill, wind_chill_flag,
                               weather, station_name, province)
 FROM '/Users/AshishK/Desktop/climate_data_files/alberta_2_2.csv' CSV HEADER NULL '';
 
-COPY data_source.climate_data_ontario(date_time, year, month, day, time, temp_c, temp_flag, dew_point_temp_c,
+COPY data_source.climate_data_alberta(date_time, year, month, day, time, temp_c, temp_flag, dew_point_temp_c,
                               dew_point_temp_flag, rel_hum_percent, rel_hum_flag, wind_dir_10s_deg,
                               wind_dir_flag, wind_spd_km_h, wind_spd_flag, visibility_km, visibility_flag,
                               stn_press_kpa, stn_press_flag, hmdx, hmdx_flag, wind_chill, wind_chill_flag,
                               weather, station_name, province)
 FROM '/Users/AshishK/Desktop/climate_data_files/alberta_3_1.csv' CSV HEADER NULL '';
 
-COPY data_source.climate_data_ontario(date_time, year, month, day, time, temp_c, temp_flag, dew_point_temp_c,
+COPY data_source.climate_data_alberta(date_time, year, month, day, time, temp_c, temp_flag, dew_point_temp_c,
                               dew_point_temp_flag, rel_hum_percent, rel_hum_flag, wind_dir_10s_deg,
                               wind_dir_flag, wind_spd_km_h, wind_spd_flag, visibility_km, visibility_flag,
                               stn_press_kpa, stn_press_flag, hmdx, hmdx_flag, wind_chill, wind_chill_flag,
