@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS data_source.collision_data_ottawa (
-  id                          SERIAL NOT NULL,
+  id                          SERIAL PRIMARY KEY,
   collision_id                TEXT,
   location                    TEXT,
   x                           TEXT,
@@ -33,7 +33,7 @@ FROM '/Users/AshishK/Desktop/collision_data/ottawa/2017collisionsfinal.csv' CSV 
 
 
 CREATE TABLE IF NOT EXISTS data_source.collision_data_toronto (
-  id              SERIAL NOT NULL,
+  id              SERIAL PRIMARY KEY,
   x               TEXT,
   y               TEXT,
   index_          TEXT,
@@ -105,6 +105,7 @@ FROM '/Users/AshishK/Desktop/collision_data/toronto/Fatal_Collisions.csv' CSV HE
 
 
 CREATE TABLE IF NOT EXISTS data_source.collision_data_calgary (
+  id                  SERIAL PRIMARY KEY,
   date                TEXT,
   collision_location  TEXT,
   collision_severity  TEXT,
