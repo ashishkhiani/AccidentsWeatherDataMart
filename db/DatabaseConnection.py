@@ -22,7 +22,7 @@ class DatabaseConnection(object):
         self._connection.autocommit = True  # persist changes to DB automatically
 
     @staticmethod
-    def _config(filename='db/database.ini', section='postgresql'):
+    def _config(filename='db/database.ini', section='localhost'):
         """
         Fetches database configurations
         :param filename: config file path
@@ -35,7 +35,7 @@ class DatabaseConnection(object):
         # read config file
         parser.read(filename)
 
-        # get section, default to postgresql
+        # get section, default to localhost
         db = {}
         if parser.has_section(section):
             params = parser.items(section)
