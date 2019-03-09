@@ -18,19 +18,15 @@ CREATE TABLE IF NOT EXISTS data_source.collision_data_ottawa (
   no_of_pedestrians           TEXT
 );
 
---For 2014 Ottawa Collision Data, file was converted to csv.
 COPY data_source.collision_data_ottawa(collision_id, location, x, y, longitude, latitude, date, time, environment, light, surface_condition, traffic_control, traffic_control_condition, collision_classification, impact_type, no_of_pedestrians)
 FROM '/Users/AshishK/Desktop/collision_data/ottawa/2014collisionsfinal.csv' CSV HEADER NULL '';
 
---For 2015 Ottawa Collision Data, file was converted to csv.
 COPY data_source.collision_data_ottawa(collision_id, location, x, y, longitude, latitude, date, time, environment, light, surface_condition, traffic_control, traffic_control_condition, collision_classification, impact_type, no_of_pedestrians)
 FROM '/Users/AshishK/Desktop/collision_data/ottawa/2015collisionsfinal.csv' CSV HEADER NULL '';
 
---For 2016 Ottawa Collision Data, file was converted to csv.
 COPY data_source.collision_data_ottawa(collision_id, location, x, y, longitude, latitude, date, time, environment, light, surface_condition, traffic_control, traffic_control_condition, collision_classification, impact_type, no_of_pedestrians)
 FROM '/Users/AshishK/Desktop/collision_data/ottawa/2016collisionsfinal.csv' CSV HEADER NULL '';
 
---For 2017 Ottawa Collision Data, Longitude, Latitude and Year columns were removed. File was converted to csv.
 COPY data_source.collision_data_ottawa(collision_id, location, x, y, longitude, latitude, date, time, environment, light, surface_condition, traffic_control, traffic_control_condition, collision_classification, impact_type, no_of_pedestrians)
 FROM '/Users/AshishK/Desktop/collision_data/ottawa/2017collisionsfinal.csv' CSV HEADER NULL '';
 
