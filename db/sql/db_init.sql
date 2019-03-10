@@ -21,17 +21,25 @@ CREATE TABLE IF NOT EXISTS accidents_weather_data_mart.weather_dimension (
   latitude                  FLOAT NOT NULL,
   elevation                 FLOAT NOT NULL,
   temperature               FLOAT,
+  temperature_flag          VARCHAR(20),
   dew_point_temp            FLOAT,
+  dew_point_temp_flag       VARCHAR(20),
   relative_humidity         FLOAT,
+  relative_humidity_flag    VARCHAR(20),
   wind_direction            FLOAT,
+  wind_direction_flag       VARCHAR(20),
   wind_speed                FLOAT,
-  wind_speed_flag           VARCHAR(2),
+  wind_speed_flag           VARCHAR(20),
   visibility                FLOAT,
+  visibility_flag           VARCHAR(20),
   station_pressure          FLOAT,
+  station_pressure_flag     VARCHAR(20),
   humidex                   FLOAT,
+  humidex_flag              VARCHAR(20),
   wind_chill                FLOAT,
-  wind_chill_flag           VARCHAR(2),
-  weather                   VARCHAR(200)
+  wind_chill_flag           VARCHAR(20),
+  weather                   VARCHAR(200),
+  weather_flag              VARCHAR(20)
 );
 
 CREATE TABLE IF NOT EXISTS relations.weather_hour_relation (

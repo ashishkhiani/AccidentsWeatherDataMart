@@ -6,7 +6,7 @@ if __name__ == '__main__':
 
     populate_dimensions(
         hour=False,
-        weather=False,
+        weather=True,
         accident=False,
         location=False
     )
