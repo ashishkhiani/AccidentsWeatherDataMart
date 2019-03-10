@@ -148,19 +148,14 @@ FROM '/Users/AshishK/Desktop/climate_data_files/alberta_3_2.csv' CSV HEADER NULL
 CREATE TABLE data_source.climate_data_calgary AS
 SELECT * FROM data_source.climate_data_alberta
 WHERE station_name in (
-  'CALGARY NOSE HILL',
-  'CALGARY ROSSCARROCK',
-  'CALGARY MARLBOROUGH',
   'CALGARY INT''L A',
   'CALGARY INT''L CS',
   'CALGARY INTL A',
-  'CALGARY MIDNAPORE',
   'COP UPPER');
 
 CREATE TABLE data_source.climate_data_ottawa AS
 SELECT * FROM data_source.climate_data_ontario
 WHERE station_name in (
-    'OTTAWA CDA',
     'OTTAWA CDA RCS',
     'OTTAWA MACDONALD-CARTIER INT''L A',
     'OTTAWA INTL A');
@@ -170,21 +165,16 @@ CREATE TABLE data_source.climate_data_toronto AS
 SELECT * FROM data_source.climate_data_ontario
 WHERE station_name in (
     'PA MATTAMY ATHLETIC CENTRE',
-    'TORONTO',
     'TORONTO CITY',
     'TORONTO CITY CENTRE',
     'PA ROYAL CANADIAN YACHT CLUB',
     'PA DUFFERIN AND ST. CLAIR CIBC',
-    'TORONTO EAST YORK DUSTAN',
     'PA TORONTO HYUNDAI',
     'PA SCARBOROUGH TORONTO HUNT',
     'PA TORONTO NORTH YORK MOTORS',
     'PA ATMOS NORTH YORK',
     'PA DOWNSVIEW PARK',
-    'TORONTO BURNHAMTHORPE',
-    'TORONTO NORTH YORK',
     'PA DOWNSVIEW',
-    'THORNHILL GRANDVIEW',
     'PA YORK UNIVERSITY',
     'PA MARKHAM NORTH TOYOTA',
     'TORONTO INTL A',
@@ -211,34 +201,24 @@ FROM '/Users/AshishK/Desktop/station_inventory.csv' CSV HEADER NULL '';
 CREATE TABLE data_source.station_inventory AS
 SELECT * FROM data_source.raw_station_inventory
 WHERE name in (
-    'CALGARY NOSE HILL',
-    'CALGARY ROSSCARROCK',
-    'CALGARY MARLBOROUGH',
     'CALGARY INT''L A',
     'CALGARY INT''L CS',
     'CALGARY INTL A',
-    'CALGARY MIDNAPORE',
     'COP UPPER',
-    'OTTAWA CDA',
     'OTTAWA CDA RCS',
     'OTTAWA MACDONALD-CARTIER INT''L A',
     'OTTAWA INTL A',
     'PA MATTAMY ATHLETIC CENTRE',
-    'TORONTO',
     'TORONTO CITY',
     'TORONTO CITY CENTRE',
     'PA ROYAL CANADIAN YACHT CLUB',
     'PA DUFFERIN AND ST. CLAIR CIBC',
-    'TORONTO EAST YORK DUSTAN',
     'PA TORONTO HYUNDAI',
     'PA SCARBOROUGH TORONTO HUNT',
     'PA TORONTO NORTH YORK MOTORS',
     'PA ATMOS NORTH YORK',
     'PA DOWNSVIEW PARK',
-    'TORONTO BURNHAMTHORPE',
-    'TORONTO NORTH YORK',
     'PA DOWNSVIEW',
-    'THORNHILL GRANDVIEW',
     'PA YORK UNIVERSITY',
     'PA MARKHAM NORTH TOYOTA',
     'TORONTO INTL A',

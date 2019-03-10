@@ -1,3 +1,6 @@
+import psycopg2.extras
+
+from db import DatabaseConnection
 from db.dal.data_source.DataSourceDAL import DataSourceDAL
 
 
@@ -19,5 +22,10 @@ class StationInventoryDAL(object):
 
     @staticmethod
     def fetch_by_name(name):
-        sql = """SELECT * FROM data_source.station_inventory WHERE name = '%s'""" % repr(name.strip())
-        return DataSourceDAL.fetch_one(sql)
+        sql = """SELECT * FROM data_source.station_inventory WHERE name = %s"""
+
+        db = DatabaseConnection()
+
+        with db.get_connection().cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            cursor.execute(sql, (name,))
+            return cursor.fetchone()
