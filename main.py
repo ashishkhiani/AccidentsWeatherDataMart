@@ -7,7 +7,7 @@ if __name__ == '__main__':
 
     populate_dimensions_pre_stage(
         hour=False,
-        weather=True,
+        weather=False,
         accident=False,
         location=False
     )

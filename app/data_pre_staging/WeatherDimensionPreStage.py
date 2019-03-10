@@ -38,19 +38,17 @@ class WeatherDimensionPreStage(object):
             if len(entities) == 500:  # insert entities into db in batches of 500
                 # TODO insert into weather dimension pre-stage table
                 entities.clear()  # clear list to free up memory
-                print("completed batch " + str(i) + " of " + str(math.ceil(count/500)))
+                print("Completed batch " + str(i) + " of " + str(math.ceil(count/500)))
                 i += 1
 
         if len(entities) > 0:  # insert any remaining records into db
             # TODO insert into weather dimension pre-stage table
             entities.clear()
-            print("completed batch " + str(i) + " of " + str(math.ceil(count / 500)))
-            
+            print("Completed batch " + str(i) + " of " + str(math.ceil(count / 500)))
+
         # TODO handle Ottawa Climate Data
 
         # TODO handle Toronto Climate Data
-
-        print(entities)
 
     @staticmethod
     def handle_raw_climate_data(row, station_inventory):
