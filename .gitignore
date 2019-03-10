@@ -5,3 +5,8 @@ venv/
 db/database.ini
 
 *.pyc
+
+Data Exploration.ipynb
+
+.ipynb_checkpoints/
+
