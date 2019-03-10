@@ -21,8 +21,13 @@ def _create_schemas():
     connection = db.get_connection()
 
     with connection.cursor() as cursor:
-        sql = open("db/sql/db_init.sql", "r").read()
-        cursor.execute(sql)
+        with open("db/sql/db_init.sql", "r") as f:
+            sql = f.read()
+            cursor.execute(sql)
+
+        with open("db/sql/pre_stage.sql", "r") as f:
+            sql = f.read()
+            cursor.execute(sql)
 
     print("Database successfully initialized.")
 

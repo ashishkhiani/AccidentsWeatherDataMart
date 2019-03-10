@@ -1,8 +1,7 @@
-CREATE SCHEMA IF NOT EXISTS accidents_weather_data_mart;
-CREATE SCHEMA IF NOT EXISTS relations;
+CREATE SCHEMA IF NOT EXISTS dimension_pre_stage;
 
-CREATE TABLE IF NOT EXISTS accidents_weather_data_mart.hour_dimension (
-  hour_key      INTEGER PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS dimension_pre_stage.hour_dimension_pre_stage (
+  hour_key      SERIAL PRIMARY KEY,
   hour_start    TIME NOT NULL,
   hour_end      TIME NOT NULL,
   date          DATE NOT NULL,
@@ -14,12 +13,13 @@ CREATE TABLE IF NOT EXISTS accidents_weather_data_mart.hour_dimension (
   holiday_name  VARCHAR(200)
 );
 
-CREATE TABLE IF NOT EXISTS accidents_weather_data_mart.weather_dimension (
-  weather_key               INTEGER PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS dimension_pre_stage.weather_dimension_pre_stage (
+  weather_key               SERIAL PRIMARY KEY,
   station_name              VARCHAR(200) NOT NULL,
   longitude                 FLOAT NOT NULL,
   latitude                  FLOAT NOT NULL,
   elevation                 FLOAT NOT NULL,
+  date                      DATE NOT NULL,
   temperature               FLOAT,
   temperature_flag          VARCHAR(20),
   dew_point_temp            FLOAT,
@@ -40,10 +40,4 @@ CREATE TABLE IF NOT EXISTS accidents_weather_data_mart.weather_dimension (
   wind_chill_flag           VARCHAR(20),
   weather                   VARCHAR(200),
   weather_flag              VARCHAR(20)
-);
-
-CREATE TABLE IF NOT EXISTS relations.weather_hour_relation (
-  id SERIAL PRIMARY KEY,
-  weather_key INTEGER,
-  hour_key INTEGER
 )

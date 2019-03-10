@@ -2,7 +2,7 @@ from app.data_staging.HourDimension import HourDimension
 from app.data_staging.WeatherDimension import WeatherDimension
 
 
-def populate_dimensions(hour=False, weather=False, accident=False, location=False):
+def populate_dimensions_data_mart(hour=False, weather=False, accident=False, location=False):
 
     if hour:
         print("Populating Hour Dimension...")

@@ -1,11 +1,11 @@
 from db import DatabaseConnection
 
 
-class WeatherDimensionDAL(object):
+class WeatherDimensionPreStageDAL(object):
     """
     This functionality of this class is to interact with the database.
     All methods defined in the class must be solely responsible
-    for reading and writing to 'accidents_weather_data_mart.weather_dimension'.
+    for reading and writing to 'dimension_pre_stage.weather_dimension_pre_stage'.
     No business logic is allowed here.
     """
 
@@ -14,11 +14,11 @@ class WeatherDimensionDAL(object):
         """
         Inserts a single entity to the database.
         :param entity: a tuple of the form -> (
-                weather_key,
                 station_name,
                 longitude,
                 latitude,
                 elevation,
+                date,
                 temperature,
                 dew_point_temp,
                 relative_humidity,
@@ -36,12 +36,12 @@ class WeatherDimensionDAL(object):
         """
         db = DatabaseConnection()
 
-        sql_insert = """INSERT INTO accidents_weather_data_mart.weather_dimension (
-                          weather_key,
+        sql_insert = """INSERT INTO dimension_pre_stage.weather_dimension_pre_stage (
                           station_name, 
                           longitude, 
                           latitude, 
                           elevation, 
+                          date,
                           temperature, 
                           temperature_flag, 
                           dew_point_temp, 
@@ -62,7 +62,7 @@ class WeatherDimensionDAL(object):
                           wind_chill_flag, 
                           weather, 
                           weather_flag) 
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
                                 %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
         with db.get_connection().cursor() as cursor:
@@ -73,11 +73,11 @@ class WeatherDimensionDAL(object):
         """
         Insert many entities to the database.
         :param entities: a list of tuples of the form -> [(
-                weather_key,
                 station_name,
                 longitude,
                 latitude,
                 elevation,
+                date,
                 temperature,
                 dew_point_temp,
                 relative_humidity,
@@ -95,12 +95,12 @@ class WeatherDimensionDAL(object):
         """
         db = DatabaseConnection()
 
-        sql_insert = """INSERT INTO accidents_weather_data_mart.weather_dimension (
-                          weather_key,
+        sql_insert = """INSERT INTO dimension_pre_stage.weather_dimension_pre_stage (
                           station_name, 
                           longitude, 
                           latitude, 
                           elevation, 
+                          date,
                           temperature, 
                           temperature_flag, 
                           dew_point_temp, 
@@ -121,7 +121,7 @@ class WeatherDimensionDAL(object):
                           wind_chill_flag, 
                           weather, 
                           weather_flag) 
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
                                 %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
         with db.get_connection().cursor() as cursor:
