@@ -2,7 +2,10 @@ import math
 from datetime import datetime
 
 from db.dal.data_source.ClimateDataCalgaryDAL import ClimateDataCalgaryDAL
+from db.dal.data_source.ClimateDataOttawaDAL import ClimateDataOttawaDAL
+from db.dal.data_source.ClimateDataTorontoDAL import ClimateDataTorontoDAL
 from db.dal.data_source.StationInventoryDAL import StationInventoryDAL
+from db.dal.dimension_pre_stage.WeatherDimensionPreStageDAL import WeatherDimensionPreStageDAL
 from utils.flags import AVAILABLE, ESTIMATED, NOT_AVAILABLE
 from utils.utilities import is_null_or_empty, is_estimated, is_missing_or_unavailable
 
@@ -20,7 +23,6 @@ class WeatherDimensionPreStage(object):
 
     @staticmethod
     def populate():
-        entities = []
         station_inventory = dict()
 
         for station in StationInventoryDAL.fetch_all():
@@ -30,25 +32,51 @@ class WeatherDimensionPreStage(object):
                 'elevation': station['elevation']
             }
 
+        # Calgary Climate Data
+        print("Populating dimension_pre_stage.weather_dimension_pre_stage with Calgary data...")
+        WeatherDimensionPreStage.populate_helper(
+            count=ClimateDataCalgaryDAL.get_count(),
+            data=ClimateDataCalgaryDAL.fetch_all(),
+            station_inventory=station_inventory
+        )
+        print("Successfully populated Calgary data in dimension_pre_stage.weather_dimension_pre_stage.")
+
+        # Ottawa Climate Data
+        print("Populating dimension_pre_stage.weather_dimension_pre_stage with Ottawa data...")
+        WeatherDimensionPreStage.populate_helper(
+            count=ClimateDataOttawaDAL.get_count(),
+            data=ClimateDataOttawaDAL.fetch_all(),
+            station_inventory=station_inventory
+        )
+        print("Successfully populated Ottawa data in dimension_pre_stage.weather_dimension_pre_stage.")
+
+        # Toronto Climate Data
+        print("Populating dimension_pre_stage.weather_dimension_pre_stage with Toronto data...")
+        WeatherDimensionPreStage.populate_helper(
+            count=ClimateDataTorontoDAL.get_count(),
+            data=ClimateDataTorontoDAL.fetch_all(),
+            station_inventory=station_inventory
+        )
+        print("Successfully populated Toronto data in dimension_pre_stage.weather_dimension_pre_stage.")
+
+    @staticmethod
+    def populate_helper(count, data, station_inventory):
+        entities = []
+
         i = 1
-        count = ClimateDataCalgaryDAL.get_count()
-        for row in ClimateDataCalgaryDAL.fetch_all():
+        for row in data:
             entities.append(WeatherDimensionPreStage.handle_raw_climate_data(row, station_inventory))
 
             if len(entities) == 500:  # insert entities into db in batches of 500
-                # TODO insert into weather dimension pre-stage table
+                WeatherDimensionPreStageDAL.insert_many(entities)
                 entities.clear()  # clear list to free up memory
-                print("Completed batch " + str(i) + " of " + str(math.ceil(count/500)))
+                print("Completed batch " + str(i) + " of " + str(math.ceil(count / 500)))
                 i += 1
 
         if len(entities) > 0:  # insert any remaining records into db
-            # TODO insert into weather dimension pre-stage table
+            WeatherDimensionPreStageDAL.insert_many(entities)
             entities.clear()
             print("Completed batch " + str(i) + " of " + str(math.ceil(count / 500)))
-
-        # TODO handle Ottawa Climate Data
-
-        # TODO handle Toronto Climate Data
 
     @staticmethod
     def handle_raw_climate_data(row, station_inventory):
@@ -56,7 +84,7 @@ class WeatherDimensionPreStage(object):
         station_name, longitude, latitude, elevation = \
             WeatherDimensionPreStage.handle_station_data(row['station_name'], station_inventory)
 
-        date = WeatherDimensionPreStage.handle_date_time(row['date_time'])
+        date_time = WeatherDimensionPreStage.handle_date_time(row['date_time'])
 
         temperature, temperature_flag = \
             WeatherDimensionPreStage.handle_float_data_and_flag(row['temp_c'], row['temp_flag'])
@@ -64,16 +92,16 @@ class WeatherDimensionPreStage(object):
         dew_point_temp, dew_point_temp_flag = \
             WeatherDimensionPreStage.handle_float_data_and_flag(row['dew_point_temp_c'], row['dew_point_temp_flag'])
 
-        relative_humidity, relative_humidity_flag =\
+        relative_humidity, relative_humidity_flag = \
             WeatherDimensionPreStage.handle_float_data_and_flag(row['rel_hum_percent'], row['rel_hum_flag'])
 
-        wind_direction, wind_direction_flag =\
+        wind_direction, wind_direction_flag = \
             WeatherDimensionPreStage.handle_float_data_and_flag(row['wind_dir_10s_deg'], row['wind_dir_flag'])
 
-        wind_speed, wind_speed_flag =\
+        wind_speed, wind_speed_flag = \
             WeatherDimensionPreStage.handle_float_data_and_flag(row['wind_spd_km_h'], row['wind_spd_flag'])
 
-        visibility, visibility_flag =\
+        visibility, visibility_flag = \
             WeatherDimensionPreStage.handle_float_data_and_flag(row['visibility_km'], row['visibility_flag'])
 
         station_pressure, station_pressure_flag = \
@@ -82,7 +110,7 @@ class WeatherDimensionPreStage(object):
         humidex, humidex_flag = \
             WeatherDimensionPreStage.handle_float_data_and_flag(row['hmdx'], row['hmdx_flag'])
 
-        wind_chill, wind_chill_flag =\
+        wind_chill, wind_chill_flag = \
             WeatherDimensionPreStage.handle_float_data_and_flag(row['wind_chill'], row['wind_chill_flag'])
 
         weather, weather_flag = WeatherDimensionPreStage.handle_weather(row['weather'])
@@ -91,7 +119,8 @@ class WeatherDimensionPreStage(object):
                   longitude,
                   latitude,
                   elevation,
-                  date,
+                  date_time.date(),
+                  date_time.time(),
                   temperature,
                   temperature_flag,
                   dew_point_temp,

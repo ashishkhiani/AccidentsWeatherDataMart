@@ -19,6 +19,7 @@ class WeatherDimensionPreStageDAL(object):
                 latitude,
                 elevation,
                 date,
+                time,
                 temperature,
                 dew_point_temp,
                 relative_humidity,
@@ -42,6 +43,7 @@ class WeatherDimensionPreStageDAL(object):
                           latitude, 
                           elevation, 
                           date,
+                          time,
                           temperature, 
                           temperature_flag, 
                           dew_point_temp, 
@@ -63,7 +65,7 @@ class WeatherDimensionPreStageDAL(object):
                           weather, 
                           weather_flag) 
                         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
-                                %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+                                %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
         with db.get_connection().cursor() as cursor:
             cursor.execute(sql_insert, entity)
@@ -78,6 +80,7 @@ class WeatherDimensionPreStageDAL(object):
                 latitude,
                 elevation,
                 date,
+                time,
                 temperature,
                 dew_point_temp,
                 relative_humidity,
@@ -101,6 +104,7 @@ class WeatherDimensionPreStageDAL(object):
                           latitude, 
                           elevation, 
                           date,
+                          time,
                           temperature, 
                           temperature_flag, 
                           dew_point_temp, 
@@ -122,7 +126,7 @@ class WeatherDimensionPreStageDAL(object):
                           weather, 
                           weather_flag) 
                         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
-                                %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+                                %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
         with db.get_connection().cursor() as cursor:
             cursor.executemany(sql_insert, entities)

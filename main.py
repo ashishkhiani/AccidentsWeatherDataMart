@@ -1,5 +1,5 @@
 from app.data_pre_staging import populate_dimensions_pre_stage
-from app.data_staging import populate_dimensions_data_mart
+from app.data_staging import populate_dimensions_data_mart, create_relations
 from db import init_schemas
 
 if __name__ == '__main__':
@@ -17,4 +17,11 @@ if __name__ == '__main__':
         weather=False,
         accident=False,
         location=False
+    )
+
+    create_relations(
+        weather_hour=False,
+        weather_location=False,
+        accident_hour=False,
+        accident_location=False
     )
