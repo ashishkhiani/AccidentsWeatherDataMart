@@ -1,3 +1,6 @@
+from db.dal.data_mart.HourDimensionDAL import HourDimensionDAL
+
+
 class HourDimension(object):
     """
     The functionality of this class is to define the business logic necessary
@@ -8,5 +11,7 @@ class HourDimension(object):
 
     @staticmethod
     def populate():
-        # TODO get data from pre-stage dimension and populate into HourDimension removing unnecessary columns
-        print("Not yet implemented")
+        print("Populating accidents_weather_data_mart.hour_dimension")
+        HourDimensionDAL.copy_data_from_hour_pre_stage()
+        print("Successfully populated accidents_weather_data_mart.hour_dimension")
+
