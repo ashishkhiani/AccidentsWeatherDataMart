@@ -26,6 +26,14 @@ class DataSourceDAL(object):
                     yield result
 
     @staticmethod
+    def fetch_one(sql):
+        db = DatabaseConnection()
+
+        with db.get_connection().cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            cursor.execute(sql)
+            return cursor.fetchone()
+
+    @staticmethod
     def get_count(sql):
         db = DatabaseConnection()
 

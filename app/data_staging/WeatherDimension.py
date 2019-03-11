@@ -1,8 +1,3 @@
-from db.dal.data_source.ClimateDataCalgaryDAL import ClimateDataCalgaryDAL
-from db.dal.data_source.ClimateDataOttawaDAL import ClimateDataOttawaDAL
-from db.dal.data_source.ClimateDataTorontoDAL import ClimateDataTorontoDAL
-
-
 class WeatherDimension(object):
     """
     The functionality of this class is to define the business logic necessary
@@ -13,14 +8,6 @@ class WeatherDimension(object):
 
     @staticmethod
     def populate():
-        for row in ClimateDataCalgaryDAL.fetch_all():
-            # handle row
-            continue
-
-        for row in ClimateDataOttawaDAL.fetch_all():
-            # handle row
-            continue
-
-        for row in ClimateDataTorontoDAL.fetch_all():
-            # handle row
-            continue
+        # TODO get data from pre-stage dimension and populate into WeatherDimension removing unnecessary columns
+        # TODO connect Hour Dimension to Weather Dimension
+        print("Not yet implemented")

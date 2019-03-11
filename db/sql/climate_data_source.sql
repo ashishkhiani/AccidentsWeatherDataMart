@@ -148,19 +148,14 @@ FROM '/Users/AshishK/Desktop/climate_data_files/alberta_3_2.csv' CSV HEADER NULL
 CREATE TABLE data_source.climate_data_calgary AS
 SELECT * FROM data_source.climate_data_alberta
 WHERE station_name in (
-  'CALGARY NOSE HILL',
-  'CALGARY ROSSCARROCK',
-  'CALGARY MARLBOROUGH',
   'CALGARY INT''L A',
   'CALGARY INT''L CS',
   'CALGARY INTL A',
-  'CALGARY MIDNAPORE',
   'COP UPPER');
 
 CREATE TABLE data_source.climate_data_ottawa AS
 SELECT * FROM data_source.climate_data_ontario
 WHERE station_name in (
-    'OTTAWA CDA',
     'OTTAWA CDA RCS',
     'OTTAWA MACDONALD-CARTIER INT''L A',
     'OTTAWA INTL A');
@@ -170,22 +165,16 @@ CREATE TABLE data_source.climate_data_toronto AS
 SELECT * FROM data_source.climate_data_ontario
 WHERE station_name in (
     'PA MATTAMY ATHLETIC CENTRE',
-    'TORONTO',
     'TORONTO CITY',
-    'TORONTO CITY CENTRE',
     'TORONTO CITY CENTRE',
     'PA ROYAL CANADIAN YACHT CLUB',
     'PA DUFFERIN AND ST. CLAIR CIBC',
-    'TORONTO EAST YORK DUSTAN',
     'PA TORONTO HYUNDAI',
     'PA SCARBOROUGH TORONTO HUNT',
     'PA TORONTO NORTH YORK MOTORS',
     'PA ATMOS NORTH YORK',
     'PA DOWNSVIEW PARK',
-    'TORONTO BURNHAMTHORPE',
-    'TORONTO NORTH YORK',
     'PA DOWNSVIEW',
-    'THORNHILL GRANDVIEW',
     'PA YORK UNIVERSITY',
     'PA MARKHAM NORTH TOYOTA',
     'TORONTO INTL A',
@@ -194,7 +183,49 @@ WHERE station_name in (
     'PA HERSHEY CENTRE',
     'PA CONCORD RYDER',
     'TORONTO BUTTONVILLE A'
-    'TORONTO BUTTONVILLE A',
-    'TORONTO BUTTONVILLE A',
+    'PA MONOPOLY PROPERTY MANAGEMENT',
+    'PA ATMOS MISSISSAUGA');
+
+
+CREATE TABLE IF NOT EXISTS data_source.raw_station_inventory (
+  id          SERIAL PRIMARY KEY,
+  name        TEXT,
+  latitude    TEXT,
+  longitude   TEXT,
+  elevation   TEXT
+);
+
+COPY data_source.raw_station_inventory(name, latitude, longitude, elevation)
+FROM '/Users/AshishK/Desktop/station_inventory.csv' CSV HEADER NULL '';
+
+CREATE TABLE data_source.station_inventory AS
+SELECT * FROM data_source.raw_station_inventory
+WHERE name in (
+    'CALGARY INT''L A',
+    'CALGARY INT''L CS',
+    'CALGARY INTL A',
+    'COP UPPER',
+    'OTTAWA CDA RCS',
+    'OTTAWA MACDONALD-CARTIER INT''L A',
+    'OTTAWA INTL A',
+    'PA MATTAMY ATHLETIC CENTRE',
+    'TORONTO CITY',
+    'TORONTO CITY CENTRE',
+    'PA ROYAL CANADIAN YACHT CLUB',
+    'PA DUFFERIN AND ST. CLAIR CIBC',
+    'PA TORONTO HYUNDAI',
+    'PA SCARBOROUGH TORONTO HUNT',
+    'PA TORONTO NORTH YORK MOTORS',
+    'PA ATMOS NORTH YORK',
+    'PA DOWNSVIEW PARK',
+    'PA DOWNSVIEW',
+    'PA YORK UNIVERSITY',
+    'PA MARKHAM NORTH TOYOTA',
+    'TORONTO INTL A',
+    'TORONTO LESTER B. PEARSON INT''L A',
+    'PA U OF T SCARBOROUGH TENNIS CENTRE',
+    'PA HERSHEY CENTRE',
+    'PA CONCORD RYDER',
+    'TORONTO BUTTONVILLE A'
     'PA MONOPOLY PROPERTY MANAGEMENT',
     'PA ATMOS MISSISSAUGA');
