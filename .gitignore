@@ -5,3 +5,17 @@ venv/
 db/database.ini
 
 *.pyc
+
+db/resources/climate_data/alberta_1_1\.csv
+db/resources/climate_data/alberta_1_2\.csv
+db/resources/climate_data/alberta_2_1\.csv
+db/resources/climate_data/alberta_2_2\.csv
+db/resources/climate_data/alberta_3_1\.csv
+db/resources/climate_data/alberta_3_2\.csv
+
+db/resources/climate_data/ontario_1_1\.csv
+db/resources/climate_data/ontario_1_2\.csv
+db/resources/climate_data/ontario_2_1\.csv
+db/resources/climate_data/ontario_2_2\.csv
+db/resources/climate_data/ontario_3\.csv
+db/resources/climate_data/ontario_4\.csv
