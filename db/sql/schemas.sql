@@ -245,6 +245,7 @@ CREATE TABLE IF NOT EXISTS dimension_pre_stage.weather_dimension_pre_stage (
   latitude                  FLOAT NOT NULL,
   elevation                 FLOAT NOT NULL,
   date                      DATE NOT NULL,
+  time                      TIME NOT NULL,
   temperature               FLOAT,
   temperature_flag          VARCHAR(20),
   dew_point_temp            FLOAT,
