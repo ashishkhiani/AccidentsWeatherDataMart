@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS data_source.collision_data_ottawa (
-  id                          SERIAL PRIMARY KEY,
+  id                          INTEGER PRIMARY KEY,
   collision_id                TEXT,
   location                    TEXT,
   x                           TEXT,
@@ -18,22 +18,22 @@ CREATE TABLE IF NOT EXISTS data_source.collision_data_ottawa (
   no_of_pedestrians           TEXT
 );
 
-COPY data_source.collision_data_ottawa(collision_id, location, x, y, longitude, latitude, date, time, environment, light, surface_condition, traffic_control, traffic_control_condition, collision_classification, impact_type, no_of_pedestrians)
+COPY data_source.collision_data_ottawa(id, collision_id, location, x, y, longitude, latitude, date, time, environment, light, surface_condition, traffic_control, traffic_control_condition, collision_classification, impact_type, no_of_pedestrians)
 FROM '/Users/AshishK/Desktop/collision_data/ottawa/2014collisionsfinal.csv' CSV HEADER NULL '';
 
-COPY data_source.collision_data_ottawa(collision_id, location, x, y, longitude, latitude, date, time, environment, light, surface_condition, traffic_control, traffic_control_condition, collision_classification, impact_type, no_of_pedestrians)
+COPY data_source.collision_data_ottawa(id, collision_id, location, x, y, longitude, latitude, date, time, environment, light, surface_condition, traffic_control, traffic_control_condition, collision_classification, impact_type, no_of_pedestrians)
 FROM '/Users/AshishK/Desktop/collision_data/ottawa/2015collisionsfinal.csv' CSV HEADER NULL '';
 
-COPY data_source.collision_data_ottawa(collision_id, location, x, y, longitude, latitude, date, time, environment, light, surface_condition, traffic_control, traffic_control_condition, collision_classification, impact_type, no_of_pedestrians)
+COPY data_source.collision_data_ottawa(id, collision_id, location, x, y, longitude, latitude, date, time, environment, light, surface_condition, traffic_control, traffic_control_condition, collision_classification, impact_type, no_of_pedestrians)
 FROM '/Users/AshishK/Desktop/collision_data/ottawa/2016collisionsfinal.csv' CSV HEADER NULL '';
 
-COPY data_source.collision_data_ottawa(collision_id, location, x, y, longitude, latitude, date, time, environment, light, surface_condition, traffic_control, traffic_control_condition, collision_classification, impact_type, no_of_pedestrians)
+COPY data_source.collision_data_ottawa(id, collision_id, location, x, y, longitude, latitude, date, time, environment, light, surface_condition, traffic_control, traffic_control_condition, collision_classification, impact_type, no_of_pedestrians)
 FROM '/Users/AshishK/Desktop/collision_data/ottawa/2017collisionsfinal.csv' CSV HEADER NULL '';
 
 
 
 CREATE TABLE IF NOT EXISTS data_source.collision_data_toronto (
-  id              SERIAL PRIMARY KEY,
+  id              INTEGER PRIMARY KEY,
   x               TEXT,
   y               TEXT,
   index_          TEXT,
@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS data_source.collision_data_toronto (
   fid             TEXT
 );
 
-COPY data_source.collision_data_toronto(x, y,	index_, accnum, year, date, time, hour, street1, street2, "offset",
+COPY data_source.collision_data_toronto(id, x, y,	index_, accnum, year, date, time, hour, street1, street2, "offset",
                                         road_class, district, latitude, longitude, loccoord, accloc, traffctl,
                                         visibility, light, rdsfcond, acclass, impactype, invtype, invage, injury, fatal_no,
                                         initdir, vehtype, manoeuver, drivact, drivcond, pedtype, pedact, pedcond, cyclistype,
@@ -105,7 +105,7 @@ FROM '/Users/AshishK/Desktop/collision_data/toronto/Fatal_Collisions.csv' CSV HE
 
 
 CREATE TABLE IF NOT EXISTS data_source.collision_data_calgary (
-  id                  SERIAL PRIMARY KEY,
+  id                  INTEGER PRIMARY KEY,
   date                TEXT,
   collision_location  TEXT,
   collision_severity  TEXT,
@@ -120,7 +120,7 @@ CREATE TABLE IF NOT EXISTS data_source.collision_data_calgary (
   "kxmf-bzkv"         TEXT
 );
 
-COPY data_source.collision_data_calgary(date, collision_location, collision_severity, comm_name, comm_code,
+COPY data_source.collision_data_calgary(id, date, collision_location, collision_severity, comm_name, comm_code,
                                         latitude, longitude, point, "4a3i-ccfj", "4b54-tmc4", "p8tp-5dkv",
                                         "kxmf-bzkv")
 FROM '/Users/AshishK/Desktop/collision_data/calgary/Pedestrian_Motor_Vehicle_Collisions.csv' CSV HEADER NULL '';
