@@ -135,8 +135,8 @@ no_of_pedestrians)"""
 
         accident_data = accidents.get(accident_id)
 
-        longitude = accident_data['longitude']
-        latitude = accident_data['latitude']
+        longitude = accident_data['LONGITUDE']
+        latitude = accident_data['LATITUDE']
         location = accident_data['LOCATION']
 
         if is_null_or_empty(longitude) or is_null_or_empty(latitude):
@@ -149,8 +149,9 @@ no_of_pedestrians)"""
 
         return accident_id, round(float(longitude), 2), round(float(latitude), 2), round(float(location), 2)
 
+
     @staticmethod
-    def handle_environment(environment):
+    def handle_id_condition(environment):
         if is_null_or_empty(environment):
             raise Exception("Environment is empty/null")
 
