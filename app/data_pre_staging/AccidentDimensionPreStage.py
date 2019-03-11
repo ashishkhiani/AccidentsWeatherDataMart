@@ -76,36 +76,34 @@ no_of_pedestrians)"""
         id, longitude, latitude, location = \
             AccidentDimensionPreStage.handle_accident_data(row['ID'], accidents)
 
+        collision_id, x, y = \
+            row["COLLISION_ID"], row["X"], row["Y"]
+
         date = AccidentDimensionPreStage.handle_date_time(row['DATE'], row['TIME'])
 
-        environment = \
-            AccidentDimensionPreStage.handle_environment(row['environment'])
+        environment  = \
+            AccidentDimensionPreStage.handle_id_condition(row['LIGHT'])
 
-        dew_point_temp, dew_point_temp_flag = \
-            AccidentDimensionPreStage.handle_float_data_and_flag(row['dew_point_temp_c'], row['dew_point_temp_flag'])
+        light = \
+            AccidentDimensionPreStage.handle_id_condition(row['LIGHT'])
 
-        relative_humidity, relative_humidity_flag =\
-            AccidentDimensionPreStage.handle_float_data_and_flag(row['rel_hum_percent'], row['rel_hum_flag'])
+        surface_condition = \
+            AccidentDimensionPreStage.handle_id_condition(row['SURFACE_CONDITION'])
 
-        wind_direction, wind_direction_flag =\
-            AccidentDimensionPreStage.handle_float_data_and_flag(row['wind_dir_10s_deg'], row['wind_dir_flag'])
+        traffic_control = \
+            AccidentDimensionPreStage.handle_id_condition(row['TRAFFIC_CONTROL'])
+        
+        collision_classification = \
+            AccidentDimensionPreStage.handle_id_condition(row['COLLISION_CLASSIFICATION'])
 
-        wind_speed, wind_speed_flag =\
-            AccidentDimensionPreStage.handle_float_data_and_flag(row['wind_spd_km_h'], row['wind_spd_flag'])
+        collision_classification = \
+            AccidentDimensionPreStage.handle_id_condition(row['COLLISION_CLASSIFICATION'])
+        
+        impact_type = \
+            AccidentDimensionPreStage.handle_id_condition(row['IMPACT_TYPE'])
 
-        visibility, visibility_flag =\
-            AccidentDimensionPreStage.handle_float_data_and_flag(row['visibility_km'], row['visibility_flag'])
-
-        station_pressure, station_pressure_flag = \
-            AccidentDimensionPreStage.handle_float_data_and_flag(row['stn_press_kpa'], row['stn_press_flag'])
-
-        humidex, humidex_flag = \
-            AccidentDimensionPreStage.handle_float_data_and_flag(row['hmdx'], row['hmdx_flag'])
-
-        wind_chill, wind_chill_flag =\
-            AccidentDimensionPreStage.handle_float_data_and_flag(row['wind_chill'], row['wind_chill_flag'])
-
-        weather, weather_flag = AccidentDimensionPreStage.handle_weather(row['weather'])
+        no_of_pedestrians = \
+            row["NO_OF_PEDESTRIANS"]
 
         entity = (id,
                   collision_id,
@@ -139,22 +137,26 @@ no_of_pedestrians)"""
 
         longitude = accident_data['longitude']
         latitude = accident_data['latitude']
-        elevation = accident_data['elevation']
+        location = accident_data['LOCATION']
 
         if is_null_or_empty(longitude) or is_null_or_empty(latitude):
             raise Exception("Longitude/Latitude is empty/null")
 
-        if is_null_or_empty(elevation):
+        if is_null_or_empty(location):
             raise Exception("Elevation is empty/null")
 
-        return accident_id, round(float(longitude), 2), round(float(latitude), 2), round(float(elevation), 2)
+        
+
+        return accident_id, round(float(longitude), 2), round(float(latitude), 2), round(float(location), 2)
 
     @staticmethod
     def handle_environment(environment):
         if is_null_or_empty(environment):
             raise Exception("Environment is empty/null")
 
-        
+        env = environment.split('-')
+        return env[1]
+
     @staticmethod
     def handle_date_and_time(date, time):
         if is_null_or_empty(date):
@@ -175,13 +177,3 @@ no_of_pedestrians)"""
             return value, ESTIMATED
 
         return value, AVAILABLE
-
-    @staticmethod
-    def handle_weather(weather):
-        if is_null_or_empty(weather) or is_missing_or_unavailable(weather):
-            return None, NOT_AVAILABLE
-
-        if is_estimated(weather):
-            return weather, ESTIMATED
-
-        return weather, AVAILABLE

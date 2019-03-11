@@ -47,3 +47,9 @@ CREATE TABLE IF NOT EXISTS relations.weather_hour_relation (
   weather_key INTEGER,
   hour_key INTEGER
 )
+
+CREATE TABLE IF NOT EXISTS relations.accident_relation (
+  id          INTEGER PRIMARY KEY,
+  accident_id INTEGER,
+  location    TEXT
+)
