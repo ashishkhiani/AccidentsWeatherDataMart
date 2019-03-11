@@ -1,7 +1,7 @@
 from db import DatabaseConnection
 
 
-class WeatherHourRelation(object):
+class WeatherHourRelationDAL(object):
     """
     This functionality of this class is to interact with the database.
     ALl methods defined in the class must be solely responsible
@@ -10,16 +10,14 @@ class WeatherHourRelation(object):
     """
 
     @staticmethod
-    def insert(weather_key, hour_key):
-        """
-        Stores the relationship between the weather and hour dimension
-        :param weather_key: surrogate key of the weather dimension
-        :param hour_key: surrogate key of the hour dimension
-        :return: None
-        """
+    def connect_weather_hour_dimension():
         db = DatabaseConnection()
 
-        sql_insert = """INSERT INTO relations.weather_hour_relation (weather_key, hour_key) VALUES (%s, %s)"""
+        sql = """INSERT INTO relations.weather_hour_relation (weather_key, hour_key)
+                 SELECT W.weather_key, H.hour_key
+                 FROM dimension_pre_stage.weather_dimension_pre_stage W, 
+                      dimension_pre_stage.hour_dimension_pre_stage H
+                 WHERE W.date = H.date AND H.hour_start <= W.time AND W.time <= H.hour_end"""
 
         with db.get_connection().cursor() as cursor:
-            cursor.execute(sql_insert, (weather_key, hour_key))
+            cursor.execute(sql)

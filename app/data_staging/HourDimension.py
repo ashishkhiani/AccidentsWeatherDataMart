@@ -11,7 +11,5 @@ class HourDimension(object):
 
     @staticmethod
     def populate():
-        print("Populating accidents_weather_data_mart.hour_dimension")
         HourDimensionDAL.copy_data_from_hour_pre_stage()
-        print("Successfully populated accidents_weather_data_mart.hour_dimension")
 

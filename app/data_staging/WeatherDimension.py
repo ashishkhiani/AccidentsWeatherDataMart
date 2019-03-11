@@ -11,7 +11,5 @@ class WeatherDimension(object):
 
     @staticmethod
     def populate():
-        print("Populating accidents_weather_data_mart.weather_dimension")
         WeatherDimensionDAL.copy_data_from_weather_pre_stage()
-        print("Successfully populated accidents_weather_data_mart.weather_dimension")
 
