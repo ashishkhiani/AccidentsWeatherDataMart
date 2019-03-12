@@ -36,8 +36,6 @@ def parse_ottawa_location(street_string):
     return parsed_streets
 
 
-
-
 ENVIRONMENT = (
     'unknown',
     'clear',
