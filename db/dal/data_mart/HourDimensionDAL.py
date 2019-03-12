@@ -60,3 +60,23 @@ class HourDimensionDAL(object):
 
         with db.get_connection().cursor() as cursor:
             cursor.executemany(sql_insert, entities)
+
+    @staticmethod
+    def copy_data_from_hour_pre_stage():
+        db = DatabaseConnection()
+
+        sql = """INSERT INTO accidents_weather_data_mart.hour_dimension(
+                    hour_key, 
+                    hour_start, 
+                    hour_end, 
+                    date, 
+                    day_of_week, 
+                    month, 
+                    year, 
+                    is_weekend, 
+                    is_holiday, 
+                    holiday_name) 
+                 SELECT * FROM dimension_pre_stage.hour_dimension_pre_stage"""
+
+        with db.get_connection().cursor() as cursor:
+            cursor.execute(sql)

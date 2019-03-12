@@ -1,3 +1,6 @@
+from db.dal.data_mart.WeatherDimensionDAL import WeatherDimensionDAL
+
+
 class WeatherDimension(object):
     """
     The functionality of this class is to define the business logic necessary
@@ -8,6 +11,5 @@ class WeatherDimension(object):
 
     @staticmethod
     def populate():
-        # TODO get data from pre-stage dimension and populate into WeatherDimension removing unnecessary columns
-        # TODO connect Hour Dimension to Weather Dimension
-        print("Not yet implemented")
+        WeatherDimensionDAL.copy_data_from_weather_pre_stage()
+
