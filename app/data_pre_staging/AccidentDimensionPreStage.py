@@ -6,7 +6,7 @@ from db.dal.dimension_pre_stage.AccidentDimensionPreStageDAL import AccidentDime
 
 from utils.flags import AVAILABLE, ESTIMATED, NOT_AVAILABLE
 from utils.utilities import is_null_or_empty, is_estimated, is_missing_or_unavailable
-
+from utils.utilities import ENVIRONMENT, VISIBILITY, ROAD_SURFACE
 
 class AccidentDimensionPreStage(object):
     """
