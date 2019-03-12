@@ -4,6 +4,7 @@ from datetime import datetime
 from db.dal.data_source.ClimateDataCalgaryDAL import CollisionDataOttawaDAL
 from db.dal.data_source.ClimateDataCalgaryDAL import CollisionDataTorontoDAL
 from db.dal.data_source.ClimateDataCalgaryDAL import CollisionDataCalgaryDAL
+from db.dal.dimension_pre_stage.AccidentDimensionPreStageDAL import AccidentDimensionPreStageDAL
 
 from utils.flags import AVAILABLE, ESTIMATED, NOT_AVAILABLE
 from utils.utilities import is_null_or_empty, is_estimated, is_missing_or_unavailable
@@ -23,46 +24,23 @@ class AccidentDimensionPreStage(object):
     @staticmethod
     def populate():
         entities = []
-        accidents = dict()
-"""
-(id,
-collision_id,
-location,
-x,
-y,
-longitude,
-latitude,
-date,
-time,
-environment,
-light,
-surface_condition,
-traffic_control,
-traffic_control_condition,
-collision_classification,
-impact_type,
-no_of_pedestrians)"""
-
-        for accident in CollisionDataOttawaDAL.fetch_all():
-            accident[accident['id']] = {
-                'longitude': accident['longitude'],
-                'latitude': accident['latitude'],
-                'location': accident['location'],
-            }
+        
 
         i = 1
         count = CollisionDataOttawaDAL.get_count()
+
         for row in CollisionDataOttawaDAL.fetch_all():
-            entities.append(AccidentDimensionPreStage.handle_raw_climate_data(row, accident))
+            entities.append(AccidentDimensionPreStage.handle_raw_ottawa_accident_data(row))
 
             if len(entities) == 500:  # insert entities into db in batches of 500
-                # TODO insert into weather dimension pre-stage table
+                AccidentDimensionPreStageDAL.insert_many(entities)
                 entities.clear()  # clear list to free up memory
                 print("Completed batch " + str(i) + " of " + str(math.ceil(count/500)))
                 i += 1
 
         if len(entities) > 0:  # insert any remaining records into db
             # TODO insert into weather dimension pre-stage table
+            AccidentDimensionPreStageDAL.insert_many(entities)
             entities.clear()
             print("Completed batch " + str(i) + " of " + str(math.ceil(count / 500)))
 
@@ -71,30 +49,24 @@ no_of_pedestrians)"""
         # TODO handle Toronto Climate Data
 
     @staticmethod
-    def handle_raw_accident_data(row, accidents):
+    def handle_raw_ottawa_accident_data(row):
 
-        id, longitude, latitude, location = \
-            AccidentDimensionPreStage.handle_accident_data(row['id'], accidents)
+        longitude, latitude, street_name, street1, street2 = \
+            AccidentDimensionPreStage.handle_accident_data(row)
 
-        collision_id, x, y = \
-            row["COLLISION_ID"], row["X"], row["Y"]
-
-        date = AccidentDimensionPreStage.handle_date_time(row['date'], row['time'])
+        date, time = AccidentDimensionPreStage.handle_date_time(row['date'], row['time'])
 
         environment, environment_flag  = \
+            AccidentDimensionPreStage.handle_id_condition(row['environment'])
+
+        visibility, visibility_flag = \
             AccidentDimensionPreStage.handle_id_condition(row['light'])
 
-        light, light_flag = \
-            AccidentDimensionPreStage.handle_id_condition(row['light'])
-
-        surface_condition, surface_condition_flag = \
+        road_surface, road_surface_flag = \
             AccidentDimensionPreStage.handle_id_condition(row['surface_condition'])
 
         traffic_control, traffic_control_flag = \
             AccidentDimensionPreStage.handle_id_condition(row['traffic_control'])
-
-        traffic_control_condition, traffic_control_condition_flag = \
-            AccidentDimensionPreStage.handle_id_condition(row['traffic_control_condition'])
         
         collision_classification, collision_classification_flag = \
             AccidentDimensionPreStage.handle_id_condition(row['collision_classification'])
@@ -102,57 +74,46 @@ no_of_pedestrians)"""
         impact_type, impact_type_flag = \
             AccidentDimensionPreStage.handle_id_condition(row['impact_type'])
 
-        no_of_pedestrians = \
-            row["no_of_pedestrians"]
-
-        entity = (id,
-                  collision_id,
-                  location,
-                  longitude,
+        entity = (longitude,
                   latitude,
                   date,
                   time,
+                  street_name,
+                  street1,
+                  street2,
                   environment,
                   environment_flag,
-                  light,
-                  light_flag,
-                  surface_condition,
-                  surface_condition,
+                  road_surface,
+                  road_surface_flag,
                   traffic_control,
                   traffic_control_flag,
-                  traffic_control_condition,
-                  traffic_control_condition_flag,
+                  visibility,
+                  visibility_flag,
                   collision_classification,
                   collision_classification_flag,
                   impact_type,
-                  impact_type_flag,
-                  no_of_pedestrians)
+                  impact_type_flag)
 
         return entity
 
     @staticmethod
-    def handle_accident_data(accident_id, accidents):
-        if is_null_or_empty(accident_id):
-            raise Exception("Station name is empty/null")
+    def handle_accident_data(row):
+        if is_null_or_empty(row):
+            raise Exception("Row is empty/null")
 
-        if accident_id not in accidents:
-            raise Exception("Station name does not exist in station inventory")
-
-        accident_data = accidents.get(accident_id)
-
-        longitude = accident_data['longitude']
-        latitude = accident_data['latitude']
-        location = accident_data['location']
+        longitude = row['longitude']
+        latitude = row['latitude']
+        street_name = row['street_name']
+        street1 = row['street1']
+        street2 = row['street2']
 
         if is_null_or_empty(longitude) or is_null_or_empty(latitude):
             raise Exception("Longitude/Latitude is empty/null")
 
-        if is_null_or_empty(location):
-            raise Exception("Elevation is empty/null")
+        if is_null_or_empty(street_name):
+            raise Exception("Main street name is empty/null")
 
-        
-
-        return accident_id, round(float(longitude), 2), round(float(latitude), 2), round(float(location), 2)
+        return round(float(longitude), 2), round(float(latitude), 2), street_name, street1, street2
 
 
     @staticmethod
@@ -171,7 +132,7 @@ no_of_pedestrians)"""
         if is_null_or_empty(time):
             raise Exception("Time is empty/null")
 
-        return datetime.strptime(date+" "+time, '%Y-%m-%d %I:%M:%S %p')
+        return datetime.strftime(date, '%Y-%m-%d'), datetime.strptime(time, '%I:%M:%S %p')
 
     @staticmethod
     def handle_float_data_and_flag(data, flag):
