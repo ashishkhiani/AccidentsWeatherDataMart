@@ -267,3 +267,26 @@ CREATE TABLE IF NOT EXISTS dimension_pre_stage.weather_dimension_pre_stage (
   weather                   VARCHAR(200),
   weather_flag              VARCHAR(20)
 );
+
+CREATE TABLE IF NOT EXISTS data_source.accident_dimension_pre_stage(
+  id                          SERIAL PRIMARY KEY,
+  longitude                   FLOAT NOT NULL,
+  latitude                    FLOAT NOT NULL,
+  date                        DATE NOT NULL,
+  time                        TIME NOT NULL,
+  street_name                 VARCHAR(50) NOT NULL,
+  street1                     VARCHAR(50),
+  street2                     VARCHAR(30),
+  environment                 VARCHAR(20),
+  environment_flag            VARCHAR(20),
+  road_surface                VARCHAR(20),
+  road_surface_flag           VARCHAR(20),
+  traffic_control             VARCHAR(20),
+  traffic_control_flag        VARCHAR(20),
+  visibility                  VARCHAR(10),
+  visibility_flag             VARCHAR(20),
+  collision_classification    VARCHAR(20),
+  collision_classification_flag VARCHAR(20),
+  impact_type                 VARCHAR(20),
+  impact_type_flag            VARCHAR(20)
+);

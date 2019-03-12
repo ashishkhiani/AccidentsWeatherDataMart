@@ -6,6 +6,15 @@ db/database.ini
 
 *.pyc
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+Data Exploration.ipynb
+
+.ipynb_checkpoints/
+
+=======
+>>>>>>> 5c5e33644c5fb84179adadfb2652e020cc730462
 db/resources/climate_data/alberta_1_1\.csv
 db/resources/climate_data/alberta_1_2\.csv
 db/resources/climate_data/alberta_2_1\.csv
@@ -19,3 +28,13 @@ db/resources/climate_data/ontario_2_1\.csv
 db/resources/climate_data/ontario_2_2\.csv
 db/resources/climate_data/ontario_3\.csv
 db/resources/climate_data/ontario_4\.csv
+<<<<<<< HEAD
+=======
+Data Exploration.ipynb
+
+.ipynb_checkpoints/
+
+>>>>>>> fd8b394f49c72351b4844be8ec5488637ee18121
+=======
+>>>>>>> f7ddd664b1454aa09e513a9723e37041c13f6fb5
+>>>>>>> 5c5e33644c5fb84179adadfb2652e020cc730462
