@@ -1,9 +1,7 @@
 import math
 from datetime import datetime
 
-from db.dal.data_source.ClimateDataCalgaryDAL import CollisionDataOttawaDAL
-from db.dal.data_source.ClimateDataCalgaryDAL import CollisionDataTorontoDAL
-from db.dal.data_source.ClimateDataCalgaryDAL import CollisionDataCalgaryDAL
+from db.dal.data_source.CollisionDataOttawaDAL import CollisionDataOttawaDAL
 from db.dal.dimension_pre_stage.AccidentDimensionPreStageDAL import AccidentDimensionPreStageDAL
 
 from utils.flags import AVAILABLE, ESTIMATED, NOT_AVAILABLE
@@ -13,18 +11,17 @@ from utils.utilities import is_null_or_empty, is_estimated, is_missing_or_unavai
 class AccidentDimensionPreStage(object):
     """
     The functionality of this class is to define the business logic necessary
-    to populate the weather pre-stage dimension during the data pre-staging phase.
+    to populate the accident pre-stage dimension during the data pre-staging phase.
 
     This class can use any of the DAL classes defined.
 
-    The weather pre-stage dimension contains all the attributes necessary including ones
+    The accident pre-stage dimension contains all the attributes necessary including ones
     that will help connect with other dimensions
     """
 
     @staticmethod
     def populate():
         entities = []
-        
 
         i = 1
         count = CollisionDataOttawaDAL.get_count()
@@ -54,9 +51,9 @@ class AccidentDimensionPreStage(object):
         longitude, latitude, street_name, street1, street2 = \
             AccidentDimensionPreStage.handle_accident_data(row)
 
-        date, time = AccidentDimensionPreStage.handle_date_time(row['date'], row['time'])
+        date, time = AccidentDimensionPreStage.handle_date_and_time(row['date'], row['time'])
 
-        environment, environment_flag  = \
+        environment, environment_flag = \
             AccidentDimensionPreStage.handle_id_condition(row['environment'])
 
         visibility, visibility_flag = \
@@ -114,7 +111,6 @@ class AccidentDimensionPreStage(object):
             raise Exception("Main street name is empty/null")
 
         return round(float(longitude), 2), round(float(latitude), 2), street_name, street1, street2
-
 
     @staticmethod
     def handle_id_condition(id_cond):
