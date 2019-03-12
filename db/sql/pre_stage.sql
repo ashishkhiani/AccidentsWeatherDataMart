@@ -42,13 +42,10 @@ CREATE TABLE IF NOT EXISTS dimension_pre_stage.weather_dimension_pre_stage (
   weather_flag              VARCHAR(20)
 )
 
-CREATE TABLE IF NOT EXISTS dimension_pre_stage.weather_dimension_pre_stage (
 CREATE TABLE IF NOT EXISTS data_source.collision_data_ottawa_pre_stage (
   id                          INTEGER PRIMARY KEY,
   collision_id                TEXT,
   location                    TEXT,
-  x                           TEXT,
-  y                           TEXT,
   longitude                   TEXT,
   latitude                    TEXT,
   date                        TEXT,
@@ -60,12 +57,12 @@ CREATE TABLE IF NOT EXISTS data_source.collision_data_ottawa_pre_stage (
   surface_condition           TEXT,
   surface_condition_flag      TEXT,
   traffic_control             TEXT,
-  traffic_control             TEXT,
+  traffic_control_flag        TEXT,
   traffic_control_condition   TEXT,
   traffic_control_condition_flag   TEXT,
   collision_classification         TEXT,
   collision_classification_flag    TEXT,
   impact_type                 TEXT,
   impact_type_flag            TEXT,
-  no_of_pedestrians           TEXT
+  no_of_pedestrians           INTEGER
 );

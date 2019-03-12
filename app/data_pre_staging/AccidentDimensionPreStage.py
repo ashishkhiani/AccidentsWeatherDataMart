@@ -74,53 +74,58 @@ no_of_pedestrians)"""
     def handle_raw_accident_data(row, accidents):
 
         id, longitude, latitude, location = \
-            AccidentDimensionPreStage.handle_accident_data(row['ID'], accidents)
+            AccidentDimensionPreStage.handle_accident_data(row['id'], accidents)
 
         collision_id, x, y = \
             row["COLLISION_ID"], row["X"], row["Y"]
 
-        date = AccidentDimensionPreStage.handle_date_time(row['DATE'], row['TIME'])
+        date = AccidentDimensionPreStage.handle_date_time(row['date'], row['time'])
 
-        environment  = \
-            AccidentDimensionPreStage.handle_id_condition(row['LIGHT'])
+        environment, environment_flag  = \
+            AccidentDimensionPreStage.handle_id_condition(row['light'])
 
-        light = \
-            AccidentDimensionPreStage.handle_id_condition(row['LIGHT'])
+        light, light_flag = \
+            AccidentDimensionPreStage.handle_id_condition(row['light'])
 
-        surface_condition = \
-            AccidentDimensionPreStage.handle_id_condition(row['SURFACE_CONDITION'])
+        surface_condition, surface_condition_flag = \
+            AccidentDimensionPreStage.handle_id_condition(row['surface_condition'])
 
-        traffic_control = \
-            AccidentDimensionPreStage.handle_id_condition(row['TRAFFIC_CONTROL'])
+        traffic_control, traffic_control_flag = \
+            AccidentDimensionPreStage.handle_id_condition(row['traffic_control'])
+
+        traffic_control_condition, traffic_control_condition_flag = \
+            AccidentDimensionPreStage.handle_id_condition(row['traffic_control_condition'])
         
-        collision_classification = \
-            AccidentDimensionPreStage.handle_id_condition(row['COLLISION_CLASSIFICATION'])
-
-        collision_classification = \
-            AccidentDimensionPreStage.handle_id_condition(row['COLLISION_CLASSIFICATION'])
+        collision_classification, collision_classification_flag = \
+            AccidentDimensionPreStage.handle_id_condition(row['collision_classification'])
         
-        impact_type = \
-            AccidentDimensionPreStage.handle_id_condition(row['IMPACT_TYPE'])
+        impact_type, impact_type_flag = \
+            AccidentDimensionPreStage.handle_id_condition(row['impact_type'])
 
         no_of_pedestrians = \
-            row["NO_OF_PEDESTRIANS"]
+            row["no_of_pedestrians"]
 
         entity = (id,
                   collision_id,
                   location,
-                  x,
-                  y,
                   longitude,
                   latitude,
                   date,
                   time,
                   environment,
+                  environment_flag,
                   light,
+                  light_flag,
+                  surface_condition,
                   surface_condition,
                   traffic_control,
+                  traffic_control_flag,
                   traffic_control_condition,
+                  traffic_control_condition_flag,
                   collision_classification,
+                  collision_classification_flag,
                   impact_type,
+                  impact_type_flag,
                   no_of_pedestrians)
 
         return entity
@@ -135,9 +140,9 @@ no_of_pedestrians)"""
 
         accident_data = accidents.get(accident_id)
 
-        longitude = accident_data['LONGITUDE']
-        latitude = accident_data['LATITUDE']
-        location = accident_data['LOCATION']
+        longitude = accident_data['longitude']
+        latitude = accident_data['latitude']
+        location = accident_data['location']
 
         if is_null_or_empty(longitude) or is_null_or_empty(latitude):
             raise Exception("Longitude/Latitude is empty/null")
@@ -151,12 +156,13 @@ no_of_pedestrians)"""
 
 
     @staticmethod
-    def handle_id_condition(environment):
-        if is_null_or_empty(environment):
-            raise Exception("Environment is empty/null")
+    def handle_id_condition(id_cond):
+        flag = AVAILABLE
+        if is_null_or_empty(id_cond):
+            flag = NOT_AVAILABLE
 
-        env = environment.split('-')
-        return env[1]
+        env = id_cond.split('-')
+        return env[1], flag
 
     @staticmethod
     def handle_date_and_time(date, time):
