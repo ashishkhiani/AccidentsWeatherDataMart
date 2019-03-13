@@ -29,7 +29,7 @@ class AccidentDimensionPreStage(object):
 
         for row in CollisionDataOttawaDAL.fetch_all():
             entities.append(AccidentDimensionPreStage.handle_raw_ottawa_accident_data(row))
-            print(len(entities[-1]))
+            
             if len(entities) == 500:  # insert entities into db in batches of 500
                 AccidentDimensionPreStageDAL.insert_many(entities)
                 entities.clear()  # clear list to free up memory
@@ -115,6 +115,7 @@ class AccidentDimensionPreStage(object):
         flag = AVAILABLE
         if is_null_or_empty(environment):
             flag = NOT_AVAILABLE
+            return None, flag
 
         env = environment.split('-')
         if env[1].lower().strip() not in ENVIRONMENT:
@@ -126,6 +127,7 @@ class AccidentDimensionPreStage(object):
         flag = AVAILABLE
         if is_null_or_empty(light):
             flag = NOT_AVAILABLE
+            return None, flag
 
         env = light.split('-')
         if env[1].lower().strip() not in VISIBILITY:
@@ -137,6 +139,7 @@ class AccidentDimensionPreStage(object):
         flag = AVAILABLE
         if is_null_or_empty(surface):
             flag = NOT_AVAILABLE
+            return None, flag
 
         env = surface.split('-')
         if env[1].lower().strip() not in ROAD_SURFACE:
@@ -149,6 +152,7 @@ class AccidentDimensionPreStage(object):
         flag = AVAILABLE
         if is_null_or_empty(traffic):
             flag = NOT_AVAILABLE
+            return None, flag
 
         env = traffic.split('-')
         if env[1].lower().strip() not in TRAFFIC_CONTROL:
@@ -161,6 +165,8 @@ class AccidentDimensionPreStage(object):
         flag = AVAILABLE
         if is_null_or_empty(collision):
             flag = NOT_AVAILABLE
+            return None, flag
+
         r = re.compile(r"^([^-]+)-")
         env = r.split(collision)
 
@@ -174,6 +180,7 @@ class AccidentDimensionPreStage(object):
         flag = AVAILABLE
         if is_null_or_empty(impact):
             flag = NOT_AVAILABLE
+            return None, flag
 
         env = impact.split('-')
 
