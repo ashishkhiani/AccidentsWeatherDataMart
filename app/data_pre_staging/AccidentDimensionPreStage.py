@@ -6,7 +6,7 @@ from db.dal.dimension_pre_stage.AccidentDimensionPreStageDAL import AccidentDime
 
 from utils.flags import AVAILABLE, ESTIMATED, NOT_AVAILABLE
 from utils.utilities import is_null_or_empty, is_estimated, is_missing_or_unavailable
-from utils.utilities import ENVIRONMENT, VISIBILITY, ROAD_SURFACE
+from utils.utilities import ENVIRONMENT, VISIBILITY, ROAD_SURFACE, TRAFFIC_CONTROL, COLLISION_CLASSIFICATION, IMPACT_TYPE
 
 class AccidentDimensionPreStage(object):
     """
@@ -57,19 +57,19 @@ class AccidentDimensionPreStage(object):
             AccidentDimensionPreStage.handle_ottawa_environment(row['environment'])
 
         visibility, visibility_flag = \
-            AccidentDimensionPreStage.handle_light_condition(row['light'])
+            AccidentDimensionPreStage.handle_ottawa_light_condition(row['light'])
 
         road_surface, road_surface_flag = \
-            AccidentDimensionPreStage.handle_road_surface_condition(row['surface_condition'])
+            AccidentDimensionPreStage.handle_ottawa_road_surface_condition(row['surface_condition'])
 
         traffic_control, traffic_control_flag = \
-            AccidentDimensionPreStage.handle_traffic_condition(row['traffic_control'])
+            AccidentDimensionPreStage.handle_ottawa_traffic_condition(row['traffic_control'])
         
         collision_classification, collision_classification_flag = \
-            AccidentDimensionPreStage.handle_collision_condition(row['collision_classification'])
+            AccidentDimensionPreStage.handle_ottawa_collision_condition(row['collision_classification'])
         
         impact_type, impact_type_flag = \
-            AccidentDimensionPreStage.handle_impact_condition(row['impact_type'])
+            AccidentDimensionPreStage.handle_ottawa_impact_condition(row['impact_type'])
 
         entity = (longitude,
                   latitude,
@@ -124,7 +124,7 @@ class AccidentDimensionPreStage(object):
         return env[1], flag
 
     @staticmethod
-    def handle_light_condition(light):
+    def handle_ottawa_light_condition(light):
         flag = AVAILABLE
         if is_null_or_empty(light):
             flag = NOT_AVAILABLE
@@ -135,7 +135,7 @@ class AccidentDimensionPreStage(object):
         return env[1], flag
 
     @staticmethod
-    def handle_road_surface_condition(surface):
+    def handle_ottawa_road_surface_condition(surface):
         flag = AVAILABLE
         if is_null_or_empty(surface):
             flag = NOT_AVAILABLE
@@ -147,7 +147,7 @@ class AccidentDimensionPreStage(object):
         return env[1], flag
 
     @staticmethod
-    def handle_traffic_condition(traffic):
+    def handle_ottawa_traffic_condition(traffic):
         flag = AVAILABLE
         if is_null_or_empty(traffic):
             flag = NOT_AVAILABLE
@@ -159,14 +159,26 @@ class AccidentDimensionPreStage(object):
         return env[1], flag
 
     @staticmethod
-    def handle_collision_condition(collision):
+    def handle_ottawa_collision_condition(collision):
         flag = AVAILABLE
         if is_null_or_empty(collision):
             flag = NOT_AVAILABLE
 
         env = collision.split('-')
-        if env[1] not in TRAFFIC_CONTROL:
-            raise Exception("{} is an invalid/unknown traffic control variable".format(env[1]))
+        if env[1] not in COLLISION_CLASSIFICATION:
+            raise Exception("{} is an invalid/unknown collision classification variable".format(env[1]))
+
+        return env[1], flag
+    
+    @staticmethod
+    def handle_ottawa_impact_condition(impact):
+        flag = AVAILABLE
+        if is_null_or_empty(impact):
+            flag = NOT_AVAILABLE
+
+        env = impact.split('-')
+        if env[1] not in IMPACT_TYPE:
+            raise Exception("{} is an invalid/unknown impact variable".format(env[1]))
 
         return env[1], flag
 
