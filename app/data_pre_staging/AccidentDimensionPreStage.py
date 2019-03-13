@@ -44,7 +44,8 @@ class AccidentDimensionPreStage(object):
             print("Completed batch " + str(i) + " of " + str(math.ceil(count / 500)))
 
         # TODO handle Calgary Climate Data
-
+        i = 1
+        count = CollisionDataTorontoDAL.get_count()
         # TODO handle Toronto Climate Data
         for row in CollisionDataTorontoDAL.fetch_all():
             entities.append(AccidentDimensionPreStage.handle_raw_toronto_accident_data(row))
@@ -112,9 +113,9 @@ class AccidentDimensionPreStage(object):
     @staticmethod
     def handle_raw_toronto_accident_data(row):
 
-        longitude, latitude, street_name, street1, street2 = \
-            AccidentDimensionPreStage.handle_accident_data(row)
-
+        longitude, latitude, street_name, street1 = \
+            AccidentDimensionPreStage.handle_accident_data(row, "Toronto")
+        street2 = None
         date, time = AccidentDimensionPreStage.handle_toronto_date_and_time(row['date'])
 
         environment, environment_flag = \
@@ -130,7 +131,7 @@ class AccidentDimensionPreStage(object):
             AccidentDimensionPreStage.handle_toronto_traffic_condition(row['traffctl'])
         
         collision_classification, collision_classification_flag = \
-            AccidentDimensionPreStage.handle_toronto_collision_condition(row['aclass'])
+            AccidentDimensionPreStage.handle_toronto_collision_condition(row['acclass'])
         
         impact_type, impact_type_flag = \
             AccidentDimensionPreStage.handle_toronto_impact_condition(row['impactype'])
@@ -176,7 +177,7 @@ class AccidentDimensionPreStage(object):
                 raise Exception("Longitude is empty/null")
             if is_null_or_empty(row['latitude']):
                 raise Exception("Latitude is empty/null")
-            if is_null_or_empty(row['street_name']):
+            if is_null_or_empty(row['street1']):
                 raise Exception("Stree name is empty/null")
 
             longitude = row['longitude']
@@ -217,10 +218,9 @@ class AccidentDimensionPreStage(object):
             flag = NOT_AVAILABLE
             return None, flag
 
-        env = environment.split('-')
-        if env[1].lower().strip() not in ENVIRONMENT:
-            raise Exception("{} is an invalid/unknown environment variable".format(env[1]))
-        return env[1], flag
+        if environment.lower().strip() not in ENVIRONMENT:
+            raise Exception("{} is an invalid/unknown environment variable".format(environment))
+        return environment, flag
 
     @staticmethod
     def handle_ottawa_light_condition(light):
@@ -241,9 +241,9 @@ class AccidentDimensionPreStage(object):
             flag = NOT_AVAILABLE
             return None, flag
 
-        if env.lower().strip() not in VISIBILITY:
-            raise Exception("{} is an invalid/unknown visibility variable".format(env))
-        return env, flag
+        if light.lower().strip() not in VISIBILITY:
+            raise Exception("{} is an invalid/unknown visibility variable".format(light))
+        return light, flag
 
     @staticmethod
     def handle_ottawa_road_surface_condition(surface):
@@ -265,10 +265,10 @@ class AccidentDimensionPreStage(object):
             flag = NOT_AVAILABLE
             return None, flag
 
-        if env.lower().strip() not in ROAD_SURFACE:
-            raise Exception("{} is an invalid/unknown road surface variable".format(env))
+        if surface.lower().strip() not in ROAD_SURFACE:
+            raise Exception("{} is an invalid/unknown road surface variable".format(surface))
 
-        return env, flag
+        return surface, flag
 
     @staticmethod
     def handle_ottawa_traffic_condition(traffic):
@@ -290,10 +290,10 @@ class AccidentDimensionPreStage(object):
             flag = NOT_AVAILABLE
             return None, flag
 
-        if env.lower().strip() not in TRAFFIC_CONTROL:
-            raise Exception("{} is an invalid/unknown traffic control variable".format(env))
+        if traffic.lower().strip() not in TRAFFIC_CONTROL:
+            raise Exception("{} is an invalid/unknown traffic control variable".format(traffic))
 
-        return env, flag
+        return traffic, flag
 
     @staticmethod
     def handle_ottawa_collision_condition(collision):
@@ -320,10 +320,10 @@ class AccidentDimensionPreStage(object):
             flag = NOT_AVAILABLE
             return None, flag
 
-        if env.lower().strip() not in COLLISION_CLASSIFICATION:
-            raise Exception("{} is an invalid/unknown collision classification variable".format(env))
+        if collision.lower().strip() not in COLLISION_CLASSIFICATION:
+            raise Exception("{} is an invalid/unknown collision classification variable".format(collision))
 
-        return env, flag
+        return collision, flag
 
     @staticmethod
     def handle_ottawa_impact_condition(impact):
@@ -346,10 +346,10 @@ class AccidentDimensionPreStage(object):
             flag = NOT_AVAILABLE
             return None, flag
 
-        if env.lower().strip() not in IMPACT_TYPE:
-            raise Exception("{} is an invalid/unknown impact variable".format(env))
+        if impact.lower().strip() not in IMPACT_TYPE:
+            raise Exception("{} is an invalid/unknown impact variable".format(impact))
 
-        return env, flag
+        return impact, flag
 
     @staticmethod
     def handle_ottawa_date_and_time(date, time):
@@ -364,8 +364,6 @@ class AccidentDimensionPreStage(object):
     def handle_toronto_date_and_time(date):
         if is_null_or_empty(date):
             raise Exception("Date is empty/null")
-        if is_null_or_empty(time):
-            raise Exception("Time is empty/null")
 
         date_time = datetime.strptime(date, "%Y-%m-%dT%H:%M:%S.%fZ")
         return date_time, date_time

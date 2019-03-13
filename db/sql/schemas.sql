@@ -283,7 +283,7 @@ CREATE TABLE IF NOT EXISTS dimension_pre_stage.accident_dimension_pre_stage(
   road_surface_flag           VARCHAR(60),
   traffic_control             VARCHAR(60),
   traffic_control_flag        VARCHAR(60),
-  visibility                  VARCHAR(10),
+  visibility                  VARCHAR(30),
   visibility_flag             VARCHAR(60),
   collision_classification    VARCHAR(60),
   collision_classification_flag VARCHAR(60),
