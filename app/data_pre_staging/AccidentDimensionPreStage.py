@@ -141,18 +141,18 @@ class AccidentDimensionPreStage(object):
 
         date, time = AccidentDimensionPreStage.handle_calgary_date_and_time(row['date'])
 
-        environment, environment_flag = None, None
+        environment, environment_flag = None, NOT_AVAILABLE
 
-        visibility, visibility_flag = None
+        visibility, visibility_flag = None, NOT_AVAILABLE
 
-        road_surface, road_surface_flag = None, None
+        road_surface, road_surface_flag = None, NOT_AVAILABLE
 
-        traffic_control, traffic_control_flag = None, None
+        traffic_control, traffic_control_flag = None, NOT_AVAILABLE
         
         collision_classification, collision_classification_flag = \
             AccidentDimensionPreStage.handle_calgary_collision_condition(row['collision_classification'])
         
-        impact_type, impact_type_flag = None, None
+        impact_type, impact_type_flag = None, NOT_AVAILABLE
 
         entity = (longitude,
                   latitude,
