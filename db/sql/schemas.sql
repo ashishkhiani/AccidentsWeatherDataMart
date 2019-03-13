@@ -268,7 +268,7 @@ CREATE TABLE IF NOT EXISTS dimension_pre_stage.weather_dimension_pre_stage (
   weather_flag              VARCHAR(20)
 );
 
-CREATE TABLE IF NOT EXISTS data_source.accident_dimension_pre_stage(
+CREATE TABLE IF NOT EXISTS dimension_pre_stage.accident_dimension_pre_stage(
   id                          SERIAL PRIMARY KEY,
   longitude                   FLOAT NOT NULL,
   latitude                    FLOAT NOT NULL,
