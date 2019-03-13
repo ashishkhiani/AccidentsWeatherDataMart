@@ -6,7 +6,7 @@ if __name__ == '__main__':
     data_source = DataSource(
         populate_calgary_collision_data=False,
         populate_ottawa_collision_data=True,
-        populate_toronto_collision_data=False,
+        populate_toronto_collision_data=True,
         populate_ontario_climate_data=False,
         populate_alberta_climate_data=False,
         populate_calgary_climate_data=False,
