@@ -46,16 +46,16 @@ VISIBILITY = (
 
 
 ROAD_SURFACE = (
-    'unknown'
-    'dry'
-    'ice'
-    'loose snow'
-    'packed snow'
-    'slush'
-    'wet'
-    'mud'
-    'loose sand or gravel'
-    'spilled liquid'
+    'unknown',
+    'dry',
+    'ice',
+    'loose snow',
+    'packed snow',
+    'slush',
+    'wet',
+    'mud',
+    'loose sand or gravel',
+    'spilled liquid',
     'other'
 )
 

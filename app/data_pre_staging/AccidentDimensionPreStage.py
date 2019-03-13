@@ -54,22 +54,22 @@ class AccidentDimensionPreStage(object):
         date, time = AccidentDimensionPreStage.handle_date_and_time(row['date'], row['time'])
 
         environment, environment_flag = \
-            AccidentDimensionPreStage.handle_id_condition(row['environment'])
+            AccidentDimensionPreStage.handle_ottawa_environment(row['environment'])
 
         visibility, visibility_flag = \
-            AccidentDimensionPreStage.handle_id_condition(row['light'])
+            AccidentDimensionPreStage.handle_light_condition(row['light'])
 
         road_surface, road_surface_flag = \
-            AccidentDimensionPreStage.handle_id_condition(row['surface_condition'])
+            AccidentDimensionPreStage.handle_road_surface_condition(row['surface_condition'])
 
         traffic_control, traffic_control_flag = \
-            AccidentDimensionPreStage.handle_id_condition(row['traffic_control'])
+            AccidentDimensionPreStage.handle_traffic_condition(row['traffic_control'])
         
         collision_classification, collision_classification_flag = \
-            AccidentDimensionPreStage.handle_id_condition(row['collision_classification'])
+            AccidentDimensionPreStage.handle_collision_condition(row['collision_classification'])
         
         impact_type, impact_type_flag = \
-            AccidentDimensionPreStage.handle_id_condition(row['impact_type'])
+            AccidentDimensionPreStage.handle_impact_condition(row['impact_type'])
 
         entity = (longitude,
                   latitude,
@@ -113,12 +113,61 @@ class AccidentDimensionPreStage(object):
         return round(float(longitude), 2), round(float(latitude), 2), street_name, street1, street2
 
     @staticmethod
-    def handle_id_condition(id_cond):
+    def handle_ottawa_environment(environment):
         flag = AVAILABLE
-        if is_null_or_empty(id_cond):
+        if is_null_or_empty(environment):
             flag = NOT_AVAILABLE
 
-        env = id_cond.split('-')
+        env = environment.split('-')
+        if env[1] not in ENVIRONMENT:
+            raise Exception("{} is an invalid/unknown environment variable".format(env[1]))
+        return env[1], flag
+
+    @staticmethod
+    def handle_light_condition(light):
+        flag = AVAILABLE
+        if is_null_or_empty(light):
+            flag = NOT_AVAILABLE
+
+        env = light.split('-')
+        if env[1] not in VISIBILITY:
+            raise Exception("{} is an invalid/unknown visibility variable".format(env[1]))
+        return env[1], flag
+
+    @staticmethod
+    def handle_road_surface_condition(surface):
+        flag = AVAILABLE
+        if is_null_or_empty(surface):
+            flag = NOT_AVAILABLE
+
+        env = surface.split('-')
+        if env[1] not in ROAD_SURFACE:
+            raise Exception("{} is an invalid/unknown road surface variable".format(env[1]))
+
+        return env[1], flag
+
+    @staticmethod
+    def handle_traffic_condition(traffic):
+        flag = AVAILABLE
+        if is_null_or_empty(traffic):
+            flag = NOT_AVAILABLE
+
+        env = traffic.split('-')
+        if env[1] not in TRAFFIC_CONTROL:
+            raise Exception("{} is an invalid/unknown traffic control variable".format(env[1]))
+
+        return env[1], flag
+
+    @staticmethod
+    def handle_collision_condition(collision):
+        flag = AVAILABLE
+        if is_null_or_empty(collision):
+            flag = NOT_AVAILABLE
+
+        env = collision.split('-')
+        if env[1] not in TRAFFIC_CONTROL:
+            raise Exception("{} is an invalid/unknown traffic control variable".format(env[1]))
+
         return env[1], flag
 
     @staticmethod
