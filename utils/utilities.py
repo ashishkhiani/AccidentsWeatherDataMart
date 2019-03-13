@@ -64,17 +64,48 @@ VISIBILITY = (
 
 
 ROAD_SURFACE = (
-    'unknown'
-    'dry'
-    'ice'
-    'loose snow'
-    'packed snow'
-    'slush'
-    'wet'
-    'mud'
-    'loose sand or gravel'
-    'spilled liquid'
+    'unknown',
+    'dry',
+    'ice',
+    'loose snow',
+    'packed snow',
+    'slush',
+    'wet',
+    'mud',
+    'loose sand or gravel',
+    'spilled liquid',
     'other'
 )
 
 
+TRAFFIC_CONTROL = (
+    'traffic signal',
+    'stop sign',
+    'yield sign',
+    'pedestrian crossover',
+    'school bus',
+    'traffic gate',
+    'traffic controller',
+    'no control',
+    'roundabout',
+    'other'
+)
+
+COLLISION_CLASSIFICATION = (
+    'fatal',
+    'non-fatal',
+    'p.d. only'
+)
+
+IMPACT_TYPE = (
+    'approaching',
+    'angle',
+    'cyclist collisions'
+    'pedestrian collisions'
+    'rear end',
+    'sideswipe',
+    'turning movement',
+    'smv unattended vehicle',
+    'smv other',
+    'other'
+)
