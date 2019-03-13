@@ -149,7 +149,7 @@ class AccidentDimensionPreStage(object):
         traffic_control, traffic_control_flag = None, NOT_AVAILABLE
         
         collision_classification, collision_classification_flag = \
-            AccidentDimensionPreStage.handle_calgary_collision_condition(row['collision_classification'])
+            AccidentDimensionPreStage.handle_calgary_collision_condition(row['collision_severity'])
         
         impact_type, impact_type_flag = None, NOT_AVAILABLE
 
@@ -396,6 +396,22 @@ class AccidentDimensionPreStage(object):
             raise Exception("{} is an invalid/unknown collision classification variable".format(collision))
 
         return collision, flag
+
+    @staticmethod
+    def handle_calgary_collision_condition(collision):
+        flag = AVAILABLE
+        if is_null_or_empty(collision):
+            flag = NOT_AVAILABLE
+            return None, flag
+
+        if collision.lower().strip() == "fatal":
+            return collision, flag
+        elif collision.lower().strip() == "injury":
+            return 'non-fatal injury', flag
+        elif collision.lower().strip() == 'property damage only':
+            return "p.d. only"
+        elif collision.lower().strip() not in COLLISION_CLASSIFICATION:
+            raise Exception("{} is an invalid/unknown collision classification variable".format(collision))
 
     @staticmethod
     def handle_ottawa_impact_condition(impact):
