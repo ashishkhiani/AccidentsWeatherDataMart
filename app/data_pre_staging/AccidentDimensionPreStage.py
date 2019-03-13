@@ -1,5 +1,5 @@
 import math, re
-from datetime import datetime
+from datetime import datetime, time
 
 from db.dal.data_source.CollisionDataOttawaDAL import CollisionDataOttawaDAL
 from db.dal.data_source.CollisionDataTorontoDAL import CollisionDataTorontoDAL
@@ -425,6 +425,13 @@ class AccidentDimensionPreStage(object):
             raise Exception("Time is empty/null")
 
         return datetime.strptime(date, '%Y-%m-%d').date(), datetime.strptime(time, '%I:%M:%S %p').time()
+
+    @staticmethod
+    def handle_calgary_date_and_time(date):
+        if is_null_or_empty(date):
+            raise Exception("Date is empty/null")
+
+        return datetime.strptime(date, '%Y-%m-%d').date(), time(0,0)
 
     @staticmethod
     def handle_toronto_date_and_time(date):
