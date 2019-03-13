@@ -1,14 +1,17 @@
-import math, re
+import math
+import re
 from datetime import datetime, time
 
+from db.dal.data_source.CollisionDataCalgaryDAL import CollisionDataCalgaryDAL
 from db.dal.data_source.CollisionDataOttawaDAL import CollisionDataOttawaDAL
 from db.dal.data_source.CollisionDataTorontoDAL import CollisionDataTorontoDAL
 from db.dal.dimension_pre_stage.AccidentDimensionPreStageDAL import AccidentDimensionPreStageDAL
-
-from utils.flags import AVAILABLE, ESTIMATED, NOT_AVAILABLE
-from utils.utilities import is_null_or_empty, is_estimated, is_missing_or_unavailable
-from utils.utilities import ENVIRONMENT, VISIBILITY, ROAD_SURFACE, TRAFFIC_CONTROL, COLLISION_CLASSIFICATION, IMPACT_TYPE
+from utils.flags import AVAILABLE, NOT_AVAILABLE
+from utils.utilities import ENVIRONMENT, VISIBILITY, ROAD_SURFACE, \
+    TRAFFIC_CONTROL, COLLISION_CLASSIFICATION, IMPACT_TYPE
+from utils.utilities import is_null_or_empty
 from utils.utilities import parse_ottawa_location
+
 
 class AccidentDimensionPreStage(object):
     """
@@ -23,65 +26,61 @@ class AccidentDimensionPreStage(object):
 
     @staticmethod
     def populate():
+
+        # Calgary Collision Data
+        print("Populating dimension_pre_stage.accident_dimension_pre_stage with Calgary data...")
+        AccidentDimensionPreStage.populate_helper(
+            count=CollisionDataCalgaryDAL.get_count(),
+            data=CollisionDataCalgaryDAL.fetch_all(),
+            city="Calgary"
+        )
+        print("Successfully populated Calgary data in dimension_pre_stage.accident_dimension_pre_stage.")
+
+        # Ottawa Collision Data
+        print("Populating dimension_pre_stage.accident_dimension_pre_stage with Ottawa data...")
+        AccidentDimensionPreStage.populate_helper(
+            count=CollisionDataOttawaDAL.get_count(),
+            data=CollisionDataOttawaDAL.fetch_all(),
+            city="Ottawa"
+        )
+        print("Successfully populated Ottawa data in dimension_pre_stage.accident_dimension_pre_stage.")
+
+        # Toronto Collision Data
+        print("Populating dimension_pre_stage.accident_dimension_pre_stage with Toronto data...")
+        AccidentDimensionPreStage.populate_helper(
+            count=CollisionDataTorontoDAL.get_count(),
+            data=CollisionDataTorontoDAL.fetch_all(),
+            city="Toronto"
+        )
+        print("Successfully populated Toronto data in dimension_pre_stage.accident_dimension_pre_stage.")
+
+    @staticmethod
+    def populate_helper(count, data, city):
         entities = []
 
         i = 1
-        count = CollisionDataOttawaDAL.get_count()
+        for row in data:
+            entities.append(AccidentDimensionPreStage.handle_raw_collision_data(row, city))
 
-        for row in CollisionDataOttawaDAL.fetch_all():
-            entities.append(AccidentDimensionPreStage.handle_raw_ottawa_accident_data(row))
-            
             if len(entities) == 500:  # insert entities into db in batches of 500
                 AccidentDimensionPreStageDAL.insert_many(entities)
                 entities.clear()  # clear list to free up memory
-                print("Completed batch " + str(i) + " of " + str(math.ceil(count/500)))
+                print("Completed batch " + str(i) + " of " + str(math.ceil(count / 500)))
                 i += 1
 
         if len(entities) > 0:  # insert any remaining records into db
-            # TODO insert into weather dimension pre-stage table
             AccidentDimensionPreStageDAL.insert_many(entities)
             entities.clear()
             print("Completed batch " + str(i) + " of " + str(math.ceil(count / 500)))
 
-        # TODO handle Calgary Climate Data
-        i = 1
-        count = CollisionDataCalgaryDAL.get_count()
-
-        for row in CollisionDataCalgaryDAL.fetch_all():
-            entities.append(AccidentDimensionPreStage.handle_raw_calgary_accident_data(row))
-            
-            if len(entities) == 500:  # insert entities into db in batches of 500
-                AccidentDimensionPreStageDAL.insert_many(entities)
-                entities.clear()  # clear list to free up memory
-                print("Completed batch " + str(i) + " of " + str(math.ceil(count/500)))
-                i += 1
-
-        if len(entities) > 0:  # insert any remaining records into db
-            # TODO insert into weather dimension pre-stage table
-            AccidentDimensionPreStageDAL.insert_many(entities)
-            entities.clear()
-            print("Completed batch " + str(i) + " of " + str(math.ceil(count / 500)))
-
-
-
-
-        i = 1
-        count = CollisionDataTorontoDAL.get_count()
-        # TODO handle Toronto Climate Data
-        for row in CollisionDataTorontoDAL.fetch_all():
-            entities.append(AccidentDimensionPreStage.handle_raw_toronto_accident_data(row))
-            
-            if len(entities) == 500:  # insert entities into db in batches of 500
-                AccidentDimensionPreStageDAL.insert_many(entities)
-                entities.clear()  # clear list to free up memory
-                print("Completed batch " + str(i) + " of " + str(math.ceil(count/500)))
-                i += 1
-
-        if len(entities) > 0:  # insert any remaining records into db
-            # TODO insert into weather dimension pre-stage table
-            AccidentDimensionPreStageDAL.insert_many(entities)
-            entities.clear()
-            print("Completed batch " + str(i) + " of " + str(math.ceil(count / 500)))
+    @staticmethod
+    def handle_raw_collision_data(row, city):
+        if city == "Ottawa":
+            AccidentDimensionPreStage.handle_raw_ottawa_accident_data(row)
+        elif city == "Toronto":
+            AccidentDimensionPreStage.handle_raw_toronto_accident_data(row)
+        elif city == "Calgary":
+            AccidentDimensionPreStage.handle_raw_calgary_accident_data(row)
 
     @staticmethod
     def handle_raw_ottawa_accident_data(row):
@@ -89,7 +88,7 @@ class AccidentDimensionPreStage(object):
         longitude, latitude, street_name, street1, street2 = \
             AccidentDimensionPreStage.handle_accident_data(row, "Ottawa")
 
-        date, time = AccidentDimensionPreStage.handle_ottawa_date_and_time(row['date'], row['time'])
+        date, _time = AccidentDimensionPreStage.handle_ottawa_date_and_time(row['date'], row['time'])
 
         environment, environment_flag = \
             AccidentDimensionPreStage.handle_ottawa_environment(row['environment'])
@@ -112,7 +111,7 @@ class AccidentDimensionPreStage(object):
         entity = (longitude,
                   latitude,
                   date,
-                  time,
+                  _time,
                   street_name,
                   street1,
                   street2,
@@ -139,7 +138,7 @@ class AccidentDimensionPreStage(object):
 
         street2 = None
 
-        date, time = AccidentDimensionPreStage.handle_calgary_date_and_time(row['date'])
+        date, _time = AccidentDimensionPreStage.handle_calgary_date_and_time(row['date'])
 
         environment, environment_flag = None, NOT_AVAILABLE
 
@@ -157,7 +156,7 @@ class AccidentDimensionPreStage(object):
         entity = (longitude,
                   latitude,
                   date,
-                  time,
+                  _time,
                   street_name,
                   street1,
                   street2,
@@ -181,8 +180,10 @@ class AccidentDimensionPreStage(object):
 
         longitude, latitude, street_name, street1 = \
             AccidentDimensionPreStage.handle_accident_data(row, "Toronto")
+
         street2 = None
-        date, time = AccidentDimensionPreStage.handle_toronto_date_and_time(row['date'])
+
+        date, _time = AccidentDimensionPreStage.handle_toronto_date_and_time(row['date'])
 
         environment, environment_flag = \
             AccidentDimensionPreStage.handle_toronto_environment(row['visibility'])
@@ -205,7 +206,7 @@ class AccidentDimensionPreStage(object):
         entity = (longitude,
                   latitude,
                   date,
-                  time,
+                  _time,
                   street_name,
                   street1,
                   street2,
@@ -223,6 +224,7 @@ class AccidentDimensionPreStage(object):
                   impact_type_flag)
 
         return entity
+
     @staticmethod
     def handle_accident_data(row, city):
         if city == "Ottawa":
@@ -233,11 +235,12 @@ class AccidentDimensionPreStage(object):
             if is_null_or_empty(row['location']):
                 raise Exception("Location is empty/null")
 
-
             longitude = row['longitude']
             latitude = row['latitude']
             street_name, street1, street2 = parse_ottawa_location(row['location'])
+
             return float(longitude), float(latitude), street_name, street1, street2
+
         elif city == "Toronto":
             if is_null_or_empty(row['longitude']):
                 raise Exception("Longitude is empty/null")
@@ -252,6 +255,7 @@ class AccidentDimensionPreStage(object):
             street1 = row['street2']
 
             return float(longitude), float(latitude), street_name, street1
+
         elif city == "Calgary":
             if is_null_or_empty(row['longitude']):
                 raise Exception("Longitude is empty/null")
@@ -263,6 +267,7 @@ class AccidentDimensionPreStage(object):
             longitude = row['longitude']
             latitude = row['latitude']
             street_name, street1, _ = parse_calgary_location(row['collision_location']) # IF WE HAVE STREET2, REPLACE _ WITH IT here and in accident data func.
+
             return float(longitude), float(latitude), street_name, street1
 
     @staticmethod
@@ -375,7 +380,8 @@ class AccidentDimensionPreStage(object):
             env[-1] = "Fatal"
 
         if env[-1].lower().strip() not in COLLISION_CLASSIFICATION:
-            raise Exception("{} is an invalid/unknown collision classification variable".format(env[-1].lower().strip()))
+            raise Exception("{} is an invalid/unknown collision classification variable"
+                            .format(env[-1].lower().strip()))
 
         return env[-1], flag
     
@@ -418,20 +424,20 @@ class AccidentDimensionPreStage(object):
         return impact, flag
 
     @staticmethod
-    def handle_ottawa_date_and_time(date, time):
+    def handle_ottawa_date_and_time(date, _time):
         if is_null_or_empty(date):
             raise Exception("Date is empty/null")
-        if is_null_or_empty(time):
+        if is_null_or_empty(_time):
             raise Exception("Time is empty/null")
 
-        return datetime.strptime(date, '%Y-%m-%d').date(), datetime.strptime(time, '%I:%M:%S %p').time()
+        return datetime.strptime(date, '%Y-%m-%d').date(), datetime.strptime(_time, '%I:%M:%S %p').time()
 
     @staticmethod
     def handle_calgary_date_and_time(date):
         if is_null_or_empty(date):
             raise Exception("Date is empty/null")
 
-        return datetime.strptime(date, '%Y-%m-%d').date(), time(0,0)
+        return datetime.strptime(date, '%Y-%m-%d').date(), time(0, 0)
 
     @staticmethod
     def handle_toronto_date_and_time(date):
@@ -440,15 +446,3 @@ class AccidentDimensionPreStage(object):
 
         date_time = datetime.strptime(date, "%Y-%m-%dT%H:%M:%S.%fZ")
         return date_time, date_time
-
-    @staticmethod
-    def handle_float_data_and_flag(data, flag):
-        if is_null_or_empty(data) or is_missing_or_unavailable(flag):
-            return None, NOT_AVAILABLE
-
-        value = round(float(data), 2)
-
-        if is_estimated(flag):  # estimated data
-            return value, ESTIMATED
-
-        return value, AVAILABLE
