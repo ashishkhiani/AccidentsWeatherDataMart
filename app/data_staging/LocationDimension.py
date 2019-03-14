@@ -1,7 +1,7 @@
 from db.dal.data_mart.LocationDimensionDAL import LocationDimensionDAL
 
 
-class HourDimension(object):
+class LocationDimension(object):
     """
     The functionality of this class is to define the business logic necessary
     to populate the location dimension during the data staging phase.

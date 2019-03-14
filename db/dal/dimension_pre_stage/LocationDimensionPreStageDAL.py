@@ -5,7 +5,7 @@ class LocationDimensionPreStageDAL(object):
     """
     This functionality of this class is to interact with the database.
     All methods defined in the class must be solely responsible
-    for reading and writing to 'dimension_pre_stage.weather_dimension_pre_stage'.
+    for reading and writing to 'dimension_pre_stage.location_dimension_pre_stage'.
     No business logic is allowed here.
     """
 
@@ -19,8 +19,8 @@ class LocationDimensionPreStageDAL(object):
                 intersection_2,
                 longitude,
                 latitude,
-                neighbourhood,
-                )
+                city,
+                neighbourhood)
 
         :return: None
         """
@@ -32,8 +32,8 @@ class LocationDimensionPreStageDAL(object):
                 intersection_2,
                 longitude,
                 latitude,
-                neighbourhood,
-                ) 
+                city,
+                neighbourhood)
                         VALUES (%s, %s, %s, %s, %s, %s)"""
 
         with db.get_connection().cursor() as cursor:
@@ -43,14 +43,14 @@ class LocationDimensionPreStageDAL(object):
     def insert_many(entities):
         """
         Inserts a single entity to the database.
-        :param entities: a tuple of the form -> (
+        :param entities: a tuple of the form -> ([
                 street_name,
                 intersection_1,
                 intersection_2,
                 longitude,
                 latitude,
-                neighbourhood,
-                )
+                city,
+                neighbourhood])
 
         :return: None
         """
@@ -62,8 +62,8 @@ class LocationDimensionPreStageDAL(object):
                 intersection_2,
                 longitude,
                 latitude,
-                neighbourhood,
-                ) 
+                city,
+                neighbourhood) 
                         VALUES (%s, %s, %s, %s, %s, %s)"""
 
         with db.get_connection().cursor() as cursor:

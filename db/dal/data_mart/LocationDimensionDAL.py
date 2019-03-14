@@ -19,6 +19,7 @@ class LocationDimensionDAL(object):
                 intersection_2,
                 longitude,
                 latitude,
+                city,
                 neighbourhood)
 
         :return: None
@@ -26,12 +27,13 @@ class LocationDimensionDAL(object):
         db = DatabaseConnection()
 
         sql_insert = """INSERT INTO accidents_weather_data_mart.location_dimension (
-                            street_name,
-                            intersection_1,
-                            intersection_2,
-                            longitude,
-                            latitude,
-                            neighbourhood) 
+                street_name,
+                intersection_1,
+                intersection_2,
+                longitude,
+                latitude,
+                city,
+                neighbourhood)
                           VALUES (%s, %s, %s, %s, %s, %s)"""
 
         with db.get_connection().cursor() as cursor:
@@ -47,6 +49,7 @@ class LocationDimensionDAL(object):
                 intersection_2,
                 longitude,
                 latitude,
+                city,
                 neighbourhood])
 
         :return: None
@@ -54,12 +57,13 @@ class LocationDimensionDAL(object):
         db = DatabaseConnection()
 
         sql_insert = """INSERT INTO accidents_weather_data_mart.location_dimension (
-                            street_name,
-                            intersection_1,
-                            intersection_2,
-                            longitude,
-                            latitude,
-                            neighbourhood) 
+                street_name,
+                intersection_1,
+                intersection_2,
+                longitude,
+                latitude,
+                city,
+                neighbourhood) 
                           VALUES (%s, %s, %s, %s, %s, %s)"""
 
         with db.get_connection().cursor() as cursor:
@@ -69,13 +73,14 @@ class LocationDimensionDAL(object):
     def copy_data_from_location_pre_stage():
         db = DatabaseConnection()
 
-        sql = """INSERT INTO accidents_weather_data_mart.location_dimension(
-                    street_name,
-                    intersection_1,
-                    intersection_2,
-                    longitude,
-                    latitude,
-                    neighbourhood)  
+        sql = """INSERT INTO accidents_weather_data_mart.location_dimension (
+                street_name,
+                intersection_1,
+                intersection_2,
+                longitude,
+                latitude,
+                city,
+                neighbourhood)  
                  SELECT * FROM dimension_pre_stage.location_dimension_pre_stage"""
 
         with db.get_connection().cursor() as cursor:
