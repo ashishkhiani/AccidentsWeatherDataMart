@@ -411,7 +411,7 @@ class AccidentDimensionPreStage(object):
             return None, flag
 
         if collision.lower().strip() == "fatal":
-            return collision, flag
+            return collision.lower().strip(), flag
         elif collision.lower().strip() == "injury":
             return 'non-fatal injury', flag
         elif collision.lower().strip() == 'property damage only':
