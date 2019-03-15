@@ -1,5 +1,6 @@
 from app.data_staging.HourDimension import HourDimension
 from app.data_staging.WeatherDimension import WeatherDimension
+from app.data_staging.LocationDimension import LocationDimension
 from app.data_staging.Relations import Relations
 
 
@@ -21,6 +22,7 @@ def populate_dimensions_data_mart(hour=False, weather=False, accident=False, loc
 
     if location:
         print("Populating Location Dimension...")
+        LocationDimension.populate()
         print("Location Dimension successfully populated.")
 
 
@@ -37,8 +39,10 @@ def create_relations(weather_hour=False, weather_location=False, accident_hour=F
 
     if accident_hour:
         print("Creating Accident-Hour relation...")
+        Relations.create_accident_hour_relation()
         print("Accident-Hour relation successfully created.")
 
     if accident_location:
         print("Creating Accident-Location relation...")
+        Relations.create_accident_location_relation()
         print("Accident-Location relation successfully created.")

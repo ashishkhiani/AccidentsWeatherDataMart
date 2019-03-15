@@ -61,8 +61,8 @@ class AccidentDimensionPreStageDAL(object):
                           collision_classification_flag,
                           impact_type,
                           impact_type_flag ) 
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s
-                                %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, )"""
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s,
+                                %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
         with db.get_connection().cursor() as cursor:
             cursor.execute(sql_insert, entity)
@@ -119,8 +119,8 @@ class AccidentDimensionPreStageDAL(object):
                           collision_classification_flag,
                           impact_type,
                           impact_type_flag) 
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s
-                                %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, )"""
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s,
+                                %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
         with db.get_connection().cursor() as cursor:
             cursor.executemany(sql_insert, entities)

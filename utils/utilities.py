@@ -1,3 +1,5 @@
+import re
+
 def is_null_or_empty(item):
     if item is None or item.strip() == '':
         return True
@@ -17,24 +19,6 @@ def is_missing_or_unavailable(item):
         return True
 
     return False
-
-
-def parse_ottawa_location(street_string):
-    parsed_streets = []
-    if '@' in street_string:
-        parsed_streets = street_string.split('@')
-        parsed_streets[1] = parsed_streets[1].lstrip()
-        parsed_streets.append(None)
-    else:
-        temp_parsed_streets = street_string.split("btwn")
-        parsed_intersection = temp_parsed_streets[1].split('&')
-        parsed_streets.append(temp_parsed_streets[0])
-        parsed_streets = parsed_streets + parsed_intersection
-        parsed_streets[1] = parsed_streets[1].lstrip()
-        parsed_streets[2] = parsed_streets[2].lstrip()
-    
-    return parsed_streets
-
 
 ENVIRONMENT = (
     'unknown',
@@ -77,7 +61,6 @@ ROAD_SURFACE = (
     'other'
 )
 
-
 TRAFFIC_CONTROL = (
     'traffic signal',
     'stop sign',
@@ -93,15 +76,15 @@ TRAFFIC_CONTROL = (
 
 COLLISION_CLASSIFICATION = (
     'fatal',
-    'non-fatal',
+    'non-fatal injury',
     'p.d. only'
 )
 
 IMPACT_TYPE = (
     'approaching',
     'angle',
-    'cyclist collisions'
-    'pedestrian collisions'
+    'cyclist collisions',
+    'pedestrian collisions',
     'rear end',
     'sideswipe',
     'turning movement',

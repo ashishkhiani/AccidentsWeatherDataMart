@@ -1,3 +1,5 @@
+from db.dal.relations.AccidentHourRelationDAL import AccidentHourRelationDAL
+from db.dal.relations.AccidentLocationRelationDAL import AccidentLocationRelationDAL
 from db.dal.relations.WeatherHourRelationDAL import WeatherHourRelationDAL
 
 
@@ -13,8 +15,8 @@ class Relations(object):
 
     @staticmethod
     def create_accident_hour_relation():
-        print("Not yet implemented")
+        AccidentHourRelationDAL.connect_accident_hour_dimension()
 
     @staticmethod
     def create_accident_location_relation():
-        print("Not yet implemented")
+        AccidentLocationRelationDAL.connect_accident_location_dimension()

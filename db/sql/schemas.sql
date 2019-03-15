@@ -215,12 +215,35 @@ CREATE TABLE IF NOT EXISTS accidents_weather_data_mart.weather_dimension (
   weather_flag              VARCHAR(20)
 );
 
+CREATE TABLE IF NOT EXISTS accidents_weather_data_mart.location_dimension (
+  location_key    INTEGER PRIMARY KEY,
+  street_name     VARCHAR(200) NOT NULL,
+  intersection_1  VARCHAR(200),
+  intersection_2  VARCHAR(200),
+  longitude       FLOAT NOT NULL,
+  latitude        FLOAT NOT NULL,
+  city            VARCHAR(50),
+  neighbourhood   VARCHAR(200)
+);
+
 /* RELATIONS */
 
 CREATE TABLE IF NOT EXISTS relations.weather_hour_relation (
   id SERIAL PRIMARY KEY,
   weather_key INTEGER,
   hour_key INTEGER
+);
+
+CREATE TABLE IF NOT EXISTS relations.accident_hour_relation (
+  id SERIAL PRIMARY KEY,
+  accident_key INTEGER,
+  hour_key INTEGER
+);
+
+CREATE TABLE IF NOT EXISTS relations.accident_location_relation (
+  id SERIAL PRIMARY KEY,
+  accident_key INTEGER,
+  location_key INTEGER
 );
 
 /* PRE-STAGE DIMENSIONS */
@@ -268,25 +291,36 @@ CREATE TABLE IF NOT EXISTS dimension_pre_stage.weather_dimension_pre_stage (
   weather_flag              VARCHAR(20)
 );
 
-CREATE TABLE IF NOT EXISTS data_source.accident_dimension_pre_stage(
-  id                          SERIAL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS dimension_pre_stage.accident_dimension_pre_stage(
+  accident_key                SERIAL PRIMARY KEY,
   longitude                   FLOAT NOT NULL,
   latitude                    FLOAT NOT NULL,
   date                        DATE NOT NULL,
-  time                        TIME NOT NULL,
-  street_name                 VARCHAR(50) NOT NULL,
-  street1                     VARCHAR(50),
-  street2                     VARCHAR(30),
-  environment                 VARCHAR(20),
-  environment_flag            VARCHAR(20),
-  road_surface                VARCHAR(20),
-  road_surface_flag           VARCHAR(20),
-  traffic_control             VARCHAR(20),
-  traffic_control_flag        VARCHAR(20),
-  visibility                  VARCHAR(10),
-  visibility_flag             VARCHAR(20),
-  collision_classification    VARCHAR(20),
-  collision_classification_flag VARCHAR(20),
-  impact_type                 VARCHAR(20),
-  impact_type_flag            VARCHAR(20)
+  time                        TIME,
+  street_name                 VARCHAR(200) NOT NULL,
+  street1                     VARCHAR(200),
+  street2                     VARCHAR(200),
+  environment                 VARCHAR(60),
+  environment_flag            VARCHAR(60),
+  road_surface                VARCHAR(60),
+  road_surface_flag           VARCHAR(60),
+  traffic_control             VARCHAR(60),
+  traffic_control_flag        VARCHAR(60),
+  visibility                  VARCHAR(30),
+  visibility_flag             VARCHAR(60),
+  collision_classification    VARCHAR(60),
+  collision_classification_flag VARCHAR(60),
+  impact_type                 VARCHAR(60),
+  impact_type_flag            VARCHAR(60)
+);
+
+CREATE TABLE IF NOT EXISTS dimension_pre_stage.location_dimension_pre_stage (
+  location_key        SERIAL PRIMARY KEY,
+  street_name     VARCHAR(200) NOT NULL,
+  intersection_1  VARCHAR(200),
+  intersection_2  VARCHAR(200),
+  longitude       FLOAT NOT NULL,
+  latitude        FLOAT NOT NULL,
+  city            VARCHAR(50),
+  neighbourhood   VARCHAR(200)
 );
