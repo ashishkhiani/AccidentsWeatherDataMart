@@ -226,6 +226,23 @@ CREATE TABLE IF NOT EXISTS accidents_weather_data_mart.location_dimension (
   neighbourhood   VARCHAR(200)
 );
 
+CREATE TABLE IF NOT EXISTS accidents_weather_data_mart.accident_dimension (
+  accident_key                INTEGER PRIMARY KEY,
+  time                        TIME,
+  environment                 VARCHAR(60),
+  environment_flag            VARCHAR(60),
+  road_surface                VARCHAR(60),
+  road_surface_flag           VARCHAR(60),
+  traffic_control             VARCHAR(60),
+  traffic_control_flag        VARCHAR(60),
+  visibility                  VARCHAR(30),
+  visibility_flag             VARCHAR(60),
+  collision_classification    VARCHAR(60),
+  collision_classification_flag VARCHAR(60),
+  impact_type                 VARCHAR(60),
+  impact_type_flag            VARCHAR(60)
+);
+
 CREATE TABLE IF NOT EXISTS accidents_weather_data_mart.accident_fact (
   fact_id           SERIAL PRIMARY KEY,
   hour_key          INTEGER NOT NULL,

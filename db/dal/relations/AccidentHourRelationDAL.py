@@ -18,9 +18,9 @@ class AccidentHourRelationDAL(object):
                  FROM dimension_pre_stage.accident_dimension_pre_stage A, 
                       dimension_pre_stage.hour_dimension_pre_stage H
                  WHERE A.date = H.date 
-                 AND A.time IS NOT NULL 
-                 AND H.hour_start <= A.time + interval '30 minute' 
-                 AND A.time + interval '30 minute' <= H.hour_end """
+                 AND ((H.hour_start <= A.time + interval '30 minute' 
+                       AND A.time + interval '30 minute' < H.hour_end)
+                     OR A.time IS NULL)"""
 
         with db.get_connection().cursor() as cursor:
             cursor.execute(sql)
