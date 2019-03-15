@@ -34,7 +34,7 @@ class LocationDimensionPreStageDAL(object):
                 latitude,
                 city,
                 neighbourhood)
-                        VALUES (%s, %s, %s, %s, %s, %s)"""
+                        VALUES (%s, %s, %s, %s, %s, %s, %s)"""
 
         with db.get_connection().cursor() as cursor:
             cursor.execute(sql_insert, entity)
@@ -57,14 +57,14 @@ class LocationDimensionPreStageDAL(object):
         db = DatabaseConnection()
 
         sql_insert = """INSERT INTO dimension_pre_stage.location_dimension_pre_stage (
-                street_name,
-                intersection_1,
-                intersection_2,
-                longitude,
-                latitude,
-                city,
-                neighbourhood) 
-                        VALUES (%s, %s, %s, %s, %s, %s)"""
+                          street_name,
+                          intersection_1,
+                          intersection_2,
+                          longitude,
+                          latitude,
+                          city,
+                          neighbourhood) 
+                        VALUES (%s, %s, %s, %s, %s, %s, %s);"""
 
         with db.get_connection().cursor() as cursor:
             cursor.executemany(sql_insert, entities)

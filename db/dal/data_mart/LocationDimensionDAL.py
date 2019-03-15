@@ -34,7 +34,7 @@ class LocationDimensionDAL(object):
                 latitude,
                 city,
                 neighbourhood)
-                          VALUES (%s, %s, %s, %s, %s, %s)"""
+                          VALUES (%s, %s, %s, %s, %s, %s, %s)"""
 
         with db.get_connection().cursor() as cursor:
             cursor.execute(sql_insert, entity)
@@ -64,7 +64,7 @@ class LocationDimensionDAL(object):
                 latitude,
                 city,
                 neighbourhood) 
-                          VALUES (%s, %s, %s, %s, %s, %s)"""
+                          VALUES (%s, %s, %s, %s, %s, %s, %s)"""
 
         with db.get_connection().cursor() as cursor:
             cursor.executemany(sql_insert, entities)
@@ -74,6 +74,7 @@ class LocationDimensionDAL(object):
         db = DatabaseConnection()
 
         sql = """INSERT INTO accidents_weather_data_mart.location_dimension (
+                location_key,
                 street_name,
                 intersection_1,
                 intersection_2,

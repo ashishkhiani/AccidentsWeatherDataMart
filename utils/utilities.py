@@ -1,3 +1,5 @@
+import re
+
 def is_null_or_empty(item):
     if item is None or item.strip() == '':
         return True

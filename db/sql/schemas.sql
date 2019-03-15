@@ -216,7 +216,7 @@ CREATE TABLE IF NOT EXISTS accidents_weather_data_mart.weather_dimension (
 );
 
 CREATE TABLE IF NOT EXISTS accidents_weather_data_mart.location_dimension (
-  hour_key        INTEGER PRIMARY KEY,
+  location_key    INTEGER PRIMARY KEY,
   street_name     VARCHAR(200) NOT NULL,
   intersection_1  VARCHAR(200),
   intersection_2  VARCHAR(200),
@@ -280,7 +280,7 @@ CREATE TABLE IF NOT EXISTS dimension_pre_stage.weather_dimension_pre_stage (
 );
 
 CREATE TABLE IF NOT EXISTS dimension_pre_stage.location_dimension_pre_stage (
-  hour_key        SERIAL PRIMARY KEY,
+  location_key        SERIAL PRIMARY KEY,
   street_name     VARCHAR(200) NOT NULL,
   intersection_1  VARCHAR(200),
   intersection_2  VARCHAR(200),

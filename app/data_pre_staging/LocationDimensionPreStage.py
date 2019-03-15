@@ -1,4 +1,5 @@
 import math
+import re
 
 from db.dal.data_source.CollisionDataCalgaryDAL import CollisionDataCalgaryDAL
 from db.dal.data_source.CollisionDataOttawaDAL import CollisionDataOttawaDAL
@@ -68,11 +69,11 @@ class LocationDimensionPreStage(object):
     @staticmethod
     def handle_raw_collision_data(row, city):
         if city == "Ottawa":
-            LocationDimensionPreStage.handle_raw_ottawa_accident_data(row)
+            return LocationDimensionPreStage.handle_raw_ottawa_accident_data(row)
         elif city == "Toronto":
-            LocationDimensionPreStage.handle_raw_toronto_accident_data(row)
+            return LocationDimensionPreStage.handle_raw_toronto_accident_data(row)
         elif city == "Calgary":
-            LocationDimensionPreStage.handle_raw_calgary_accident_data(row)
+            return LocationDimensionPreStage.handle_raw_calgary_accident_data(row)
 
     @staticmethod
     def handle_raw_ottawa_accident_data(row):
@@ -158,7 +159,7 @@ class LocationDimensionPreStage(object):
                 raise Exception("Longitude is empty/null")
             if is_null_or_empty(row['latitude']):
                 raise Exception("Latitude is empty/null")
-            if is_null_or_empty(row['intersection_1']):
+            if is_null_or_empty(row['street1']):
                 raise Exception("Street name is empty/null")
 
             longitude = row['longitude']
@@ -179,8 +180,8 @@ class LocationDimensionPreStage(object):
 
             longitude = row['longitude']
             latitude = row['latitude']
-            # street_name, intersection_1, _ = parse_calgary_location(
-            #     row['collision_location'])  # IF WE HAVE intersection_2, REPLACE _ WITH IT here and in accident data func.
+            street_name, intersection_1 = LocationDimensionPreStage.parse_calgary_location(
+                 row['collision_location'])  # IF WE HAVE intersection_2, REPLACE _ WITH IT here and in accident data func.
 
             return float(longitude), float(latitude), street_name, intersection_1
 
@@ -193,14 +194,33 @@ class LocationDimensionPreStage(object):
             parsed_streets.append(None)
         elif '&' in street_string:
             temp_parsed_streets = street_string.split("btwn")
-            parsed_intersection = temp_parsed_streets[1].split('&')
+            parsed_intersection = temp_parsed_streets[1].split('&', 1)
             parsed_streets.append(temp_parsed_streets[0])
             parsed_streets = parsed_streets + parsed_intersection
             parsed_streets[1] = parsed_streets[1].lstrip()
             parsed_streets[2] = parsed_streets[2].lstrip()
         else:
-            parsed_streets[0] = street_string
-            parsed_streets[1] = None
-            parsed_streets[2] = None
+            parsed_streets.append(street_string)
+            parsed_streets.append(None)
+            parsed_streets.append(None)
 
         return parsed_streets
+
+    @staticmethod
+    def parse_calgary_location(street_string):
+        if '&' in street_string:
+            parsed_streets = street_string.split('&')
+            parsed_streets[0] = parsed_streets[0].lstrip()
+            parsed_streets[1] = parsed_streets[1].lstrip()
+        else:
+            street_string = re.sub('\s+', ' ', street_string)
+            parsed_streets = re.findall("[\d| ]*[\D| ]*", street_string)
+            parsed_streets[0] = parsed_streets[0].rstrip()
+            parsed_streets.pop()
+            if len(parsed_streets) == 1:
+                parsed_streets.append(None)
+
+        return parsed_streets
+
+
+
