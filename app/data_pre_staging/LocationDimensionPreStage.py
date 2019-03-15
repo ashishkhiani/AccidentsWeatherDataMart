@@ -1,6 +1,8 @@
 import math
 import re
 
+from geopy import distance
+
 from db.dal.data_source.CollisionDataCalgaryDAL import CollisionDataCalgaryDAL
 from db.dal.data_source.CollisionDataOttawaDAL import CollisionDataOttawaDAL
 from db.dal.data_source.CollisionDataTorontoDAL import CollisionDataTorontoDAL
@@ -222,5 +224,20 @@ class LocationDimensionPreStage(object):
 
         return parsed_streets
 
+    @staticmethod
+    def get_closest_weather_station(latitude, longitude, station_inventory):
+        min_distance = float('inf')
+        closest_station = None
 
+        for station, station_data in station_inventory.items():
 
+            d = distance.distance(
+                (latitude, longitude),
+                (float(station_data['latitude']), float(station_data['longitude']))
+            )
+
+            if d < min_distance:
+                min_distance = d
+                closest_station = station
+
+        return closest_station

@@ -1,5 +1,5 @@
 from app.data_pre_staging import populate_dimensions_pre_stage
-from app.data_staging import populate_dimensions_data_mart, create_relations
+from app.data_staging import populate_dimensions_data_mart, create_relations, create_fact_table
 from db import init_schemas
 
 if __name__ == '__main__':
@@ -25,3 +25,5 @@ if __name__ == '__main__':
         accident_hour=False,
         accident_location=False
     )
+
+    create_fact_table(create=True)
