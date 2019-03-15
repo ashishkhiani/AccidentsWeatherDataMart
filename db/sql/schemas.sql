@@ -269,14 +269,14 @@ CREATE TABLE IF NOT EXISTS dimension_pre_stage.weather_dimension_pre_stage (
 );
 
 CREATE TABLE IF NOT EXISTS dimension_pre_stage.accident_dimension_pre_stage(
-  id                          SERIAL PRIMARY KEY,
+  accident_key                SERIAL PRIMARY KEY,
   longitude                   FLOAT NOT NULL,
   latitude                    FLOAT NOT NULL,
   date                        DATE NOT NULL,
-  time                        TIME NOT NULL,
-  street_name                 VARCHAR(50) NOT NULL,
-  street1                     VARCHAR(50),
-  street2                     VARCHAR(60),
+  time                        TIME,
+  street_name                 VARCHAR(200) NOT NULL,
+  street1                     VARCHAR(200),
+  street2                     VARCHAR(200),
   environment                 VARCHAR(60),
   environment_flag            VARCHAR(60),
   road_surface                VARCHAR(60),
