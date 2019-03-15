@@ -18,8 +18,6 @@ class AccidentDimensionDAL(object):
                           time,
                           environment,
                           environment_flag,
-                          light,
-                          light_flag,
                           road_surface,
                           road_surface_flag,
                           traffic_control,
@@ -30,7 +28,23 @@ class AccidentDimensionDAL(object):
                           collision_classification_flag,
                           impact_type,
                           impact_type_flag )
-                 SELECT * FROM dimension_pre_stage.accident_dimension_pre_stage"""
+                          
+                 SELECT accident_key, 
+                        time, 
+                        environment, 
+                        environment_flag, 
+                        road_surface, 
+                        road_surface_flag, 
+                        traffic_control, 
+                        traffic_control_flag, 
+                        visibility, 
+                        visibility_flag, 
+                        collision_classification, 
+                        collision_classification_flag, 
+                        impact_type, 
+                        impact_type_flag 
+                        
+                 FROM dimension_pre_stage.accident_dimension_pre_stage"""
 
         with db.get_connection().cursor() as cursor:
             cursor.execute(sql)

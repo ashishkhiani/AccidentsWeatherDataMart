@@ -14,14 +14,14 @@ class LocationDimensionDAL(object):
         db = DatabaseConnection()
 
         sql = """INSERT INTO accidents_weather_data_mart.location_dimension (
-                location_key,
-                street_name,
-                intersection_1,
-                intersection_2,
-                longitude,
-                latitude,
-                city,
-                neighbourhood)  
+                    location_key,
+                    street_name,
+                    intersection_1,
+                    intersection_2,
+                    longitude,
+                    latitude,
+                    city,
+                    neighbourhood)  
                  SELECT * FROM dimension_pre_stage.location_dimension_pre_stage"""
 
         with db.get_connection().cursor() as cursor:

@@ -1,7 +1,7 @@
 from db.dal.data_mart.AccidentDimensionDAL import AccidentDimensionDAL
 
 
-class HourDimension(object):
+class AccidentDimension(object):
     """
     The functionality of this class is to define the business logic necessary
     to populate the accident dimension during the data staging phase.
