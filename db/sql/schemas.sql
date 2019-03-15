@@ -215,6 +215,17 @@ CREATE TABLE IF NOT EXISTS accidents_weather_data_mart.weather_dimension (
   weather_flag              VARCHAR(20)
 );
 
+CREATE TABLE IF NOT EXISTS accidents_weather_data_mart.location_dimension (
+  location_key    INTEGER PRIMARY KEY,
+  street_name     VARCHAR(200) NOT NULL,
+  intersection_1  VARCHAR(200),
+  intersection_2  VARCHAR(200),
+  longitude       FLOAT NOT NULL,
+  latitude        FLOAT NOT NULL,
+  city            VARCHAR(50),
+  neighbourhood   VARCHAR(200)
+);
+
 /* RELATIONS */
 
 CREATE TABLE IF NOT EXISTS relations.weather_hour_relation (
@@ -266,4 +277,15 @@ CREATE TABLE IF NOT EXISTS dimension_pre_stage.weather_dimension_pre_stage (
   wind_chill_flag           VARCHAR(20),
   weather                   VARCHAR(200),
   weather_flag              VARCHAR(20)
+);
+
+CREATE TABLE IF NOT EXISTS dimension_pre_stage.location_dimension_pre_stage (
+  location_key        SERIAL PRIMARY KEY,
+  street_name     VARCHAR(200) NOT NULL,
+  intersection_1  VARCHAR(200),
+  intersection_2  VARCHAR(200),
+  longitude       FLOAT NOT NULL,
+  latitude        FLOAT NOT NULL,
+  city            VARCHAR(50),
+  neighbourhood   VARCHAR(200)
 );

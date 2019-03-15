@@ -1,5 +1,6 @@
 from app.data_staging.HourDimension import HourDimension
 from app.data_staging.WeatherDimension import WeatherDimension
+from app.data_staging.LocationDimension import LocationDimension
 from app.data_staging.Relations import Relations
 
 
@@ -21,6 +22,7 @@ def populate_dimensions_data_mart(hour=False, weather=False, accident=False, loc
 
     if location:
         print("Populating Location Dimension...")
+        LocationDimension.populate()
         print("Location Dimension successfully populated.")
 
 
