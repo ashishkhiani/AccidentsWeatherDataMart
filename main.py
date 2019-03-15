@@ -6,14 +6,14 @@ if __name__ == '__main__':
     init_schemas()
 
     populate_dimensions_pre_stage(
-        hour=False,
+        hour=True,
         weather=False,
         accident=False,
         location=False
     )
 
     populate_dimensions_data_mart(
-        hour=False,
+        hour=True,
         weather=False,
         accident=False,
         location=False
@@ -26,4 +26,4 @@ if __name__ == '__main__':
         accident_location=False
     )
 
-    create_fact_table(create=True)
+    create_fact_table(create=False)
