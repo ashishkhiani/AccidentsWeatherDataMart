@@ -300,6 +300,7 @@ CREATE TABLE IF NOT EXISTS dimension_pre_stage.accident_dimension_pre_stage(
   collision_classification_flag VARCHAR(60),
   impact_type                 VARCHAR(60),
   impact_type_flag            VARCHAR(60)
+);
 
 CREATE TABLE IF NOT EXISTS dimension_pre_stage.location_dimension_pre_stage (
   location_key        SERIAL PRIMARY KEY,

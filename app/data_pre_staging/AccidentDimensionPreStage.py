@@ -6,11 +6,13 @@ from db.dal.data_source.CollisionDataCalgaryDAL import CollisionDataCalgaryDAL
 from db.dal.data_source.CollisionDataOttawaDAL import CollisionDataOttawaDAL
 from db.dal.data_source.CollisionDataTorontoDAL import CollisionDataTorontoDAL
 from db.dal.dimension_pre_stage.AccidentDimensionPreStageDAL import AccidentDimensionPreStageDAL
+
+from app.data_pre_staging.LocationDimensionPreStage import LocationDimensionPreStage
+
 from utils.flags import AVAILABLE, NOT_AVAILABLE
 from utils.utilities import ENVIRONMENT, VISIBILITY, ROAD_SURFACE, \
     TRAFFIC_CONTROL, COLLISION_CLASSIFICATION, IMPACT_TYPE
 from utils.utilities import is_null_or_empty
-from utils.utilities import parse_ottawa_location, parse_calgary_location
 
 
 class AccidentDimensionPreStage(object):
@@ -238,7 +240,7 @@ class AccidentDimensionPreStage(object):
 
             longitude = row['longitude']
             latitude = row['latitude']
-            street_name, street1, street2 = parse_ottawa_location(row['location'])
+            street_name, street1, street2 = LocationDimensionPreStage.parse_ottawa_location(row['location'])
 
             return float(longitude), float(latitude), street_name, street1, street2
 
@@ -267,7 +269,7 @@ class AccidentDimensionPreStage(object):
 
             longitude = row['longitude']
             latitude = row['latitude']
-            street_name, street1 = parse_calgary_location(row['collision_location']) # IF WE HAVE STREET2, REPLACE _ WITH IT here and in accident data func.
+            street_name, street1 = LocationDimensionPreStage.parse_calgary_location(row['collision_location']) # IF WE HAVE STREET2, REPLACE _ WITH IT here and in accident data func.
 
             return float(longitude), float(latitude), street_name, street1
 
