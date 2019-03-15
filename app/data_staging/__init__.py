@@ -39,8 +39,10 @@ def create_relations(weather_hour=False, weather_location=False, accident_hour=F
 
     if accident_hour:
         print("Creating Accident-Hour relation...")
+        Relations.create_accident_hour_relation()
         print("Accident-Hour relation successfully created.")
 
     if accident_location:
         print("Creating Accident-Location relation...")
+        Relations.create_accident_location_relation()
         print("Accident-Location relation successfully created.")

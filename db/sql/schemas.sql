@@ -234,6 +234,18 @@ CREATE TABLE IF NOT EXISTS relations.weather_hour_relation (
   hour_key INTEGER
 );
 
+CREATE TABLE IF NOT EXISTS relations.accident_hour_relation (
+  id SERIAL PRIMARY KEY,
+  accident_key INTEGER,
+  hour_key INTEGER
+);
+
+CREATE TABLE IF NOT EXISTS relations.accident_location_relation (
+  id SERIAL PRIMARY KEY,
+  accident_key INTEGER,
+  location_key INTEGER
+);
+
 /* PRE-STAGE DIMENSIONS */
 
 CREATE TABLE IF NOT EXISTS dimension_pre_stage.hour_dimension_pre_stage (
@@ -277,6 +289,29 @@ CREATE TABLE IF NOT EXISTS dimension_pre_stage.weather_dimension_pre_stage (
   wind_chill_flag           VARCHAR(20),
   weather                   VARCHAR(200),
   weather_flag              VARCHAR(20)
+);
+
+CREATE TABLE IF NOT EXISTS dimension_pre_stage.accident_dimension_pre_stage(
+  accident_key                SERIAL PRIMARY KEY,
+  longitude                   FLOAT NOT NULL,
+  latitude                    FLOAT NOT NULL,
+  date                        DATE NOT NULL,
+  time                        TIME,
+  street_name                 VARCHAR(200) NOT NULL,
+  street1                     VARCHAR(200),
+  street2                     VARCHAR(200),
+  environment                 VARCHAR(60),
+  environment_flag            VARCHAR(60),
+  road_surface                VARCHAR(60),
+  road_surface_flag           VARCHAR(60),
+  traffic_control             VARCHAR(60),
+  traffic_control_flag        VARCHAR(60),
+  visibility                  VARCHAR(30),
+  visibility_flag             VARCHAR(60),
+  collision_classification    VARCHAR(60),
+  collision_classification_flag VARCHAR(60),
+  impact_type                 VARCHAR(60),
+  impact_type_flag            VARCHAR(60)
 );
 
 CREATE TABLE IF NOT EXISTS dimension_pre_stage.location_dimension_pre_stage (

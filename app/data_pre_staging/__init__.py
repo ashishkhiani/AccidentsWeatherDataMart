@@ -1,5 +1,6 @@
 from app.data_pre_staging.HourDimensionPreStage import HourDimensionPreStage
 from app.data_pre_staging.WeatherDimensionPreStage import WeatherDimensionPreStage
+from app.data_pre_staging.AccidentDimensionPreStage import AccidentDimensionPreStage
 from app.data_pre_staging.LocationDimensionPreStage import LocationDimensionPreStage
 
 
@@ -17,6 +18,7 @@ def populate_dimensions_pre_stage(hour=False, weather=False, accident=False, loc
 
     if accident:
         print("Populating Accident pre-stage Dimension...")
+        AccidentDimensionPreStage.populate()
         print("Accident pre-stage Dimension successfully populated.")
 
     if location:

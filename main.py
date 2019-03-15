@@ -9,14 +9,14 @@ if __name__ == '__main__':
         hour=False,
         weather=False,
         accident=False,
-        location=True
+        location=False
     )
 
     populate_dimensions_data_mart(
         hour=False,
         weather=False,
         accident=False,
-        location=True
+        location=False
     )
 
     create_relations(
