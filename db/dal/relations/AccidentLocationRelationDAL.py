@@ -10,14 +10,14 @@ class AccidentLocationRelationDAL(object):
     """
 
     @staticmethod
-    def connect_accident_hour_dimension():
+    def connect_accident_location_dimension():
         db = DatabaseConnection()
 
         sql = """INSERT INTO relations.accident_location_relation (accident_key, location_key)
                  SELECT A.accident_key, L.location_key
                  FROM dimension_pre_stage.accident_dimension_pre_stage A, 
                       dimension_pre_stage.location_dimension_pre_stage L
-                 WHERE L.latitude = A.longitude AND L.latitude = A.latitude"""
+                 WHERE L.longitude = A.longitude AND L.latitude = A.latitude"""
 
         with db.get_connection().cursor() as cursor:
             cursor.execute(sql)

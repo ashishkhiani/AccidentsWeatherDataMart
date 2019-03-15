@@ -234,6 +234,18 @@ CREATE TABLE IF NOT EXISTS relations.weather_hour_relation (
   hour_key INTEGER
 );
 
+CREATE TABLE IF NOT EXISTS relations.accident_hour_relation (
+  id SERIAL PRIMARY KEY,
+  accident_key INTEGER,
+  hour_key INTEGER
+);
+
+CREATE TABLE IF NOT EXISTS relations.accident_location_relation (
+  id SERIAL PRIMARY KEY,
+  accident_key INTEGER,
+  location_key INTEGER
+);
+
 /* PRE-STAGE DIMENSIONS */
 
 CREATE TABLE IF NOT EXISTS dimension_pre_stage.hour_dimension_pre_stage (
