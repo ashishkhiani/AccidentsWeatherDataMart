@@ -13,39 +13,39 @@ class LocationDimensionPreStage(object):
     The functionality of this class is to define the business logic necessary
     to populate the location pre-stage dimension during the data pre-staging phase.
     This class can use any of the DAL classes defined.
-    The accident pre-stage dimension contains all the attributes necessary including ones
+    The location pre-stage dimension contains all the attributes necessary including ones
     that will help connect with other dimensions
     """
 
     @staticmethod
     def populate():
 
-        # Calgary Collision Data
-        print("Populating dimension_pre_stage.accident_dimension_pre_stage with Calgary data...")
+        # Calgary Location Data
+        print("Populating dimension_pre_stage.location_dimension_pre_stage with Calgary data...")
         LocationDimensionPreStage.populate_helper(
             count=CollisionDataCalgaryDAL.get_count(),
             data=CollisionDataCalgaryDAL.fetch_all(),
             city="Calgary"
         )
-        print("Successfully populated Calgary data in dimension_pre_stage.accident_dimension_pre_stage.")
+        print("Successfully populated Calgary data in dimension_pre_stage.location_dimension_pre_stage.")
 
-        # Ottawa Collision Data
-        print("Populating dimension_pre_stage.accident_dimension_pre_stage with Ottawa data...")
+        # Ottawa Location Data
+        print("Populating dimension_pre_stage.location_dimension_pre_stage with Ottawa data...")
         LocationDimensionPreStage.populate_helper(
             count=CollisionDataOttawaDAL.get_count(),
             data=CollisionDataOttawaDAL.fetch_all(),
             city="Ottawa"
         )
-        print("Successfully populated Ottawa data in dimension_pre_stage.accident_dimension_pre_stage.")
+        print("Successfully populated Ottawa data in dimension_pre_stage.location_dimension_pre_stage.")
 
-        # Toronto Collision Data
-        print("Populating dimension_pre_stage.accident_dimension_pre_stage with Toronto data...")
+        # Toronto Location Data
+        print("Populating dimension_pre_stage.location_dimension_pre_stage with Toronto data...")
         LocationDimensionPreStage.populate_helper(
             count=CollisionDataTorontoDAL.get_count(),
             data=CollisionDataTorontoDAL.fetch_all(),
             city="Toronto"
         )
-        print("Successfully populated Toronto data in dimension_pre_stage.accident_dimension_pre_stage.")
+        print("Successfully populated Toronto data in dimension_pre_stage.location_dimension_pre_stage.")
 
     @staticmethod
     def populate_helper(count, data, city):
@@ -69,17 +69,17 @@ class LocationDimensionPreStage(object):
     @staticmethod
     def handle_raw_collision_data(row, city):
         if city == "Ottawa":
-            return LocationDimensionPreStage.handle_raw_ottawa_accident_data(row)
+            return LocationDimensionPreStage.handle_raw_ottawa_location_data(row)
         elif city == "Toronto":
-            return LocationDimensionPreStage.handle_raw_toronto_accident_data(row)
+            return LocationDimensionPreStage.handle_raw_toronto_location_data(row)
         elif city == "Calgary":
-            return LocationDimensionPreStage.handle_raw_calgary_accident_data(row)
+            return LocationDimensionPreStage.handle_raw_calgary_location_data(row)
 
     @staticmethod
-    def handle_raw_ottawa_accident_data(row):
+    def handle_raw_ottawa_location_data(row):
 
         longitude, latitude, street_name, intersection_1, intersection_2 = \
-            LocationDimensionPreStage.handle_accident_data(row, "Ottawa")
+            LocationDimensionPreStage.handle_location_data(row, "Ottawa")
 
         city = 'Ottawa'
 
@@ -96,10 +96,10 @@ class LocationDimensionPreStage(object):
         return entity
 
     @staticmethod
-    def handle_raw_calgary_accident_data(row):
+    def handle_raw_calgary_location_data(row):
 
         longitude, latitude, street_name, intersection_1 = \
-            LocationDimensionPreStage.handle_accident_data(row, "Calgary")
+            LocationDimensionPreStage.handle_location_data(row, "Calgary")
 
         intersection_2 = None
 
@@ -118,10 +118,10 @@ class LocationDimensionPreStage(object):
         return entity
 
     @staticmethod
-    def handle_raw_toronto_accident_data(row):
+    def handle_raw_toronto_location_data(row):
 
         longitude, latitude, street_name, intersection_1, neighbourhood = \
-            LocationDimensionPreStage.handle_accident_data(row, "Toronto")
+            LocationDimensionPreStage.handle_location_data(row, "Toronto")
 
         intersection_2 = None
 
@@ -138,7 +138,7 @@ class LocationDimensionPreStage(object):
         return entity
 
     @staticmethod
-    def handle_accident_data(row, city):
+    def handle_location_data(row, city):
         if city == "Ottawa":
             if is_null_or_empty(row['longitude']):
                 raise Exception("Longitude is empty/null")
@@ -181,7 +181,7 @@ class LocationDimensionPreStage(object):
             longitude = row['longitude']
             latitude = row['latitude']
             street_name, intersection_1 = LocationDimensionPreStage.parse_calgary_location(
-                 row['collision_location'])  # IF WE HAVE intersection_2, REPLACE _ WITH IT here and in accident data func.
+                 row['collision_location'])  
 
             return float(longitude), float(latitude), street_name, intersection_1
 
