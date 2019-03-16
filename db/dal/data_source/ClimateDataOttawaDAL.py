@@ -1,4 +1,4 @@
-from db.dal.data_source.DataSourceDAL import DataSourceDAL
+from db.dal.DAL import DAL
 
 
 class ClimateDataOttawaDAL(object):
@@ -11,8 +11,8 @@ class ClimateDataOttawaDAL(object):
 
     @staticmethod
     def fetch_all():
-        return DataSourceDAL.fetch_all("""SELECT * FROM data_source.climate_data_ottawa""")
+        return DAL.fetch_all("""SELECT * FROM data_source.climate_data_ottawa""")
 
     @staticmethod
     def get_count():
-        return DataSourceDAL.get_count("""SELECT count(*) FROM data_source.climate_data_ottawa""")
+        return DAL.get_count("""SELECT count(*) FROM data_source.climate_data_ottawa""")

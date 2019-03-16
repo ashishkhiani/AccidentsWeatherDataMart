@@ -1,6 +1,6 @@
 from db.DatabaseConnection import DatabaseConnection
 from db.config import config
-from utils.stations import WEATHER_STATIONS, CALGARY_STATIONS, OTTAWA_STATIONS, TORONTO_STATIONS
+from utils.stations import WEATHER_STATIONS, OTTAWA_STATIONS, TORONTO_STATIONS
 
 
 def init_schemas():
@@ -40,7 +40,7 @@ class DataSource(object):
     collision_data_ottawa_2015 = data_source_files.get('collision_data_ottawa_2015')
     collision_data_ottawa_2016 = data_source_files.get('collision_data_ottawa_2016')
     collision_data_ottawa_2017 = data_source_files.get('collision_data_ottawa_2017')
-    collision_data_calgary = data_source_files.get('collision_data_calgary')
+    # collision_data_calgary = data_source_files.get('collision_data_calgary')
     collision_data_toronto = data_source_files.get('collision_data_toronto')
 
     climate_data_alberta_1 = data_source_files.get('climate_data_alberta_1')
@@ -60,10 +60,10 @@ class DataSource(object):
     def __init__(self,
                  populate_ontario_climate_data=False,
                  populate_alberta_climate_data=False,
-                 populate_calgary_climate_data=False,
+                 # populate_calgary_climate_data=False,
                  populate_ottawa_climate_data=False,
                  populate_toronto_climate_data=False,
-                 populate_calgary_collision_data=False,
+                 # populate_calgary_collision_data=False,
                  populate_ottawa_collision_data=False,
                  populate_toronto_collision_data=False,
                  populate_raw_station_inventory_data=False,
@@ -72,12 +72,12 @@ class DataSource(object):
         # POPULATE CLIMATE DATA
         self.populate_ontario_climate_data = populate_ontario_climate_data
         self.populate_alberta_climate_data = populate_alberta_climate_data
-        self.populate_calgary_climate_data = populate_calgary_climate_data
+        # self.populate_calgary_climate_data = populate_calgary_climate_data
         self.populate_ottawa_climate_data = populate_ottawa_climate_data
         self.populate_toronto_climate_data = populate_toronto_climate_data
 
         # POPULATE COLLISION DATA
-        self.populate_calgary_collision_data = populate_calgary_collision_data
+        # self.populate_calgary_collision_data = populate_calgary_collision_data
         self.populate_ottawa_collision_data = populate_ottawa_collision_data
         self.populate_toronto_collision_data = populate_toronto_collision_data
 
@@ -90,8 +90,8 @@ class DataSource(object):
         if self.populate_ottawa_collision_data:
             self.populate_ottawa_collision_table()
 
-        if self.populate_calgary_collision_data:
-            self.populate_calgary_collision_table()
+        # if self.populate_calgary_collision_data:
+        #     self.populate_calgary_collision_table()
 
         if self.populate_toronto_collision_data:
             self.populate_toronto_collision_table()
@@ -102,8 +102,8 @@ class DataSource(object):
         if self.populate_alberta_climate_data:
             self.populate_alberta_climate_table()
 
-        if self.populate_calgary_climate_data:
-            self.populate_calgary_climate_table()
+        # if self.populate_calgary_climate_data:
+        #     self.populate_calgary_climate_table()
 
         if self.populate_ottawa_climate_data:
             self.populate_ottawa_climate_table()
@@ -146,27 +146,27 @@ class DataSource(object):
 
         print("data_source.collision_data_ottawa successfully populated.")
 
-    def populate_calgary_collision_table(self):
-        print("Populating data_source.collision_data_calgary...")
-
-        sql = """COPY data_source.collision_data_calgary(
-                                    date, 
-                                    collision_location, 
-                                    collision_severity, 
-                                    comm_name, 
-                                    comm_code,
-                                    latitude, 
-                                    longitude, 
-                                    point, 
-                                    "4a3i-ccfj", 
-                                    "4b54-tmc4", 
-                                    "p8tp-5dkv",
-                                    "kxmf-bzkv")
-                                 FROM STDIN CSV HEADER NULL ''"""
-
-        self.copy_data_from_csv(self.collision_data_calgary, sql)
-
-        print("data_source.collision_data_calgary successfully populated.")
+    # def populate_calgary_collision_table(self):
+    #     print("Populating data_source.collision_data_calgary...")
+    #
+    #     sql = """COPY data_source.collision_data_calgary(
+    #                                 date,
+    #                                 collision_location,
+    #                                 collision_severity,
+    #                                 comm_name,
+    #                                 comm_code,
+    #                                 latitude,
+    #                                 longitude,
+    #                                 point,
+    #                                 "4a3i-ccfj",
+    #                                 "4b54-tmc4",
+    #                                 "p8tp-5dkv",
+    #                                 "kxmf-bzkv")
+    #                              FROM STDIN CSV HEADER NULL ''"""
+    #
+    #     self.copy_data_from_csv(self.collision_data_calgary, sql)
+    #
+    #     print("data_source.collision_data_calgary successfully populated.")
 
     def populate_toronto_collision_table(self):
         print("Populating data_source.collision_data_toronto...")
@@ -247,16 +247,16 @@ class DataSource(object):
 
         print("data_source.climate_data_alberta successfully populated.")
 
-    def populate_calgary_climate_table(self):
-        print("Populating data_source.climate_data_calgary...")
-
-        sql = """CREATE TABLE data_source.climate_data_calgary AS
-                 SELECT * FROM data_source.climate_data_alberta
-                 WHERE station_name in %s"""
-
-        self.create_filtered_stations_table(sql, CALGARY_STATIONS)
-
-        print("data_source.climate_data_calgary successfully populated.")
+    # def populate_calgary_climate_table(self):
+    #     print("Populating data_source.climate_data_calgary...")
+    #
+    #     sql = """CREATE TABLE data_source.climate_data_calgary AS
+    #              SELECT * FROM data_source.climate_data_alberta
+    #              WHERE station_name in %s"""
+    #
+    #     self.create_filtered_stations_table(sql, CALGARY_STATIONS)
+    #
+    #     print("data_source.climate_data_calgary successfully populated.")
 
     def populate_ottawa_climate_table(self):
         print("Populating data_source.climate_data_ottawa...")

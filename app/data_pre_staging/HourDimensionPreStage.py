@@ -52,9 +52,6 @@ class HourDimensionPreStage(object):
 
                 entities.append(entity)
 
-            # Special for Calgary's case
-            entities.append((None, None, date, day_of_week, month, year, is_weekend, is_holiday, holiday_name))
-
         HourDimensionPreStageDAL.insert_many(entities)
 
     @staticmethod
