@@ -156,21 +156,21 @@ CREATE TABLE IF NOT EXISTS data_source.collision_data_toronto (
   fid             TEXT
 );
 
-CREATE TABLE IF NOT EXISTS data_source.collision_data_calgary (
-  id                  SERIAL PRIMARY KEY,
-  date                TEXT,
-  collision_location  TEXT,
-  collision_severity  TEXT,
-  comm_name           TEXT,
-  comm_code           TEXT,
-  latitude            TEXT,
-  longitude           TEXT,
-  point               TEXT,
-  "4a3i-ccfj"         TEXT,
-  "4b54-tmc4"         TEXT,
-  "p8tp-5dkv"         TEXT,
-  "kxmf-bzkv"         TEXT
-);
+-- CREATE TABLE IF NOT EXISTS data_source.collision_data_calgary (
+--   id                  SERIAL PRIMARY KEY,
+--   date                TEXT,
+--   collision_location  TEXT,
+--   collision_severity  TEXT,
+--   comm_name           TEXT,
+--   comm_code           TEXT,
+--   latitude            TEXT,
+--   longitude           TEXT,
+--   point               TEXT,
+--   "4a3i-ccfj"         TEXT,
+--   "4b54-tmc4"         TEXT,
+--   "p8tp-5dkv"         TEXT,
+--   "kxmf-bzkv"         TEXT
+-- );
 
 /* ACCIDENTS WEATHER DATA MART */
 
@@ -228,7 +228,7 @@ CREATE TABLE IF NOT EXISTS accidents_weather_data_mart.location_dimension (
 
 CREATE TABLE IF NOT EXISTS accidents_weather_data_mart.accident_dimension (
   accident_key                INTEGER PRIMARY KEY,
-  time                        TIME,
+  time                        TIME NOT NULL,
   environment                 VARCHAR(60),
   environment_flag            VARCHAR(60),
   road_surface                VARCHAR(60),
@@ -337,7 +337,7 @@ CREATE TABLE IF NOT EXISTS dimension_pre_stage.accident_dimension_pre_stage(
   longitude                   FLOAT NOT NULL,
   latitude                    FLOAT NOT NULL,
   date                        DATE NOT NULL,
-  time                        TIME,
+  time                        TIME NOT NULL,
   street_name                 VARCHAR(200) NOT NULL,
   street1                     VARCHAR(200),
   street2                     VARCHAR(200),

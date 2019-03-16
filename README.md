@@ -50,7 +50,6 @@ In addition, you will need to have pip install on your machine.
     collision_data_ottawa_2015=db/resources/collision_data/ottawa/allcollisions2015.csv
     collision_data_ottawa_2016=db/resources/collision_data/ottawa/allcollisions2016.csv
     collision_data_ottawa_2017=db/resources/collision_data/ottawa/allcollisions2017.csv
-    collision_data_calgary=db/resources/collision_data/calgary/Pedestrian_Motor_Vehicle_Collisions.csv
     collision_data_toronto=db/resources/collision_data/toronto/Fatal_Collisions.csv
     climate_data_alberta_1=db/resources/climate_data/alberta_1_1.csv
     climate_data_alberta_2=db/resources/climate_data/alberta_1_2.csv

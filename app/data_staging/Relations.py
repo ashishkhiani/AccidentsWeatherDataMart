@@ -6,7 +6,7 @@ from db.dal.relations.AccidentHourRelationDAL import AccidentHourRelationDAL
 from db.dal.relations.AccidentLocationRelationDAL import AccidentLocationRelationDAL
 from db.dal.relations.WeatherHourRelationDAL import WeatherHourRelationDAL
 from db.dal.relations.WeatherLocationRelationDAL import WeatherLocationRelationDAL
-from utils.stations import CALGARY_STATIONS, OTTAWA_STATIONS, TORONTO_STATIONS
+from utils.stations import OTTAWA_STATIONS, TORONTO_STATIONS
 
 
 class Relations(object):
@@ -17,11 +17,10 @@ class Relations(object):
 
     @staticmethod
     def create_weather_location_relation():
-        calgary_stn, ottawa_stn, toronto_stn = Relations.fetch_station_inventory()
+        ottawa_stn, toronto_stn = Relations.fetch_station_inventory()
 
         # Fetch location data
-        station_location_pairs = Relations.connect_location_to_weather_station(calgary_stn=calgary_stn,
-                                                                               ottawa_stn=ottawa_stn,
+        station_location_pairs = Relations.connect_location_to_weather_station(ottawa_stn=ottawa_stn,
                                                                                toronto_stn=toronto_stn)
 
         # Connect weather station to weather data
@@ -30,21 +29,14 @@ class Relations(object):
 
     @staticmethod
     def fetch_station_inventory():
-        calgary_stn = dict()
+        # calgary_stn = dict()
         ottawa_stn = dict()
         toronto_stn = dict()
 
         for station in StationInventoryDAL.fetch_all():
             station_name = station['name']
 
-            if station_name in CALGARY_STATIONS:
-                calgary_stn[station_name] = {
-                    'longitude': station['longitude'],
-                    'latitude': station['latitude'],
-                    'city': 'Calgary'
-                }
-
-            elif station_name in OTTAWA_STATIONS:
+            if station_name in OTTAWA_STATIONS:
                 ottawa_stn[station_name] = {
                     'longitude': station['longitude'],
                     'latitude': station['latitude'],
@@ -58,10 +50,17 @@ class Relations(object):
                     'city': 'Toronto'
                 }
 
-        return calgary_stn, ottawa_stn, toronto_stn
+            # elif station_name in CALGARY_STATIONS:
+            #     calgary_stn[station_name] = {
+            #         'longitude': station['longitude'],
+            #         'latitude': station['latitude'],
+            #         'city': 'Calgary'
+            #     }
+
+        return ottawa_stn, toronto_stn
 
     @staticmethod
-    def connect_location_to_weather_station(calgary_stn, ottawa_stn, toronto_stn):
+    def connect_location_to_weather_station(ottawa_stn, toronto_stn):
         station_location_pairs = []
 
         batch_num = 1
@@ -72,13 +71,7 @@ class Relations(object):
 
         for _object in data:
 
-            if _object['city'] == 'Calgary':
-                closest_station = LocationDimensionPreStage.get_closest_weather_station(
-                    latitude=_object['latitude'],
-                    longitude=_object['longitude'],
-                    station_inventory=calgary_stn)
-
-            elif _object['city'] == 'Ottawa':
+            if _object['city'] == 'Ottawa':
                 closest_station = LocationDimensionPreStage.get_closest_weather_station(
                     latitude=_object['latitude'],
                     longitude=_object['longitude'],
@@ -89,6 +82,13 @@ class Relations(object):
                     latitude=_object['latitude'],
                     longitude=_object['longitude'],
                     station_inventory=toronto_stn)
+
+            # elif _object['city'] == 'Calgary':
+            #     closest_station = LocationDimensionPreStage.get_closest_weather_station(
+            #         latitude=_object['latitude'],
+            #         longitude=_object['longitude'],
+            #         station_inventory=calgary_stn)
+
             else:
                 raise Exception(_object['city'] + " is not supported.")
 
