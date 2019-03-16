@@ -1,7 +1,6 @@
 import math
 from datetime import datetime
 
-from db.dal.data_source.ClimateDataCalgaryDAL import ClimateDataCalgaryDAL
 from db.dal.data_source.ClimateDataOttawaDAL import ClimateDataOttawaDAL
 from db.dal.data_source.ClimateDataTorontoDAL import ClimateDataTorontoDAL
 from db.dal.data_source.StationInventoryDAL import StationInventoryDAL
@@ -32,14 +31,14 @@ class WeatherDimensionPreStage(object):
                 'elevation': station['elevation']
             }
 
-        # Calgary Climate Data
-        print("Populating dimension_pre_stage.weather_dimension_pre_stage with Calgary data...")
-        WeatherDimensionPreStage.populate_helper(
-            count=ClimateDataCalgaryDAL.get_count(),
-            data=ClimateDataCalgaryDAL.fetch_all(),
-            station_inventory=station_inventory
-        )
-        print("Successfully populated Calgary data in dimension_pre_stage.weather_dimension_pre_stage.")
+        # # Calgary Climate Data
+        # print("Populating dimension_pre_stage.weather_dimension_pre_stage with Calgary data...")
+        # WeatherDimensionPreStage.populate_helper(
+        #     count=ClimateDataCalgaryDAL.get_count(),
+        #     data=ClimateDataCalgaryDAL.fetch_all(),
+        #     station_inventory=station_inventory
+        # )
+        # print("Successfully populated Calgary data in dimension_pre_stage.weather_dimension_pre_stage.")
 
         # Ottawa Climate Data
         print("Populating dimension_pre_stage.weather_dimension_pre_stage with Ottawa data...")

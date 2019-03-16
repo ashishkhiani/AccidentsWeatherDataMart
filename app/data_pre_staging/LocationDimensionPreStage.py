@@ -1,9 +1,8 @@
 import math
-import re
 
 from geopy import distance
 
-from db.dal.data_source.CollisionDataCalgaryDAL import CollisionDataCalgaryDAL
+# from db.dal.data_source.CollisionDataCalgaryDAL import CollisionDataCalgaryDAL
 from db.dal.data_source.CollisionDataOttawaDAL import CollisionDataOttawaDAL
 from db.dal.data_source.CollisionDataTorontoDAL import CollisionDataTorontoDAL
 from db.dal.dimension_pre_stage.LocationDimensionPreStageDAL import LocationDimensionPreStageDAL
@@ -22,14 +21,14 @@ class LocationDimensionPreStage(object):
     @staticmethod
     def populate():
 
-        # Calgary Location Data
-        print("Populating dimension_pre_stage.location_dimension_pre_stage with Calgary data...")
-        LocationDimensionPreStage.populate_helper(
-            count=CollisionDataCalgaryDAL.get_count(),
-            data=CollisionDataCalgaryDAL.fetch_all(),
-            city="Calgary"
-        )
-        print("Successfully populated Calgary data in dimension_pre_stage.location_dimension_pre_stage.")
+        # # Calgary Location Data
+        # print("Populating dimension_pre_stage.location_dimension_pre_stage with Calgary data...")
+        # LocationDimensionPreStage.populate_helper(
+        #     count=CollisionDataCalgaryDAL.get_count(),
+        #     data=CollisionDataCalgaryDAL.fetch_all(),
+        #     city="Calgary"
+        # )
+        # print("Successfully populated Calgary data in dimension_pre_stage.location_dimension_pre_stage.")
 
         # Ottawa Location Data
         print("Populating dimension_pre_stage.location_dimension_pre_stage with Ottawa data...")
@@ -74,8 +73,8 @@ class LocationDimensionPreStage(object):
             return LocationDimensionPreStage.handle_raw_ottawa_location_data(row)
         elif city == "Toronto":
             return LocationDimensionPreStage.handle_raw_toronto_location_data(row)
-        elif city == "Calgary":
-            return LocationDimensionPreStage.handle_raw_calgary_location_data(row)
+        # elif city == "Calgary":
+        #     return LocationDimensionPreStage.handle_raw_calgary_location_data(row)
 
     @staticmethod
     def handle_raw_ottawa_location_data(row):
@@ -97,27 +96,27 @@ class LocationDimensionPreStage(object):
 
         return entity
 
-    @staticmethod
-    def handle_raw_calgary_location_data(row):
-
-        longitude, latitude, street_name, intersection_1 = \
-            LocationDimensionPreStage.handle_location_data(row, "Calgary")
-
-        intersection_2 = None
-
-        city = 'Calgary'
-
-        neighbourhood = None
-
-        entity = (street_name,
-                  intersection_1,
-                  intersection_2,
-                  longitude,
-                  latitude,
-                  city,
-                  neighbourhood)
-
-        return entity
+    # @staticmethod
+    # def handle_raw_calgary_location_data(row):
+    #
+    #     longitude, latitude, street_name, intersection_1 = \
+    #         LocationDimensionPreStage.handle_location_data(row, "Calgary")
+    #
+    #     intersection_2 = None
+    #
+    #     city = 'Calgary'
+    #
+    #     neighbourhood = None
+    #
+    #     entity = (street_name,
+    #               intersection_1,
+    #               intersection_2,
+    #               longitude,
+    #               latitude,
+    #               city,
+    #               neighbourhood)
+    #
+    #     return entity
 
     @staticmethod
     def handle_raw_toronto_location_data(row):
@@ -172,20 +171,20 @@ class LocationDimensionPreStage(object):
 
             return float(longitude), float(latitude), street_name, intersection_1, neighbourhood
 
-        elif city == "Calgary":
-            if is_null_or_empty(row['longitude']):
-                raise Exception("Longitude is empty/null")
-            if is_null_or_empty(row['latitude']):
-                raise Exception("Latitude is empty/null")
-            if is_null_or_empty(row['collision_location']):
-                raise Exception("Collision location is empty/null")
-
-            longitude = row['longitude']
-            latitude = row['latitude']
-            street_name, intersection_1 = LocationDimensionPreStage.parse_calgary_location(
-                 row['collision_location'])  
-
-            return float(longitude), float(latitude), street_name, intersection_1
+        # elif city == "Calgary":
+        #     if is_null_or_empty(row['longitude']):
+        #         raise Exception("Longitude is empty/null")
+        #     if is_null_or_empty(row['latitude']):
+        #         raise Exception("Latitude is empty/null")
+        #     if is_null_or_empty(row['collision_location']):
+        #         raise Exception("Collision location is empty/null")
+        #
+        #     longitude = row['longitude']
+        #     latitude = row['latitude']
+        #     street_name, intersection_1 = LocationDimensionPreStage.parse_calgary_location(
+        #          row['collision_location'])
+        #
+        #     return float(longitude), float(latitude), street_name, intersection_1
 
     @staticmethod
     def parse_ottawa_location(street_string):
@@ -208,21 +207,21 @@ class LocationDimensionPreStage(object):
 
         return parsed_streets
 
-    @staticmethod
-    def parse_calgary_location(street_string):
-        if '&' in street_string:
-            parsed_streets = street_string.split('&')
-            parsed_streets[0] = parsed_streets[0].lstrip()
-            parsed_streets[1] = parsed_streets[1].lstrip()
-        else:
-            street_string = re.sub('\s+', ' ', street_string)
-            parsed_streets = re.findall("[\d| ]*[\D| ]*", street_string)
-            parsed_streets[0] = parsed_streets[0].rstrip()
-            parsed_streets.pop()
-            if len(parsed_streets) == 1:
-                parsed_streets.append(None)
-
-        return parsed_streets
+    # @staticmethod
+    # def parse_calgary_location(street_string):
+    #     if '&' in street_string:
+    #         parsed_streets = street_string.split('&')
+    #         parsed_streets[0] = parsed_streets[0].lstrip()
+    #         parsed_streets[1] = parsed_streets[1].lstrip()
+    #     else:
+    #         street_string = re.sub('\s+', ' ', street_string)
+    #         parsed_streets = re.findall("[\d| ]*[\D| ]*", street_string)
+    #         parsed_streets[0] = parsed_streets[0].rstrip()
+    #         parsed_streets.pop()
+    #         if len(parsed_streets) == 1:
+    #             parsed_streets.append(None)
+    #
+    #     return parsed_streets
 
     @staticmethod
     def get_closest_weather_station(latitude, longitude, station_inventory):

@@ -1,5 +1,3 @@
-import re
-
 def is_null_or_empty(item):
     if item is None or item.strip() == '':
         return True
@@ -20,6 +18,7 @@ def is_missing_or_unavailable(item):
 
     return False
 
+
 ENVIRONMENT = (
     'unknown',
     'clear',
@@ -31,7 +30,6 @@ ENVIRONMENT = (
     'fog, mist, smoke, dust',
     'other'
 )
-
 
 VISIBILITY = (
     'unknown',
@@ -45,7 +43,6 @@ VISIBILITY = (
     'dark, artificial',
     'other'
 )
-
 
 ROAD_SURFACE = (
     'unknown',

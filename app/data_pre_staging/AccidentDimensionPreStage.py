@@ -1,8 +1,8 @@
 import math
 import re
-from datetime import datetime, time
+from datetime import datetime
 
-from db.dal.data_source.CollisionDataCalgaryDAL import CollisionDataCalgaryDAL
+# from db.dal.data_source.CollisionDataCalgaryDAL import CollisionDataCalgaryDAL
 from db.dal.data_source.CollisionDataOttawaDAL import CollisionDataOttawaDAL
 from db.dal.data_source.CollisionDataTorontoDAL import CollisionDataTorontoDAL
 from db.dal.dimension_pre_stage.AccidentDimensionPreStageDAL import AccidentDimensionPreStageDAL
@@ -29,14 +29,14 @@ class AccidentDimensionPreStage(object):
     @staticmethod
     def populate():
 
-        # Calgary Collision Data
-        print("Populating dimension_pre_stage.accident_dimension_pre_stage with Calgary data...")
-        AccidentDimensionPreStage.populate_helper(
-            count=CollisionDataCalgaryDAL.get_count(),
-            data=CollisionDataCalgaryDAL.fetch_all(),
-            city="Calgary"
-        )
-        print("Successfully populated Calgary data in dimension_pre_stage.accident_dimension_pre_stage.")
+        # # Calgary Collision Data
+        # print("Populating dimension_pre_stage.accident_dimension_pre_stage with Calgary data...")
+        # AccidentDimensionPreStage.populate_helper(
+        #     count=CollisionDataCalgaryDAL.get_count(),
+        #     data=CollisionDataCalgaryDAL.fetch_all(),
+        #     city="Calgary"
+        # )
+        # print("Successfully populated Calgary data in dimension_pre_stage.accident_dimension_pre_stage.")
 
         # Ottawa Collision Data
         print("Populating dimension_pre_stage.accident_dimension_pre_stage with Ottawa data...")
@@ -82,8 +82,8 @@ class AccidentDimensionPreStage(object):
             return AccidentDimensionPreStage.handle_raw_ottawa_accident_data(row)
         elif city == "Toronto":
             return AccidentDimensionPreStage.handle_raw_toronto_accident_data(row)
-        elif city == "Calgary":
-            return AccidentDimensionPreStage.handle_raw_calgary_accident_data(row)
+        # elif city == "Calgary":
+        #     return AccidentDimensionPreStage.handle_raw_calgary_accident_data(row)
 
     @staticmethod
     def handle_raw_ottawa_accident_data(row):
@@ -133,50 +133,50 @@ class AccidentDimensionPreStage(object):
 
         return entity
 
-    @staticmethod
-    def handle_raw_calgary_accident_data(row):
-
-        longitude, latitude, street_name, street1 = \
-            AccidentDimensionPreStage.handle_accident_data(row, "Calgary")
-
-        street2 = None
-
-        date, _time = AccidentDimensionPreStage.handle_calgary_date_and_time(row['date'])
-
-        environment, environment_flag = None, NOT_AVAILABLE
-
-        visibility, visibility_flag = None, NOT_AVAILABLE
-
-        road_surface, road_surface_flag = None, NOT_AVAILABLE
-
-        traffic_control, traffic_control_flag = None, NOT_AVAILABLE
-        
-        collision_classification, collision_classification_flag = \
-            AccidentDimensionPreStage.handle_calgary_collision_condition(row['collision_severity'])
-        
-        impact_type, impact_type_flag = None, NOT_AVAILABLE
-
-        entity = (longitude,
-                  latitude,
-                  date,
-                  _time,
-                  street_name,
-                  street1,
-                  street2,
-                  environment,
-                  environment_flag,
-                  road_surface,
-                  road_surface_flag,
-                  traffic_control,
-                  traffic_control_flag,
-                  visibility,
-                  visibility_flag,
-                  collision_classification,
-                  collision_classification_flag,
-                  impact_type,
-                  impact_type_flag)
-
-        return entity
+    # @staticmethod
+    # def handle_raw_calgary_accident_data(row):
+    #
+    #     longitude, latitude, street_name, street1 = \
+    #         AccidentDimensionPreStage.handle_accident_data(row, "Calgary")
+    #
+    #     street2 = None
+    #
+    #     date, _time = AccidentDimensionPreStage.handle_calgary_date_and_time(row['date'])
+    #
+    #     environment, environment_flag = None, NOT_AVAILABLE
+    #
+    #     visibility, visibility_flag = None, NOT_AVAILABLE
+    #
+    #     road_surface, road_surface_flag = None, NOT_AVAILABLE
+    #
+    #     traffic_control, traffic_control_flag = None, NOT_AVAILABLE
+    #
+    #     collision_classification, collision_classification_flag = \
+    #         AccidentDimensionPreStage.handle_calgary_collision_condition(row['collision_severity'])
+    #
+    #     impact_type, impact_type_flag = None, NOT_AVAILABLE
+    #
+    #     entity = (longitude,
+    #               latitude,
+    #               date,
+    #               _time,
+    #               street_name,
+    #               street1,
+    #               street2,
+    #               environment,
+    #               environment_flag,
+    #               road_surface,
+    #               road_surface_flag,
+    #               traffic_control,
+    #               traffic_control_flag,
+    #               visibility,
+    #               visibility_flag,
+    #               collision_classification,
+    #               collision_classification_flag,
+    #               impact_type,
+    #               impact_type_flag)
+    #
+    #     return entity
 
     @staticmethod
     def handle_raw_toronto_accident_data(row):
@@ -259,19 +259,21 @@ class AccidentDimensionPreStage(object):
 
             return float(longitude), float(latitude), street_name, street1
 
-        elif city == "Calgary":
-            if is_null_or_empty(row['longitude']):
-                raise Exception("Longitude is empty/null")
-            if is_null_or_empty(row['latitude']):
-                raise Exception("Latitude is empty/null")
-            if is_null_or_empty(row['collision_location']):
-                raise Exception("Collision location is empty/null")
-
-            longitude = row['longitude']
-            latitude = row['latitude']
-            street_name, street1 = LocationDimensionPreStage.parse_calgary_location(row['collision_location']) # IF WE HAVE STREET2, REPLACE _ WITH IT here and in accident data func.
-
-            return float(longitude), float(latitude), street_name, street1
+        # elif city == "Calgary":
+        #     if is_null_or_empty(row['longitude']):
+        #         raise Exception("Longitude is empty/null")
+        #     if is_null_or_empty(row['latitude']):
+        #         raise Exception("Latitude is empty/null")
+        #     if is_null_or_empty(row['collision_location']):
+        #         raise Exception("Collision location is empty/null")
+        #
+        #     longitude = row['longitude']
+        #     latitude = row['latitude']
+        #
+        #     # IF WE HAVE STREET2, REPLACE _ WITH IT here and in accident data func.
+        #     street_name, street1 = LocationDimensionPreStage.parse_calgary_location(row['collision_location'])
+        #
+        #     return float(longitude), float(latitude), street_name, street1
 
     @staticmethod
     def handle_ottawa_environment(environment):
@@ -403,21 +405,21 @@ class AccidentDimensionPreStage(object):
 
         return collision.lower().strip(), flag
 
-    @staticmethod
-    def handle_calgary_collision_condition(collision):
-        flag = AVAILABLE
-        if is_null_or_empty(collision):
-            flag = NOT_AVAILABLE
-            return None, flag
-
-        if collision.lower().strip() == "fatal":
-            return collision.lower().strip(), flag
-        elif collision.lower().strip() == "injury":
-            return 'non-fatal injury', flag
-        elif collision.lower().strip() == 'property damage only':
-            return "p.d. only", flag
-        elif collision.lower().strip() not in COLLISION_CLASSIFICATION:
-            raise Exception("{} is an invalid/unknown collision classification variable".format(collision))
+    # @staticmethod
+    # def handle_calgary_collision_condition(collision):
+    #     flag = AVAILABLE
+    #     if is_null_or_empty(collision):
+    #         flag = NOT_AVAILABLE
+    #         return None, flag
+    #
+    #     if collision.lower().strip() == "fatal":
+    #         return collision.lower().strip(), flag
+    #     elif collision.lower().strip() == "injury":
+    #         return 'non-fatal injury', flag
+    #     elif collision.lower().strip() == 'property damage only':
+    #         return "p.d. only", flag
+    #     elif collision.lower().strip() not in COLLISION_CLASSIFICATION:
+    #         raise Exception("{} is an invalid/unknown collision classification variable".format(collision))
 
     @staticmethod
     def handle_ottawa_impact_condition(impact):
@@ -454,12 +456,12 @@ class AccidentDimensionPreStage(object):
 
         return datetime.strptime(date, '%Y-%m-%d').date(), datetime.strptime(_time, '%I:%M:%S %p').time()
 
-    @staticmethod
-    def handle_calgary_date_and_time(date):
-        if is_null_or_empty(date):
-            raise Exception("Date is empty/null")
-
-        return datetime.strptime(date, '%Y/%m/%d').date(), None
+    # @staticmethod
+    # def handle_calgary_date_and_time(date):
+    #     if is_null_or_empty(date):
+    #         raise Exception("Date is empty/null")
+    #
+    #     return datetime.strptime(date, '%Y/%m/%d').date(), None
 
     @staticmethod
     def handle_toronto_date_and_time(date):

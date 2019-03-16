@@ -1,3 +1,4 @@
+from app.data_staging.AccidentDimension import AccidentDimension
 from app.data_staging.AccidentFact import AccidentFact
 from app.data_staging.HourDimension import HourDimension
 from app.data_staging.WeatherDimension import WeatherDimension
@@ -18,6 +19,7 @@ def populate_dimensions_data_mart(hour=False, weather=False, accident=False, loc
 
     if accident:
         print("Populating Accident Dimension...")
+        AccidentDimension.populate()
         print("Accident Dimension successfully populated.")
 
     if location:
@@ -26,16 +28,11 @@ def populate_dimensions_data_mart(hour=False, weather=False, accident=False, loc
         print("Location Dimension successfully populated.")
 
 
-def create_relations(weather_hour=False, weather_location=False, accident_hour=False, accident_location=False):
+def create_relations(weather_hour=False, accident_hour=False, accident_location=False, weather_location=False):
     if weather_hour:
         print("Creating Weather-Hour relation...")
         Relations.create_weather_hour_relation()
         print("Weather-Hour relation successfully created.")
-
-    if weather_location:
-        print("Creating Weather-Location relation...")
-        Relations.create_weather_location_relation()
-        print("Weather-Location relation successfully created.")
 
     if accident_hour:
         print("Creating Accident-Hour relation...")
@@ -46,6 +43,11 @@ def create_relations(weather_hour=False, weather_location=False, accident_hour=F
         print("Creating Accident-Location relation...")
         Relations.create_accident_location_relation()
         print("Accident-Location relation successfully created.")
+
+    if weather_location:
+        print("Creating Weather-Location relation...")
+        Relations.create_weather_location_relation()
+        print("Weather-Location relation successfully created.")
 
 
 def create_fact_table(create=False):
