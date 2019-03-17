@@ -1,8 +1,8 @@
 import math
+import re
 
 from geopy import distance
-
-# from db.dal.data_source.CollisionDataCalgaryDAL import CollisionDataCalgaryDAL
+from db.dal.data_source.CollisionDataCalgaryDAL import CollisionDataCalgaryDAL
 from db.dal.data_source.CollisionDataOttawaDAL import CollisionDataOttawaDAL
 from db.dal.data_source.CollisionDataTorontoDAL import CollisionDataTorontoDAL
 from db.dal.dimension_pre_stage.LocationDimensionPreStageDAL import LocationDimensionPreStageDAL
@@ -21,7 +21,7 @@ class LocationDimensionPreStage(object):
     @staticmethod
     def populate():
 
-        # # Calgary Location Data
+        # Calgary Location Data
         # print("Populating dimension_pre_stage.location_dimension_pre_stage with Calgary data...")
         # LocationDimensionPreStage.populate_helper(
         #     count=CollisionDataCalgaryDAL.get_count(),
@@ -51,10 +51,12 @@ class LocationDimensionPreStage(object):
     @staticmethod
     def populate_helper(count, data, city):
         entities = []
+        dedup_dict = {}
 
         i = 1
         for row in data:
-            entities.append(LocationDimensionPreStage.handle_raw_collision_data(row, city))
+            data_entity = LocationDimensionPreStage.handle_raw_collision_data(row, city)
+            entities.append(data_entity)
 
             if len(entities) == 500:  # insert entities into db in batches of 500
                 LocationDimensionPreStageDAL.insert_many(entities)
@@ -86,27 +88,36 @@ class LocationDimensionPreStage(object):
 
         neighbourhood = None
 
+        if intersection_1 is not None and intersection_2 is None:
+            is_intersection = True
+        else:
+            is_intersection = False
+
         entity = (street_name,
                   intersection_1,
                   intersection_2,
                   longitude,
                   latitude,
                   city,
-                  neighbourhood)
+                  neighbourhood,
+                  is_intersection)
 
         return entity
 
     # @staticmethod
     # def handle_raw_calgary_location_data(row):
     #
-    #     longitude, latitude, street_name, intersection_1 = \
+    #     longitude, latitude, street_name, intersection_1, neighbourhood = \
     #         LocationDimensionPreStage.handle_location_data(row, "Calgary")
     #
     #     intersection_2 = None
     #
     #     city = 'Calgary'
     #
-    #     neighbourhood = None
+    #     if intersection_1 is None:
+    #         is_intersection = False
+    #     else:
+    #         is_intersection = True
     #
     #     entity = (street_name,
     #               intersection_1,
@@ -114,7 +125,8 @@ class LocationDimensionPreStage(object):
     #               longitude,
     #               latitude,
     #               city,
-    #               neighbourhood)
+    #               neighbourhood,
+    #               is_intersection)
     #
     #     return entity
 
@@ -128,13 +140,19 @@ class LocationDimensionPreStage(object):
 
         city = 'Toronto'
 
+        if intersection_1 is None:
+            is_intersection = False
+        else:
+            is_intersection = True
+
         entity = (street_name,
                   intersection_1,
                   intersection_2,
                   longitude,
                   latitude,
                   city,
-                  neighbourhood)
+                  neighbourhood,
+                  is_intersection)
 
         return entity
 
@@ -183,8 +201,9 @@ class LocationDimensionPreStage(object):
         #     latitude = row['latitude']
         #     street_name, intersection_1 = LocationDimensionPreStage.parse_calgary_location(
         #          row['collision_location'])
+        #     neighbourhood = row['comm_name']
         #
-        #     return float(longitude), float(latitude), street_name, intersection_1
+        #     return float(longitude), float(latitude), street_name, intersection_1, neighbourhood
 
     @staticmethod
     def parse_ottawa_location(street_string):
