@@ -9,7 +9,7 @@ if __name__ == '__main__':
         hour=False,
         weather=False,
         accident=False,
-        location=False
+        location=True
     )
 
     create_relations(
@@ -23,7 +23,7 @@ if __name__ == '__main__':
         hour=False,
         weather=False,
         accident=False,
-        location=False
+        location=True
     )
 
     create_fact_table(create=False)

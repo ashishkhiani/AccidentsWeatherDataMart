@@ -23,9 +23,7 @@ class LocationDimensionDAL(object):
                     city,
                     neighbourhood,
                     is_intersection)  
-                     SELECT DISTINCT ON (longitude, latitude) *
-                     FROM dimension_pre_stage.location_dimension_pre_stage
-                     GROUP BY location_key, longitude, latitude"""
+                 SELECT * FROM dimension_pre_stage.location_dimension_pre_stage"""
 
         with db.get_connection().cursor() as cursor:
             cursor.execute(sql)

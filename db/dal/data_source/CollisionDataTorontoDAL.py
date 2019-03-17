@@ -22,7 +22,7 @@ class CollisionDataTorontoDAL(object):
         return DAL.fetch_all("""
                      SELECT DISTINCT ON (longitude, latitude) *
                      FROM data_source.collision_data_toronto
-                     GROUP BY id, longitude, latitude) a""")
+                     GROUP BY id, longitude, latitude""")
 
     @staticmethod
     def get_locations_count():

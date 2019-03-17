@@ -223,7 +223,8 @@ CREATE TABLE IF NOT EXISTS accidents_weather_data_mart.location_dimension (
   longitude       FLOAT NOT NULL,
   latitude        FLOAT NOT NULL,
   city            VARCHAR(50),
-  neighbourhood   VARCHAR(200)
+  neighbourhood   VARCHAR(200),
+  is_intersection BOOLEAN NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS accidents_weather_data_mart.accident_dimension (
@@ -363,5 +364,6 @@ CREATE TABLE IF NOT EXISTS dimension_pre_stage.location_dimension_pre_stage (
   longitude       FLOAT NOT NULL,
   latitude        FLOAT NOT NULL,
   city            VARCHAR(50),
-  neighbourhood   VARCHAR(200)
+  neighbourhood   VARCHAR(200),
+  is_intersection BOOLEAN NOT NULL
 );
