@@ -24,8 +24,8 @@ class LocationDimensionPreStage(object):
         # Calgary Location Data
         # print("Populating dimension_pre_stage.location_dimension_pre_stage with Calgary data...")
         # LocationDimensionPreStage.populate_helper(
-        #     count=CollisionDataCalgaryDAL.get_count(),
-        #     data=CollisionDataCalgaryDAL.fetch_all(),
+        #     count=CollisionDataCalgaryDAL.get_locations_count(),
+        #     data=CollisionDataCalgaryDAL.fetch_all_unique_locations(),
         #     city="Calgary"
         # )
         # print("Successfully populated Calgary data in dimension_pre_stage.location_dimension_pre_stage.")
@@ -33,8 +33,8 @@ class LocationDimensionPreStage(object):
         # Ottawa Location Data
         print("Populating dimension_pre_stage.location_dimension_pre_stage with Ottawa data...")
         LocationDimensionPreStage.populate_helper(
-            count=CollisionDataOttawaDAL.get_count(),
-            data=CollisionDataOttawaDAL.fetch_all(),
+            count=CollisionDataOttawaDAL.get_locations_count(),
+            data=CollisionDataOttawaDAL.fetch_all_unique_locations(),
             city="Ottawa"
         )
         print("Successfully populated Ottawa data in dimension_pre_stage.location_dimension_pre_stage.")
@@ -42,8 +42,8 @@ class LocationDimensionPreStage(object):
         # Toronto Location Data
         print("Populating dimension_pre_stage.location_dimension_pre_stage with Toronto data...")
         LocationDimensionPreStage.populate_helper(
-            count=CollisionDataTorontoDAL.get_count(),
-            data=CollisionDataTorontoDAL.fetch_all(),
+            count=CollisionDataTorontoDAL.get_locations_count(),
+            data=CollisionDataTorontoDAL.fetch_all_unique_locations(),
             city="Toronto"
         )
         print("Successfully populated Toronto data in dimension_pre_stage.location_dimension_pre_stage.")
@@ -51,7 +51,6 @@ class LocationDimensionPreStage(object):
     @staticmethod
     def populate_helper(count, data, city):
         entities = []
-        dedup_dict = {}
 
         i = 1
         for row in data:
