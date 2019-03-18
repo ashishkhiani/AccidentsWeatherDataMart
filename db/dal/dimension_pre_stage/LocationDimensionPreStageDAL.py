@@ -22,7 +22,8 @@ class LocationDimensionPreStageDAL(object):
                 longitude,
                 latitude,
                 city,
-                neighbourhood])
+                neighbourhood,
+                is_intersection])
 
         :return: None
         """
@@ -35,7 +36,8 @@ class LocationDimensionPreStageDAL(object):
                           longitude,
                           latitude,
                           city,
-                          neighbourhood) 
+                          neighbourhood,
+                          is_intersection) 
                         VALUES %s;"""
 
         with db.get_connection().cursor() as cursor:
