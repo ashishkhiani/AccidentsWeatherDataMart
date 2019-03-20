@@ -197,5 +197,6 @@ class WeatherDimensionPreStage(object):
     @staticmethod
     def handle_null_values():
         WeatherDimensionPreStageDAL.update_temperature_nulls()
+        print("Null temperatures replaced")
         WeatherDimensionPreStageDAL.update_weather_nulls()
-        print("Not yet implemented")
+        print("Null weather elements replaced")

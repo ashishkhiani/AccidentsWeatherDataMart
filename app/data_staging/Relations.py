@@ -4,6 +4,8 @@ from app.data_pre_staging import LocationDimensionPreStage
 from db.dal.data_source.StationInventoryDAL import StationInventoryDAL
 from db.dal.relations.AccidentHourRelationDAL import AccidentHourRelationDAL
 from db.dal.relations.AccidentLocationRelationDAL import AccidentLocationRelationDAL
+from db.dal.relations.EventHourRelationDAL import EventHourRelationDAL
+from db.dal.relations.EventLocationRelationDAL import EventLocationRelationDAL
 from db.dal.relations.WeatherHourRelationDAL import WeatherHourRelationDAL
 from db.dal.relations.WeatherLocationRelationDAL import WeatherLocationRelationDAL
 from utils.stations import OTTAWA_STATIONS, TORONTO_STATIONS
@@ -20,11 +22,10 @@ class Relations(object):
         ottawa_stn, toronto_stn = Relations.fetch_station_inventory()
 
         # Fetch location data
-        station_location_pairs = Relations.connect_location_to_weather_station(ottawa_stn=ottawa_stn,
-                                                                               toronto_stn=toronto_stn)
+        Relations.connect_location_to_weather_station(ottawa_stn=ottawa_stn,
+                                                      toronto_stn=toronto_stn)
 
         # Connect weather station to weather data
-        WeatherLocationRelationDAL.insert_many_temp(station_location_pairs)
         WeatherLocationRelationDAL.connect_weather_to_location_dimension()
 
     @staticmethod
@@ -62,9 +63,7 @@ class Relations(object):
     @staticmethod
     def connect_location_to_weather_station(ottawa_stn, toronto_stn):
         station_location_pairs = []
-
         batch_num = 1
-        i = 0
 
         data = WeatherLocationRelationDAL.get_distinct_locations_and_time_information()
         count = WeatherLocationRelationDAL.get_distinct_locations_and_time_information_count()
@@ -98,17 +97,16 @@ class Relations(object):
                                            _object['date'],
                                            _object['hour_start']))
 
-            if i == 500:
+            if len(station_location_pairs) == 500:
+                WeatherLocationRelationDAL.insert_many_temp(station_location_pairs)
+                station_location_pairs.clear()
                 print("Completed batch " + str(batch_num) + " of " + str(math.ceil(count / 500)))
                 batch_num += 1
-                i = 0
 
-            i += 1
-
-        if i > 0:
+        if len(station_location_pairs) > 0:
+            WeatherLocationRelationDAL.insert_many_temp(station_location_pairs)
+            station_location_pairs.clear()
             print("Completed batch " + str(batch_num) + " of " + str(math.ceil(count / 500)))
-
-        return station_location_pairs
 
     @staticmethod
     def create_accident_hour_relation():
@@ -117,3 +115,11 @@ class Relations(object):
     @staticmethod
     def create_accident_location_relation():
         AccidentLocationRelationDAL.connect_accident_location_dimension()
+
+    @staticmethod
+    def create_event_hour_relation():
+        EventHourRelationDAL.connect_event_hour_dimension()
+
+    @staticmethod
+    def create_event_location_relation():
+        EventLocationRelationDAL.connect_event_location_dimension()
