@@ -4,6 +4,8 @@ from app.data_pre_staging import LocationDimensionPreStage
 from db.dal.data_source.StationInventoryDAL import StationInventoryDAL
 from db.dal.relations.AccidentHourRelationDAL import AccidentHourRelationDAL
 from db.dal.relations.AccidentLocationRelationDAL import AccidentLocationRelationDAL
+from db.dal.relations.EventHourRelationDAL import EventHourRelationDAL
+from db.dal.relations.EventLocationRelationDAL import EventLocationRelationDAL
 from db.dal.relations.WeatherHourRelationDAL import WeatherHourRelationDAL
 from db.dal.relations.WeatherLocationRelationDAL import WeatherLocationRelationDAL
 from utils.stations import OTTAWA_STATIONS, TORONTO_STATIONS
@@ -111,3 +113,11 @@ class Relations(object):
     @staticmethod
     def create_accident_location_relation():
         AccidentLocationRelationDAL.connect_accident_location_dimension()
+
+    @staticmethod
+    def create_event_hour_relation():
+        EventHourRelationDAL.connect_event_hour_dimension()
+
+    @staticmethod
+    def create_event_location_relation():
+        EventLocationRelationDAL.connect_event_location_dimension()

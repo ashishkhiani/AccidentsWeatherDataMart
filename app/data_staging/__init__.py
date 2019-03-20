@@ -1,12 +1,13 @@
 from app.data_staging.AccidentDimension import AccidentDimension
 from app.data_staging.AccidentFact import AccidentFact
+from app.data_staging.EventDimension import EventDimension
 from app.data_staging.HourDimension import HourDimension
 from app.data_staging.WeatherDimension import WeatherDimension
 from app.data_staging.LocationDimension import LocationDimension
 from app.data_staging.Relations import Relations
 
 
-def populate_dimensions_data_mart(hour=False, weather=False, accident=False, location=False):
+def populate_dimensions_data_mart(hour=False, weather=False, accident=False, location=False, event=False):
     if hour:
         print("Populating Hour Dimension...")
         HourDimension.populate()
@@ -27,8 +28,14 @@ def populate_dimensions_data_mart(hour=False, weather=False, accident=False, loc
         LocationDimension.populate()
         print("Location Dimension successfully populated.")
 
+    if event:
+        print("Populating Event Dimension...")
+        EventDimension.populate()
+        print("Even Dimension successfully populated.")
 
-def create_relations(weather_hour=False, accident_hour=False, accident_location=False, weather_location=False):
+
+def create_relations(weather_hour=False, accident_hour=False, accident_location=False, weather_location=False,
+                     event_hour=False, event_location=False):
     if weather_hour:
         print("Creating Weather-Hour relation...")
         Relations.create_weather_hour_relation()
@@ -48,6 +55,16 @@ def create_relations(weather_hour=False, accident_hour=False, accident_location=
         print("Creating Weather-Location relation...")
         Relations.create_weather_location_relation()
         print("Weather-Location relation successfully created.")
+
+    if event_hour:
+        print("Creating Event-Hour relation...")
+        Relations.create_event_hour_relation()
+        print("Event-Hour relation successfully created.")
+
+    if event_location:
+        print("Creating Event-Location relation...")
+        Relations.create_event_location_relation()
+        print("Event-Location relation successfully created.")
 
 
 def create_fact_table(create=False):

@@ -250,8 +250,14 @@ CREATE TABLE IF NOT EXISTS accidents_weather_data_mart.accident_fact (
   location_key      INTEGER NOT NULL,
   accident_key      INTEGER NOT NULL,
   weather_key       INTEGER NOT NULL,
+  event_key         INTEGER,
   is_fatal          BOOLEAN NOT NULL,
   is_intersection   BOOLEAN NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS accidents_weather_data_mart.event_dimension (
+  event_key         SERIAL PRIMARY KEY,
+  name              VARCHAR(200) NOT NULL
 );
 
 /* RELATIONS */
@@ -286,6 +292,19 @@ CREATE TABLE IF NOT EXISTS relations.weather_location_temp_relation (
   location_key INTEGER,
   date DATE,
   time TIME
+);
+
+
+CREATE TABLE IF NOT EXISTS relations.event_hour_relation (
+  id SERIAL PRIMARY KEY,
+  event_key INTEGER,
+  hour_key INTEGER
+);
+
+CREATE TABLE IF NOT EXISTS relations.event_location_relation (
+  id SERIAL PRIMARY KEY,
+  event_key INTEGER,
+  location_key INTEGER
 );
 
 /* PRE-STAGE DIMENSIONS */
@@ -366,4 +385,12 @@ CREATE TABLE IF NOT EXISTS dimension_pre_stage.location_dimension_pre_stage (
   city            VARCHAR(50),
   neighbourhood   VARCHAR(200),
   is_intersection BOOLEAN NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS dimension_pre_stage.event_dimension_pre_stage (
+  event_key         SERIAL PRIMARY KEY,
+  name              VARCHAR(200) NOT NULL,
+  start_date        DATE NOT NULL,
+  end_date          DATE NOT NULL,
+  city              VARCHAR(200) NOT NULL
 );
