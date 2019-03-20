@@ -13,8 +13,8 @@ def populate_dimensions_pre_stage(hour=False, weather=False, accident=False, loc
 
     if weather:
         print("Populating Weather pre-stage Dimension...")
-        WeatherDimensionPreStage.populate()
-        #WeatherDimensionPreStage.handle_null_values()
+        #WeatherDimensionPreStage.populate()
+        WeatherDimensionPreStage.handle_null_values()
         print("Weather pre-stage Dimension successfully populated.")
 
     if accident:
