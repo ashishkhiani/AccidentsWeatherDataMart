@@ -1,6 +1,6 @@
 --Write OLAP queries here
 
--- Question 4
+-- Question 4 a) (Top N query) The most dangerous intersection
 SELECT L.street_name, L.intersection_1, COUNT(*) AS counted
 FROM   accidents_weather_data_mart.accident_fact F,
 	accidents_weather_data_mart.hour_dimension H,
@@ -28,6 +28,22 @@ LIMIT  10;
 -- 	AND L.location_key = F.location_key
 -- ORDER BY L.intersection_1
 
+
+-- Question 4 b) (Bottom N query) the safest street to drive on
+SELECT L.street_name, COUNT(*) AS counted
+FROM   accidents_weather_data_mart.accident_fact F,
+	accidents_weather_data_mart.hour_dimension H,
+	accidents_weather_data_mart.location_dimension L,
+	accidents_weather_data_mart.accident_dimension AC,
+	accidents_weather_data_mart.weather_dimension W
+WHERE  H.year > '2014'
+	AND H.hour_key = F.hour_key
+	AND L.location_key = F.location_key
+	AND AC.accident_key = F.accident_key
+	AND W.weather_key = F.weather_key
+GROUP BY L.street_name
+ORDER BY counted ASC, L.street_name
+LIMIT  10;
 
 -- Question 5 - Improved, tracks accidents by year and day of week, and returns fatal count along with
 -- Non-fatal ratio (Fatal/Non-fatal)
