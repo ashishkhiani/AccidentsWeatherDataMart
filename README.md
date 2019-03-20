@@ -1,6 +1,6 @@
 # CONFIGURATION
 
-Prequisites:
+Pre-requisites:
 
 This project uses Python 3. You need to have Python 3 installed on your machine.
 In addition, you will need to have pip install on your machine. 
