@@ -76,8 +76,6 @@ class WeatherDimensionPreStageDAL(object):
         """
             Update all temperature pre-stage values
         """
-
-
         db = DatabaseConnection()
 
         sql_update = \
@@ -100,8 +98,6 @@ class WeatherDimensionPreStageDAL(object):
         """
             Update all weather values
         """
-
-
         db = DatabaseConnection()
 
         sql_update = \
