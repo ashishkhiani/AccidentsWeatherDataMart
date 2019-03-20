@@ -1,6 +1,6 @@
 --Write OLAP queries here
 
--- Question 5
+-- Question 4
 SELECT L.street_name, L.intersection_1, COUNT(*) AS counted
 FROM   accidents_weather_data_mart.accident_fact F,
 	accidents_weather_data_mart.hour_dimension H,
@@ -29,7 +29,7 @@ LIMIT  10;
 -- ORDER BY L.intersection_1
 
 
--- Question 6 - Improved, tracks accidents by year and day of week, and returns fatal count along with
+-- Question 5 - Improved, tracks accidents by year and day of week, and returns fatal count along with
 -- Non-fatal ratio (Fatal/Non-fatal)
 SELECT
  H.year,
