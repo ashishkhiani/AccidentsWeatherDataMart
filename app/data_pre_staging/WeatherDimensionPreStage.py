@@ -193,3 +193,8 @@ class WeatherDimensionPreStage(object):
             return weather, ESTIMATED
 
         return weather, AVAILABLE
+
+    @staticmethod
+    def handle_null_values():
+        # TODO handle all rows that have null values
+        print("Not yet implemented")

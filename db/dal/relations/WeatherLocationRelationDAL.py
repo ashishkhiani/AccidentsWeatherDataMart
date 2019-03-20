@@ -7,38 +7,51 @@ class WeatherLocationRelationDAL(object):
 
     @staticmethod
     def get_distinct_locations_and_time_information():
-        sql = """SELECT DISTINCT ON (AL.location_key) 
+        sql = """
+                    SELECT
                       AL.location_key, L.city, L.latitude, L.longitude, H.date, H.hour_start
-                      
-                 FROM relations.accident_hour_relation AH, 
-                      relations.accident_location_relation AL, 
+                    
+                    FROM
+                      relations.accident_hour_relation AH,
+                      relations.accident_location_relation AL,
                       relations.weather_hour_relation WH,
                       dimension_pre_stage.location_dimension_pre_stage L,
                       dimension_pre_stage.hour_dimension_pre_stage H
-                      
-                 WHERE AH.accident_key = AL.accident_key
-                       AND AH.hour_key = WH.hour_key
-                       AND AL.location_key = L.location_key
-                       AND AH.hour_key = H.hour_key"""
+                    
+                    WHERE
+                      AH.accident_key = AL.accident_key
+                      AND AH.hour_key = WH.hour_key
+                      AND AL.location_key = L.location_key
+                      AND AH.hour_key = H.hour_key
+                    
+                    GROUP BY
+                      AL.location_key, L.city, L.latitude, L.longitude, H.date, H.hour_start
+              """
 
         return DAL.fetch_all(sql)
 
     @staticmethod
     def get_distinct_locations_and_time_information_count():
         sql = """SELECT count(*) FROM (
-                    SELECT DISTINCT ON (AL.location_key) 
-                          AL.location_key, L.city, L.latitude, L.longitude, H.date, H.hour_start
-    
-                     FROM relations.accident_hour_relation AH, 
-                          relations.accident_location_relation AL, 
-                          relations.weather_hour_relation WH,
-                          dimension_pre_stage.location_dimension_pre_stage L,
-                          dimension_pre_stage.hour_dimension_pre_stage H
-    
-                     WHERE AH.accident_key = AL.accident_key
-                           AND AH.hour_key = WH.hour_key
-                           AND AL.location_key = L.location_key
-                           AND AH.hour_key = H.hour_key) C"""
+                    SELECT
+                      AL.location_key, L.city, L.latitude, L.longitude, H.date, H.hour_start
+                    
+                    FROM
+                      relations.accident_hour_relation AH,
+                      relations.accident_location_relation AL,
+                      relations.weather_hour_relation WH,
+                      dimension_pre_stage.location_dimension_pre_stage L,
+                      dimension_pre_stage.hour_dimension_pre_stage H
+                    
+                    WHERE
+                      AH.accident_key = AL.accident_key
+                      AND AH.hour_key = WH.hour_key
+                      AND AL.location_key = L.location_key
+                      AND AH.hour_key = H.hour_key
+                    
+                    GROUP BY
+                      AL.location_key, L.city, L.latitude, L.longitude, H.date, H.hour_start) C
+              """
 
         return DAL.get_count(sql)
 

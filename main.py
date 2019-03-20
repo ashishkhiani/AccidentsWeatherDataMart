@@ -9,21 +9,25 @@ if __name__ == '__main__':
         hour=False,
         weather=False,
         accident=False,
-        location=False
+        location=False,
+        event=False
     )
 
     create_relations(
         weather_hour=False,
         accident_hour=False,
         accident_location=False,
-        weather_location=False
+        weather_location=False,
+        event_hour=False,
+        event_location=False
     )
 
     populate_dimensions_data_mart(
         hour=False,
         weather=False,
         accident=False,
-        location=False
+        location=False,
+        event=False
     )
 
-    create_fact_table(create=False)
+    create_fact_table(create=True)
