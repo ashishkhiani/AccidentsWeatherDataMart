@@ -52,4 +52,25 @@ WHERE
 GROUP BY
  H.day_of_week, H.year, Non_fatal.count
 ORDER BY
- H.year, H.day_of_week;
+ H.year, CASE WHEN(
+ 			 H.day_of_week = 'Monday')
+			 THEN 0
+			 WHEN (
+			 H.day_of_week = 'Tuesday')
+			 THEN 1
+			 WHEN (
+			 H.day_of_week = 'Wednesday')
+			 THEN 2
+			 WHEN (
+			 H.day_of_week = 'Thursday')
+			 THEN 3
+			 WHEN (
+			 H.day_of_week = 'Friday')
+			 THEN 4
+			 WHEN (
+			 H.day_of_week = 'Saturday')
+			 THEN 5
+			 WHEN (
+			 H.day_of_week = 'Sunday')
+			 THEN 6
+			 END;
