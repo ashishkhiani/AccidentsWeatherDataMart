@@ -29,18 +29,27 @@ LIMIT  10;
 -- ORDER BY L.intersection_1
 
 
--- Question 6 - Sub-optimal
+-- Question 6 - Improved, tracks accidents by year and day of week, and returns fatal count along with
+-- Non-fatal ratio (Fatal/Non-fatal)
 SELECT
  H.year,
  H.day_of_week,
- COUNT (F.is_fatal) AS average_amount
+ COUNT (F.is_fatal) AS total_amount,
+ COUNT(F.is_fatal)::float/Non_fatal.count::float as Fatal_NonFatal_ratio
 FROM
  accidents_weather_data_mart.accident_fact F,
- accidents_weather_data_mart.hour_dimension H
+ accidents_weather_data_mart.hour_dimension H,
+ (SELECT count(F1.is_fatal), H1.day_of_week, H1.year
+  FROM accidents_weather_data_mart.accident_fact F1,
+ 	    accidents_weather_data_mart.hour_dimension H1
+  WHERE H1.year > '2014' AND H1.hour_key = F1.hour_key AND NOT F1.is_fatal
+  GROUP BY H1.day_of_week, H1.year) as Non_fatal
 WHERE
 	H.year > '2014'
 	AND H.hour_key = F.hour_key
+	AND F.is_fatal
+	AND Non_fatal.day_of_week = H.day_of_week AND Non_fatal.year = H.year
 GROUP BY
- H.day_of_week, H.year
+ H.day_of_week, H.year, Non_fatal.count
 ORDER BY
  H.year, H.day_of_week;
