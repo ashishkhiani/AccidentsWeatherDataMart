@@ -70,3 +70,53 @@ class WeatherDimensionPreStageDAL(object):
 
         with db.get_connection().cursor() as cursor:
             execute_values(cur=cursor, sql=sql_insert, argslist=entities)
+
+    @staticmethod
+    def update_temperature_nulls():
+        """
+            Update all temperature pre-stage values
+        """
+
+
+        db = DatabaseConnection()
+
+        sql_update = \
+            """
+            UPDATE dimension_pre_stage.weather_dimension_pre_stage as W 
+            SET W.temperature_flag = 'estimated'
+            SET W.temperature = av.temp
+            FROM (select date, AVG(temperature) as temp
+                from dimension_pre_stage.weather_dimension_pre_stage
+                group by date) as av
+            WHERE
+             W.date = av.date AND W.temperature IS NULL
+        """
+
+        with db.get_connection().cursor() as cursor:
+            execute_values(cur=cursor, sql=sql_update)
+
+    @staticmethod
+    def update_weather_nulls():
+        """
+            Update all weather values
+        """
+
+
+        db = DatabaseConnection()
+
+        sql_update = \
+            """
+            UPDATE dimension_pre_stage.weather_dimension_pre_stage as W
+            SET W.weather_flag = 'estimated'
+            SET W.weather = av.weath
+            FROM (SELECT date, weather as weath, COUNT(weather) AS cnt
+                    FROM dimension_pre_stage.weather_dimension_pre_stage
+                    GROUP BY date, weather 
+                    ORDER BY cnt DESC
+                    LIMIT 1) as av
+            WHERE
+             W.date = av.date AND W.weather IS NULL
+        """
+
+        with db.get_connection().cursor() as cursor:
+            execute_values(cur=cursor, sql=sql_update)

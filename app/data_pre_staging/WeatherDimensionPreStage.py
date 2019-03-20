@@ -193,3 +193,9 @@ class WeatherDimensionPreStage(object):
             return weather, ESTIMATED
 
         return weather, AVAILABLE
+
+    @staticmethod
+    def handle_null_values():
+        WeatherDimensionPreStageDAL.update_temperature_nulls()
+        WeatherDimensionPreStageDAL.update_weather_nulls()
+        print("Not yet implemented")
