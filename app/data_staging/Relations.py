@@ -104,6 +104,8 @@ class Relations(object):
                 batch_num += 1
 
         if len(station_location_pairs) > 0:
+            WeatherLocationRelationDAL.insert_many_temp(station_location_pairs)
+            station_location_pairs.clear()
             print("Completed batch " + str(batch_num) + " of " + str(math.ceil(count / 500)))
 
     @staticmethod
