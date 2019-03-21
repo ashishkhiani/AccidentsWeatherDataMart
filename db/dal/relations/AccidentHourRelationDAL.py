@@ -15,15 +15,8 @@ class AccidentHourRelationDAL(object):
 
         sql = """INSERT INTO relations.accident_hour_relation (accident_key, hour_key)
                  SELECT A.accident_key, H.hour_key
-                 FROM dimension_pre_stage.accident_dimension_pre_stage A, 
-                      dimension_pre_stage.hour_dimension_pre_stage H
-                 WHERE (A.date = H.date 
-                            AND H.hour_start <= A.time + interval '30 minute' 
-                            AND A.time + interval '30 minute' < H.hour_end)
-                        OR (A.time IS NULL)
-                        OR (A.date + interval '1 day' = H.date 
-                            AND H.hour_start <= A.time + interval '30 minute' 
-                            AND A.time + interval '30 minute' < H.hour_end)"""
+                 FROM dimension_pre_stage.accident_dimension_pre_stage A, dimension_pre_stage.hour_dimension_pre_stage H
+                 WHERE date_trunc('hour', A.date + A.time + INTERVAL '30 minute') = H.date + H.hour_start;"""
 
         with db.get_connection().cursor() as cursor:
             cursor.execute(sql)
