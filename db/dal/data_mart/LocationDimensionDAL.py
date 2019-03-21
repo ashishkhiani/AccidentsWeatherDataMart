@@ -21,9 +21,15 @@ class LocationDimensionDAL(object):
                     longitude,
                     latitude,
                     city,
-                    neighbourhood,
-                    is_intersection)  
-                 SELECT * FROM dimension_pre_stage.location_dimension_pre_stage"""
+                    neighbourhood)  
+                 SELECT location_key,
+                    street_name,
+                    intersection_1,
+                    intersection_2,
+                    longitude,
+                    latitude,
+                    city,
+                    neighbourhood FROM dimension_pre_stage.location_dimension_pre_stage"""
 
         with db.get_connection().cursor() as cursor:
             cursor.execute(sql)

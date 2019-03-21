@@ -1,4 +1,5 @@
 from db import DatabaseConnection
+from db.dal.DAL import DAL
 
 
 class AccidentFactDAL(object):
@@ -36,3 +37,25 @@ class AccidentFactDAL(object):
 
         with db.get_connection().cursor() as cursor:
             cursor.execute(sql)
+
+    @staticmethod
+    def fetch_conditions():
+
+        return DAL.fetch_all("""SELECT ft.fact_id, ad.environment, ad.road_surface, wd.weather
+                    FROM accidents_weather_data_mart.accident_fact ft
+                    JOIN accidents_weather_data_mart.accident_dimension ad ON ad.accident_key = ft.accident_key
+                    JOIN accidents_weather_data_mart.weather_dimension wd ON wd.weather_key = ft.weather_key;""")
+
+    @staticmethod
+    def update_condition_integrity(fact_id, value):
+        """
+        Updates the condition_integrity field
+        """
+        db = DatabaseConnection()
+
+        sql_update_query = """UPDATE accidents_weather_data_mart.accident_fact
+                        SET condition_integrity = %s
+                        WHERE fact_id = %s;"""
+
+        with db.get_connection().cursor() as cursor:
+            cursor.execute(sql_update_query, (value, fact_id))
