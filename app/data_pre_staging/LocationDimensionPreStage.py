@@ -1,7 +1,9 @@
 import math
+import json
 import re
 
 from geopy import distance
+from shapely.geometry import Point, shape
 # from db.dal.data_source.CollisionDataCalgaryDAL import CollisionDataCalgaryDAL
 from db.dal.data_source.CollisionDataOttawaDAL import CollisionDataOttawaDAL
 from db.dal.data_source.CollisionDataTorontoDAL import CollisionDataTorontoDAL
@@ -17,6 +19,10 @@ class LocationDimensionPreStage(object):
     The location pre-stage dimension contains all the attributes necessary including ones
     that will help connect with other dimensions
     """
+
+    # Importing Ottawa Neighbourhoods
+    with open('db/resources/onsboundariesgen1.shp.json') as f:
+        ottawa_neighbourhoods = json.load(f)
 
     @staticmethod
     def populate():
@@ -85,7 +91,7 @@ class LocationDimensionPreStage(object):
 
         city = 'Ottawa'
 
-        neighbourhood = None
+        neighbourhood = LocationDimensionPreStage.get_neighbourhood_ottawa(Point(longitude, latitude))
 
         if intersection_1 is not None and intersection_2 is None:
             is_intersection = True
@@ -258,3 +264,12 @@ class LocationDimensionPreStage(object):
                 closest_station = station
 
         return closest_station
+
+    @staticmethod
+    def get_neighbourhood_ottawa(point):
+        for feature in LocationDimensionPreStage.ottawa_neighbourhoods['features']:
+            polygon = shape(feature['geometry'])
+            if polygon.contains(point):
+                return feature['properties']['Name']
+
+        return None

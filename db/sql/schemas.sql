@@ -252,7 +252,8 @@ CREATE TABLE IF NOT EXISTS accidents_weather_data_mart.accident_fact (
   weather_key       INTEGER NOT NULL,
   event_key         INTEGER,
   is_fatal          BOOLEAN NOT NULL,
-  is_intersection   BOOLEAN NOT NULL
+  is_intersection   BOOLEAN NOT NULL,
+  condition_integrity BOOLEAN
 );
 
 CREATE TABLE IF NOT EXISTS accidents_weather_data_mart.event_dimension (
