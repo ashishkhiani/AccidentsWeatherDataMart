@@ -134,3 +134,87 @@ WHERE
        W.weather LIKE '%Thunderstorm%' AND
        L.city = 'Ottawa' AND
        H.year = '2014';
+
+--Compare accidents on Mondays versus accidents on Fridays
+SELECT
+  (SELECT
+       count(*)
+  FROM
+       accidents_weather_data_mart.accident_fact F,
+       accidents_weather_data_mart.hour_dimension H
+  WHERE
+       F.hour_key = H.hour_key AND
+       H.day_of_week = 'Monday') as accidents_monday,
+
+  (SELECT
+       count(*)
+  FROM
+       accidents_weather_data_mart.accident_fact F,
+       accidents_weather_data_mart.hour_dimension H
+  WHERE
+       F.hour_key = H.hour_key AND
+       H.day_of_week = 'Friday') as accidents_friday;
+
+--Compare fatal accidents on Mondays versus fatal accidents on Fridays
+SELECT
+  (SELECT
+       count(*)
+  FROM
+       accidents_weather_data_mart.accident_fact F,
+       accidents_weather_data_mart.hour_dimension H
+  WHERE
+       F.hour_key = H.hour_key AND
+       F.is_fatal = TRUE AND
+       H.day_of_week = 'Monday') as accidents_monday,
+
+  (SELECT
+       count(*)
+  FROM
+       accidents_weather_data_mart.accident_fact F,
+       accidents_weather_data_mart.hour_dimension H
+  WHERE
+       F.hour_key = H.hour_key AND
+       F.is_fatal = TRUE AND
+       H.day_of_week = 'Friday') as accidents_friday;
+
+--Contrast the number of accidents at intersections versus those that do not occur at intersections.
+SELECT
+  (SELECT
+       count(*)
+  FROM
+       accidents_weather_data_mart.accident_fact F
+  WHERE
+       F.is_intersection = TRUE) as accidents_at_intersection,
+
+  (SELECT
+       count(*)
+  FROM
+       accidents_weather_data_mart.accident_fact F
+  WHERE
+       F.is_intersection = FALSE) as accidents_not_at_intersections;
+
+--Interplay between road surface and the number of accidents.
+SELECT
+       A.road_surface, count(*) as num_accidents
+FROM
+       accidents_weather_data_mart.accident_fact F,
+       accidents_weather_data_mart.accident_dimension A
+WHERE
+       F.accident_key = A.accident_key AND A.road_surface_flag = 'available'
+
+GROUP BY A.road_surface
+ORDER BY num_accidents DESC;
+
+--Interplay between traffic control, impact types and frequencies of accidents.
+SELECT
+       A.traffic_control, A.impact_type, count(*) as num_accidents
+FROM
+       accidents_weather_data_mart.accident_fact F,
+       accidents_weather_data_mart.accident_dimension A
+WHERE
+       F.accident_key = A.accident_key
+       AND A.traffic_control_flag = 'available'
+       AND A.impact_type_flag = 'available'
+
+GROUP BY A.traffic_control, A.impact_type
+ORDER BY A.traffic_control, A.impact_type
