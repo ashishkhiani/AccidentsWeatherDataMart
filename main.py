@@ -30,4 +30,4 @@ if __name__ == '__main__':
         event=False
     )
 
-    create_fact_table(create=True)
+    create_fact_table(create=False)
