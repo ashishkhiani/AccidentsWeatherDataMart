@@ -6,28 +6,28 @@ if __name__ == '__main__':
     init_schemas()
 
     populate_dimensions_pre_stage(
-        hour=False,
-        weather=False,
-        accident=False,
-        location=False,
-        event=False
+        hour=True,
+        weather=True,
+        accident=True,
+        location=True,
+        event=True
     )
 
     create_relations(
-        weather_hour=False,
-        accident_hour=False,
-        accident_location=False,
-        weather_location=False,
-        event_hour=False,
-        event_location=False
+        weather_hour=True,
+        accident_hour=True,
+        accident_location=True,
+        weather_location=True,
+        event_hour=True,
+        event_location=True
     )
 
     populate_dimensions_data_mart(
-        hour=False,
-        weather=False,
-        accident=False,
-        location=False,
-        event=False
+        hour=True,
+        weather=True,
+        accident=True,
+        location=True,
+        event=True
     )
 
-    create_fact_table(create=False)
+    create_fact_table(create=True)
